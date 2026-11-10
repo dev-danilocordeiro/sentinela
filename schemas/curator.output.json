@@ -1,0 +1,98 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "curator.output",
+  "type": "object",
+  "properties": {
+    "examples": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "finding_id": {
+            "type": "integer"
+          },
+          "lesson": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "finding_id",
+          "lesson"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "suppressions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "module": {
+            "type": "string"
+          },
+          "category": {
+            "type": "string",
+            "enum": [
+              "bug",
+              "performance",
+              "improvement",
+              "security"
+            ]
+          },
+          "pattern": {
+            "type": "string"
+          },
+          "reason": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "module",
+          "category",
+          "pattern",
+          "reason"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "thresholds": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "module": {
+            "type": "string"
+          },
+          "category": {
+            "type": "string",
+            "enum": [
+              "bug",
+              "performance",
+              "improvement",
+              "security"
+            ]
+          },
+          "min_confidence": {
+            "type": "number"
+          },
+          "reason": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "module",
+          "category",
+          "min_confidence",
+          "reason"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": [
+    "examples",
+    "suppressions",
+    "thresholds"
+  ],
+  "additionalProperties": false
+}

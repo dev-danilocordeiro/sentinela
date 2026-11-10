@@ -1,0 +1,62 @@
+# sentinela.yaml mínimo de uma empresa pequena: um time, um board no Linear, um canal no Slack,
+# dois repos. Modo completo, com a chave da API da empresa (docs/empresa.md). Valide com:
+#   sentinela --config examples/empresa-pequena/sentinela.yaml config validate --offline
+# O teste TestSmallCompanyExampleValidates (internal/cli) valida este arquivo com Linear e Slack
+# falsos, para ele nunca ficar desatualizado.
+
+adapters: { tracker: linear_api, notifier: slack_api, git_host: github_apps }
+
+defaults:
+  linear: { team: ENG, project: "Sentinela", labels: [sentinela], triage_state: Triage }
+  notify: { slack: C0EMPRESA01 }        # #engenharia: resumo das rodadas, issues e PRs
+  policy: { auto_approve: false, max_lines: 50, max_files: 3 }
+
+labels: { finding: sentinela, trigger: sentinela-fix, done: sentinela-done, failed: sentinela-failed }
+
+fix_trigger: { allowed: team_members }  # só quem é do time ENG no Linear pede correção
+
+github_apps: { bot: sentinela-bot-empresa, reviewer: sentinela-reviewer-empresa, reviewer_approves: false }
+
+llm:
+  provider: anthropic_api               # chave da empresa (ANTHROPIC_API_KEY), não assinatura individual
+
+budget: { per_run_usd: 5.00, per_pr_usd: 3.00, per_month_usd: 150.00 }
+
+models:
+  triage: claude-haiku-5-5
+  analysis: claude-sonnet-5-5
+  architect: claude-sonnet-5-5
+  judge: claude-sonnet-5-5
+  curator: claude-haiku-5-5
+  notes: claude-sonnet-5-5
+  orchestrator: claude-sonnet-5-5
+  spec_writer: claude-sonnet-5-5
+  executor: claude-opus-5-5
+  reviewer_security: claude-opus-5-5
+  reviewer_code: claude-sonnet-5-5
+  reviewer_reliability: claude-sonnet-5-5
+  reviewer_domain: claude-sonnet-5-5
+  approver: claude-opus-5-5
+  refusal: { action: fallback_model, fallback_model: claude-opus-5-5 }
+  use_batch: true
+
+pricing:
+  batch_discount: 0.5
+  models:
+    claude-haiku-5-5: { input: 0.10, output: 0.50, cache_read: 0.01 }
+    claude-sonnet-5-5: { input: 2.00, output: 10.00, cache_read: 0.20 }
+    claude-opus-5-5: { input: 4.00, output: 20.00, cache_read: 0.20 }
+
+blocked_paths: ["**/migrations/**", "**/auth/**", ".github/workflows/**"]
+
+teams:
+  engenharia:
+    github: ["@empresa/engenharia"]
+    linear: { team: ENG }
+    notify: { mention: S0EMPRESA01 }    # @engenharia no Slack
+
+publish: { enabled: true, max_issues_per_team_per_run: 3 }
+
+repos:
+  - { name: empresa/api, team: engenharia }
+  - { name: empresa/web, team: engenharia }

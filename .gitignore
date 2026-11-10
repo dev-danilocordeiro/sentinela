@@ -1,0 +1,55 @@
+# Binaries
+/sentinela
+/bin/
+/dist/
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# Test artifacts
+*.test
+*.out
+coverage.*
+/tmp/
+
+# Go workspace
+go.work
+go.work.sum
+
+# Secrets: never commit
+.env
+.env.*
+!.env.example
+secrets/
+*.pem
+*.key
+
+# Editors / OS
+.idea/
+.vscode/
+*.swp
+.DS_Store
+
+# Runtime data
+/worktrees/
+/reports/
+
+# Clones e worktrees do Sentinela
+/.sentinela/
+
+# Ferramentas de Node dos scanners (npm ci --ignore-scripts --prefix tools/node)
+/tools/node/node_modules/
+
+# Configuração e kit de setup de cada instalação (dados pessoais): veja sentinela.example.yaml e docs/
+/sentinela.yaml
+/sentinela.eval.yaml
+/sentinela-setup/
+
+# Notas privadas (relatórios e revisões) ficam fora do repo, em ../sentinela-notas
+/docs/relatorios/
+/docs/revisoes/
+
+# Termos proibidos que não podem ser versionados
+/scripts/termos-proibidos.local.txt

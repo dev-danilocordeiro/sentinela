@@ -1,0 +1,54 @@
+# CI do Sentinela (D-16 da revisão de prontidão): testes, inclusive os de integração num Postgres
+# com pgvector, lint e, no repo que tem a exportação, a checagem de termos proibidos.
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: pgvector/pgvector:pg16
+        env:
+          POSTGRES_USER: sentinela
+          POSTGRES_PASSWORD: sentinela
+          POSTGRES_DB: sentinela_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U sentinela -d sentinela_test"
+          --health-interval 2s
+          --health-timeout 3s
+          --health-retries 30
+    env:
+      # Os testes de integração apagam o schema deste banco: é um banco só de teste.
+      SENTINELA_TEST_DATABASE_URL: postgres://sentinela:sentinela@localhost:5432/sentinela_test?sslmode=disable
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+      - name: go test (com os testes de integração)
+        run: go test -p 1 ./...
+      - name: golangci-lint
+        uses: golangci/golangci-lint-action@v8
+        with:
+          version: v2.14.0
+      - name: termos proibidos (exportação)
+        # Só no repo que tem o script: a cópia exportada não leva a lista de termos.
+        run: |
+          if [ ! -x scripts/exportar.sh ]; then
+            echo "sem scripts/exportar.sh: checagem pulada"
+            exit 0
+          fi
+          git tag ci-exportacao HEAD
+          scripts/exportar.sh --tag ci-exportacao --modulo github.com/acme/sentinela --saida "$RUNNER_TEMP/exportacao" --sem-testes

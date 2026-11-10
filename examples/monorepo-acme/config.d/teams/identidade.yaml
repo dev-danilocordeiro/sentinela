@@ -1,0 +1,20 @@
+# config.d/teams/identidade.yaml: o time identidade. Dono: @acme/identidade.
+# Módulos no monorepo (modules/contas e modules/sessoes) vêm do CODEOWNERS.
+
+github: ["@acme/identidade"]
+members: [fulana]                     # usuária individual do CODEOWNERS que é deste time
+assignee: round_robin                 # alterna entre os membros com e-mail
+
+linear:
+  team: IDN
+  project: "Identidade"
+
+notify:
+  slack: C0ACMEIDN01                  # #identidade-alertas
+  mention: S0ACMEIDN01                # @identidade-team
+
+labels:
+  failed: identidade-falhou           # label de falha própria
+
+repos:
+  - { name: acme/sdk-identidade, default_branch: main, languages: [go] }   # sem linear_project: usa o do time

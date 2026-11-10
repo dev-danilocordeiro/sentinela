@@ -1,0 +1,103 @@
+# sentinela.yaml PRINCIPAL da organização fictícia "acme" (cenário de referência).
+#
+# Este arquivo fica com os administradores do Sentinela (veja .github/CODEOWNERS). Ele tem a
+# política da organização: modos, modelos, custos, auto-aprovação e os repos compartilhados. Cada
+# time mantém o próprio arquivo em config.d/teams/<time>.yaml, por PR. O Sentinela junta tudo ao
+# carregar (ADR 0041).
+#
+# Confira com:
+#   sentinela --config examples/monorepo-acme/sentinela.yaml config validate --offline
+# Explicação passo a passo: docs/guia-configuracao.md.
+
+workspace:                       # só para mensagens e links
+  linear_workspace: acme         # slug do workspace no Linear
+  slack_workspace: acme          # workspace do Slack
+  github_owner: acme             # organização no GitHub
+
+adapters:                        # modo de operação (docs/modos.md): aqui, o completo
+  tracker: linear_api            # issues no Linear pelo app OAuth do Sentinela
+  notifier: slack_api            # avisos pelo bot do Slack
+  git_host: github_apps          # PRs pela app bot; a app revisora comenta o gate
+
+defaults:                        # vale para quem não define o próprio
+  linear:
+    team: PLAT                   # time do Linear quando nada mais casar
+    project: "Sentinela · Geral" # projeto de último recurso (time > repo > defaults)
+    labels: [sentinela]          # labels de toda issue do Sentinela
+    triage_state: Triage         # estado inicial das issues (precisa existir em cada time)
+    review_state: In Review      # para onde a issue vai quando o PR em draft abre
+  owners_source: both            # config.d e CODEOWNERS; a config vence onde declara
+  notify:
+    slack: C0ACMESENT1           # #sentinela: resumo de cada rodada e times sem canal
+  policy:
+    auto_approve: false          # ninguém é auto-aprovado sem decisão explícita aqui
+    max_lines: 50                # tamanho máximo de PR que o gate aceita aprovar
+    max_files: 3
+
+labels:                          # labels da organização; o time troca gatilho, done e failed no arquivo dele
+  finding: sentinela             # toda issue do Sentinela
+  trigger: sentinela-fix         # uma pessoa aplica: pede a correção
+  done: sentinela-done           # o Sentinela aplica: PR em draft aberto
+  failed: sentinela-failed       # o Sentinela aplica: a correção falhou
+
+fix_trigger:                     # quem pode pedir a correção com a label de gatilho (ADR 0042)
+  allowed: team_members          # anyone | team_members | lista de usuários do Linear (e-mail ou nome)
+
+github_apps:
+  bot: sentinela-bot-acme        # slug da app que abre os PRs em draft
+  reviewer: sentinela-reviewer-acme   # slug da app que comenta a decisão do gate
+  reviewer_approves: false       # true deixa a revisora aprovar onde a política do time permitir
+
+budget:                          # em dólar; só vale com llm.provider anthropic_api
+  per_run_usd: 5.00              # teto de uma rodada de descoberta
+  per_pr_usd: 3.00               # teto de uma correção
+
+models:                          # modelo de cada papel; os times não mudam (é custo da organização)
+  triage: claude-haiku-5-5
+  analysis: claude-sonnet-5-5
+  architect: claude-sonnet-5-5
+  judge: claude-sonnet-5-5
+  curator: claude-haiku-5-5
+  notes: claude-sonnet-5-5
+  orchestrator: claude-sonnet-5-5
+  spec_writer: claude-sonnet-5-5
+  executor: claude-opus-5-5
+  reviewer_security: claude-opus-5-5
+  reviewer_code: claude-sonnet-5-5
+  reviewer_reliability: claude-sonnet-5-5
+  reviewer_domain: claude-sonnet-5-5
+  approver: claude-opus-5-5
+  refusal:
+    action: fallback_model       # modelo recusou: tenta outro
+    fallback_model: claude-opus-5-5
+
+llm:
+  provider: claude_code          # assinatura do Claude Code (claude -p)
+
+pricing:                         # USD por milhão de tokens; confira a tabela atual da Anthropic
+  models:
+    claude-haiku-5-5: { input: 0.10, output: 0.50, cache_read: 0.01 }
+    claude-sonnet-5-5: { input: 2.00, output: 10.00, cache_read: 0.20 }
+    claude-opus-5-5: { input: 4.00, output: 20.00, cache_read: 0.20 }
+
+blocked_paths:                   # nunca auto-aprova; os times só acrescentam (blocked_paths no arquivo deles)
+  - "**/migrations/**"
+  - "**/auth/**"
+  - ".github/workflows/**"
+  - "infra/**"
+
+teams:                           # só a parte da organização de cada time: policy e models
+  plataforma:
+    policy: { auto_approve: true, max_lines: 30 }   # a organização libera a auto-aprovação da plataforma
+  pagamentos:
+    policy: { auto_approve: false, blocked: true }   # domínio sensível: nunca auto-aprova
+
+publish:
+  enabled: true                  # cria as issues no Linear
+  max_issues_per_team_per_run: 3 # o excedente fica para a próxima rodada
+
+repos:                           # os repos compartilhados ficam aqui; os de um time só, no arquivo do time
+  - name: acme/plataforma        # o monorepo: cada módulo tem um dono (CODEOWNERS e config.d)
+    default_branch: main
+    owners_source: both
+    fallback_team: plataforma    # caminho sem dono vai para a plataforma

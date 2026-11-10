@@ -1,0 +1,26 @@
+{
+  "Servers": {
+    "1": {
+      "Name": "sentinela",
+      "Group": "Sentinela",
+      "Host": "postgres",
+      "Port": 5432,
+      "MaintenanceDB": "sentinela",
+      "Username": "sentinela",
+      "SSLMode": "disable",
+      "PassFile": "/var/lib/pgadmin/pgpass",
+      "DBRestriction": "sentinela"
+    },
+    "2": {
+      "Name": "sentinela_test",
+      "Group": "Sentinela",
+      "Host": "postgres",
+      "Port": 5432,
+      "MaintenanceDB": "sentinela_test",
+      "Username": "sentinela",
+      "SSLMode": "disable",
+      "PassFile": "/var/lib/pgadmin/pgpass",
+      "DBRestriction": "sentinela_test"
+    }
+  }
+}

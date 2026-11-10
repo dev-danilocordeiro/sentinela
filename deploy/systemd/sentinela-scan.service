@@ -1,0 +1,14 @@
+# Descoberta em todos os repos do sentinela.yaml, um por vez. Disparada pelo sentinela-scan.timer.
+[Unit]
+Description=Sentinela scan --all (descoberta semanal)
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=oneshot
+@USER_LINE@
+Environment=SENTINELA_HOME=@SENTINELA_HOME@
+ExecStart=@SENTINELA_HOME@/deploy/bin/sentinela-run scan --all
+# Uma rodada full num repo grande leva dezenas de minutos; sem teto curto do systemd.
+TimeoutStartSec=6h
+SyslogIdentifier=sentinela-scan

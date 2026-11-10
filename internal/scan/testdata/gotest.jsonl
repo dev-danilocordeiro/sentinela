@@ -1,0 +1,9 @@
+{"Time":"2026-10-09T23:29:14.688957837-03:00","Action":"start","Package":"probe"}
+{"Time":"2026-10-09T23:29:14.690586056-03:00","Action":"run","Package":"probe","Test":"TestFails"}
+{"Time":"2026-10-09T23:29:14.690630946-03:00","Action":"output","Package":"probe","Test":"TestFails","Output":"=== RUN   TestFails\n","OutputType":"frame"}
+{"Time":"2026-10-09T23:29:14.690651876-03:00","Action":"output","Package":"probe","Test":"TestFails","Output":"    main_test.go:5: quebrado\n","OutputType":"error"}
+{"Time":"2026-10-09T23:29:14.690662826-03:00","Action":"output","Package":"probe","Test":"TestFails","Output":"--- FAIL: TestFails (0.00s)\n","OutputType":"frame"}
+{"Time":"2026-10-09T23:29:14.690670376-03:00","Action":"fail","Package":"probe","Test":"TestFails","Elapsed":0}
+{"Time":"2026-10-09T23:29:14.690679306-03:00","Action":"output","Package":"probe","Output":"FAIL\n","OutputType":"frame"}
+{"Time":"2026-10-09T23:29:14.690880284-03:00","Action":"output","Package":"probe","Output":"FAIL\tprobe\t0.002s\n","OutputType":"frame"}
+{"Time":"2026-10-09T23:29:14.690908274-03:00","Action":"fail","Package":"probe","Elapsed":0.002}

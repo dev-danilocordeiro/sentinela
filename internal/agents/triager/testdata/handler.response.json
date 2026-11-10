@@ -1,0 +1,1 @@
+{"category":"bug","deepen":true,"reason":"UrlService.java:42 ignora o retorno de save() e responde 201 mesmo quando o Redis falha.","summary":"Encurta URLs e grava os dados no Redis."}

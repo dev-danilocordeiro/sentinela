@@ -1,0 +1,153 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "description": "Arquivo de um time (o nome do arquivo é o time). Política da organização só vale no sentinela.yaml principal. Referência: docs/guia-configuracao.md.",
+  "properties": {
+    "assignee": {
+      "type": "string"
+    },
+    "blocked_paths": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "github": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "labels": {
+      "additionalProperties": false,
+      "properties": {
+        "done": {
+          "type": "string"
+        },
+        "failed": {
+          "type": "string"
+        },
+        "trigger": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "lead": {
+      "type": "string"
+    },
+    "linear": {
+      "additionalProperties": false,
+      "properties": {
+        "category_projects": {
+          "additionalProperties": {
+            "type": "string"
+          },
+          "type": "object"
+        },
+        "done_state": {
+          "type": "string"
+        },
+        "labels": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "project": {
+          "type": "string"
+        },
+        "review_state": {
+          "type": "string"
+        },
+        "team": {
+          "type": "string"
+        },
+        "triage_state": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "members": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "modules": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "linear_project": {
+            "type": "string"
+          },
+          "override": {
+            "type": "boolean"
+          },
+          "path": {
+            "type": "string"
+          },
+          "repo": {
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "notify": {
+      "additionalProperties": false,
+      "properties": {
+        "mention": {
+          "type": "string"
+        },
+        "slack": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "policy": {
+      "additionalProperties": false,
+      "properties": {
+        "blocked": {
+          "type": "boolean"
+        },
+        "max_files": {
+          "type": "integer"
+        },
+        "max_lines": {
+          "type": "integer"
+        }
+      },
+      "type": "object"
+    },
+    "repos": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "default_branch": {
+            "type": "string"
+          },
+          "languages": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "linear_project": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "type": "array"
+    }
+  },
+  "title": "config.d/teams/\u003ctime\u003e.yaml",
+  "type": "object"
+}

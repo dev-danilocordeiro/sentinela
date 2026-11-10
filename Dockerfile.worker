@@ -1,0 +1,47 @@
+# Imagem do job do Sentinela (ADR 0053): o Claude Code da linha de execução roda aqui, com
+# execution.runtime: container. Traz git, Go, JDK, Node com corepack, os scanners da descoberta, o
+# Claude Code (versão fixada), o plugin sentinela-factory, as ferramentas de Node dos scanners
+# (eslint e tsc) e o binário sentinela (proxy de saída).
+# Sem gh e sem credenciais: push, PR e comentários são do worker, no host.
+#
+#   docker build -f Dockerfile.worker -t sentinela-job:latest .
+
+FROM golang:1.27 AS build
+WORKDIR /src
+COPY go.mod go.sum ./
+RUN go mod download
+COPY . .
+RUN CGO_ENABLED=0 go build -trimpath -ldflags="-s -w" -o /out/sentinela ./cmd/sentinela
+# Scanners da descoberta, nas versões em uso (docs/instalacao.md).
+RUN GOBIN=/out go install github.com/golangci/golangci-lint/v2/cmd/golangci-lint@v2.14.0 \
+	&& GOBIN=/out go install github.com/securego/gosec/v2/cmd/gosec@v2.29.0 \
+	&& GOBIN=/out go install golang.org/x/vuln/cmd/govulncheck@v1.8.0
+
+FROM eclipse-temurin:21-jdk AS jdk
+
+FROM node:22-bookworm
+ARG CLAUDE_CODE_VERSION=2.1.302
+ARG SEMGREP_VERSION=1.180.0
+RUN apt-get update \
+	&& apt-get install -y --no-install-recommends ca-certificates git python3-venv \
+	&& rm -rf /var/lib/apt/lists/*
+COPY --from=build /usr/local/go /usr/local/go
+COPY --from=jdk /opt/java/openjdk /opt/java/openjdk
+COPY --from=build /out/ /usr/local/bin/
+RUN python3 -m venv /opt/semgrep \
+	&& /opt/semgrep/bin/pip install --no-cache-dir "semgrep==${SEMGREP_VERSION}" \
+	&& ln -s /opt/semgrep/bin/semgrep /usr/local/bin/semgrep
+RUN npm install -g "@anthropic-ai/claude-code@${CLAUDE_CODE_VERSION}" \
+	&& corepack enable \
+	&& npm cache clean --force
+COPY plugins/sentinela-factory /opt/sentinela/plugins/sentinela-factory
+# eslint e tsc dos scanners de Node (ADR 0060), sem scripts de instalação.
+COPY tools/node/package.json tools/node/package-lock.json tools/node/eslint.config.mjs /opt/sentinela/tools/node/
+RUN npm ci --ignore-scripts --no-audit --no-fund --prefix /opt/sentinela/tools/node && npm cache clean --force
+ENV JAVA_HOME=/opt/java/openjdk \
+	PATH=/usr/local/go/bin:/opt/java/openjdk/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+# Usuário sem privilégio. O worker roda o contêiner com o uid e o gid dele (os arquivos montados
+# são dele) e com HOME=/var/lib/sentinela, onde monta o HOME do job.
+RUN useradd --create-home --home-dir /var/lib/sentinela --uid 10001 --shell /bin/sh sentinela
+USER sentinela
+WORKDIR /var/lib/sentinela

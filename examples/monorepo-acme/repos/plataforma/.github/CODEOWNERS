@@ -1,0 +1,35 @@
+# CODEOWNERS do monorepo acme/plataforma (fictício). Semântica do GitHub: a ÚLTIMA regra que casa
+# vence. O Sentinela lê este arquivo no passo 2 do roteamento; os módulos declarados em
+# config.d/teams vencem antes, no passo 1 (owners_source: both).
+
+# Regra genérica: o que não tiver dono mais específico é da plataforma.
+*                          @acme/plataforma
+
+# Pagamentos: 4 módulos e a biblioteca de dinheiro.
+/modules/cobranca/         @acme/pagamentos
+/modules/carteira/         @acme/pagamentos
+/modules/conciliacao-de-repasses/ @acme/pagamentos
+/modules/fraude/           @acme/pagamentos
+/libs/dinheiro/            @acme/pagamentos
+
+# Catálogo: 2 módulos.
+/modules/produtos/         @acme/catalogo
+/modules/busca/            @acme/catalogo
+
+# Identidade: 2 módulos.
+/modules/contas/           @acme/identidade
+/modules/sessoes/          @acme/identidade
+
+# Plataforma: 2 módulos, CI, infra e o que é compartilhado.
+/modules/observabilidade/  @acme/plataforma
+/modules/fila/             @acme/plataforma
+/.github/                  @acme/plataforma
+/infra/                    @acme/plataforma
+/go.mod                    @acme/plataforma
+**/Dockerfile              @acme/plataforma
+
+# Biblioteca compartilhada: dois donos. O primeiro é o principal; o segundo entra como inscrito.
+/libs/comum/               @acme/plataforma @acme/pagamentos
+
+# Regra sem donos: tira o dono do caminho (o roteamento cai no fallback_team do repo).
+/docs/rascunhos/

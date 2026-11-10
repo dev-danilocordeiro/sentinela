@@ -1,0 +1,1016 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "description": "Configuração do Sentinela (arquivo principal). Referência: docs/configuracao.md.",
+  "properties": {
+    "adapters": {
+      "additionalProperties": false,
+      "properties": {
+        "git_host": {
+          "type": "string"
+        },
+        "local_dir": {
+          "type": "string"
+        },
+        "mcp": {
+          "additionalProperties": false,
+          "properties": {
+            "linear_server": {
+              "type": "string"
+            },
+            "model": {
+              "type": "string"
+            },
+            "poll_interval": {
+              "description": "duração do Go, ex.: 15m, 2h, 168h",
+              "pattern": "^-?([0-9]+(\\.[0-9]+)?(ns|us|µs|ms|s|m|h))+$",
+              "type": "string"
+            },
+            "slack_server": {
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "notifier": {
+          "type": "string"
+        },
+        "tracker": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "blocked_paths": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "budget": {
+      "additionalProperties": false,
+      "properties": {
+        "per_month_usd": {
+          "type": "number"
+        },
+        "per_pr_usd": {
+          "type": "number"
+        },
+        "per_run_usd": {
+          "type": "number"
+        }
+      },
+      "type": "object"
+    },
+    "defaults": {
+      "additionalProperties": false,
+      "properties": {
+        "linear": {
+          "additionalProperties": false,
+          "properties": {
+            "category_projects": {
+              "additionalProperties": {
+                "type": "string"
+              },
+              "type": "object"
+            },
+            "done_state": {
+              "type": "string"
+            },
+            "labels": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            "project": {
+              "type": "string"
+            },
+            "review_state": {
+              "type": "string"
+            },
+            "team": {
+              "type": "string"
+            },
+            "triage_state": {
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "notify": {
+          "additionalProperties": false,
+          "properties": {
+            "mention": {
+              "type": "string"
+            },
+            "slack": {
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "owners_source": {
+          "type": "string"
+        },
+        "policy": {
+          "additionalProperties": false,
+          "properties": {
+            "auto_approve": {
+              "type": "boolean"
+            },
+            "blocked": {
+              "type": "boolean"
+            },
+            "max_files": {
+              "type": "integer"
+            },
+            "max_lines": {
+              "type": "integer"
+            }
+          },
+          "type": "object"
+        }
+      },
+      "type": "object"
+    },
+    "discovery": {
+      "additionalProperties": false,
+      "properties": {
+        "analysis_context_tokens": {
+          "type": "integer"
+        },
+        "batch_poll_interval": {
+          "description": "duração do Go, ex.: 15m, 2h, 168h",
+          "pattern": "^-?([0-9]+(\\.[0-9]+)?(ns|us|µs|ms|s|m|h))+$",
+          "type": "string"
+        },
+        "judge_votes": {
+          "type": "integer"
+        },
+        "location_candidates": {
+          "type": "integer"
+        },
+        "location_line_window": {
+          "type": "integer"
+        },
+        "max_findings_per_package": {
+          "type": "integer"
+        },
+        "max_new_repos_per_run": {
+          "type": "integer"
+        },
+        "min_confidence": {
+          "type": "number"
+        },
+        "node_tools": {
+          "type": "string"
+        },
+        "premise_margin": {
+          "type": "number"
+        },
+        "revote_band": {
+          "type": "number"
+        },
+        "scanner_timeout": {
+          "description": "duração do Go, ex.: 15m, 2h, 168h",
+          "pattern": "^-?([0-9]+(\\.[0-9]+)?(ns|us|µs|ms|s|m|h))+$",
+          "type": "string"
+        },
+        "scanners": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "semgrep_config": {
+          "type": "string"
+        },
+        "semgrep_languages": {
+          "additionalProperties": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "type": "object"
+        },
+        "similarity_threshold": {
+          "type": "number"
+        },
+        "triage_context_tokens": {
+          "type": "integer"
+        },
+        "workdir": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "execution": {
+      "additionalProperties": false,
+      "properties": {
+        "binary": {
+          "type": "string"
+        },
+        "completion_timeout": {
+          "description": "duração do Go, ex.: 15m, 2h, 168h",
+          "pattern": "^-?([0-9]+(\\.[0-9]+)?(ns|us|µs|ms|s|m|h))+$",
+          "type": "string"
+        },
+        "concurrency": {
+          "type": "integer"
+        },
+        "container": {
+          "additionalProperties": false,
+          "properties": {
+            "dind_image": {
+              "type": "string"
+            },
+            "egress_allow": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            "engine": {
+              "type": "string"
+            },
+            "image": {
+              "type": "string"
+            },
+            "labels": {
+              "additionalProperties": {
+                "type": "string"
+              },
+              "type": "object"
+            }
+          },
+          "type": "object"
+        },
+        "disallowed_tools": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "failed_worktree_retention": {
+          "description": "duração do Go, ex.: 15m, 2h, 168h",
+          "pattern": "^-?([0-9]+(\\.[0-9]+)?(ns|us|µs|ms|s|m|h))+$",
+          "type": "string"
+        },
+        "home": {
+          "type": "string"
+        },
+        "home_files": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "idle_timeout": {
+          "description": "duração do Go, ex.: 15m, 2h, 168h",
+          "pattern": "^-?([0-9]+(\\.[0-9]+)?(ns|us|µs|ms|s|m|h))+$",
+          "type": "string"
+        },
+        "ignore_comment_prefixes": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "job_docker": {
+          "type": "string"
+        },
+        "jobs": {
+          "type": "string"
+        },
+        "jobs_retention": {
+          "description": "duração do Go, ex.: 15m, 2h, 168h",
+          "pattern": "^-?([0-9]+(\\.[0-9]+)?(ns|us|µs|ms|s|m|h))+$",
+          "type": "string"
+        },
+        "max_budget_usd": {
+          "type": "number"
+        },
+        "max_resumes": {
+          "type": "integer"
+        },
+        "plugin": {
+          "type": "string"
+        },
+        "poll_interval": {
+          "description": "duração do Go, ex.: 15m, 2h, 168h",
+          "pattern": "^-?([0-9]+(\\.[0-9]+)?(ns|us|µs|ms|s|m|h))+$",
+          "type": "string"
+        },
+        "review_notes": {
+          "type": "string"
+        },
+        "runtime": {
+          "type": "string"
+        },
+        "shepherd_max_cycles": {
+          "type": "integer"
+        },
+        "timeout": {
+          "description": "duração do Go, ex.: 15m, 2h, 168h",
+          "pattern": "^-?([0-9]+(\\.[0-9]+)?(ns|us|µs|ms|s|m|h))+$",
+          "type": "string"
+        },
+        "webhook_events_retention": {
+          "description": "duração do Go, ex.: 15m, 2h, 168h",
+          "pattern": "^-?([0-9]+(\\.[0-9]+)?(ns|us|µs|ms|s|m|h))+$",
+          "type": "string"
+        },
+        "worktrees": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "feedback": {
+      "additionalProperties": false,
+      "properties": {
+        "curator_interval": {
+          "description": "duração do Go, ex.: 15m, 2h, 168h",
+          "pattern": "^-?([0-9]+(\\.[0-9]+)?(ns|us|µs|ms|s|m|h))+$",
+          "type": "string"
+        },
+        "max_examples": {
+          "type": "integer"
+        },
+        "suppression_ttl": {
+          "description": "duração do Go, ex.: 15m, 2h, 168h",
+          "pattern": "^-?([0-9]+(\\.[0-9]+)?(ns|us|µs|ms|s|m|h))+$",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "fix_trigger": {
+      "additionalProperties": false,
+      "properties": {
+        "allowed": {
+          "description": "anyone, team_members ou uma lista de usuários do Linear (e-mail ou nome), que pode incluir team_members",
+          "oneOf": [
+            {
+              "enum": [
+                "anyone",
+                "team_members"
+              ],
+              "type": "string"
+            },
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            }
+          ]
+        }
+      },
+      "type": "object"
+    },
+    "github_apps": {
+      "additionalProperties": false,
+      "properties": {
+        "bot": {
+          "type": "string"
+        },
+        "reviewer": {
+          "type": "string"
+        },
+        "reviewer_approves": {
+          "type": "boolean"
+        }
+      },
+      "type": "object"
+    },
+    "labels": {
+      "additionalProperties": false,
+      "properties": {
+        "done": {
+          "type": "string"
+        },
+        "failed": {
+          "type": "string"
+        },
+        "finding": {
+          "type": "string"
+        },
+        "intentional": {
+          "type": "string"
+        },
+        "not_intentional": {
+          "type": "string"
+        },
+        "question": {
+          "type": "string"
+        },
+        "trigger": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "linear_auth": {
+      "additionalProperties": false,
+      "properties": {
+        "fallback_api_key": {
+          "type": "boolean"
+        },
+        "grant": {
+          "type": "string"
+        },
+        "legacy_prefix_until": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "mode": {
+          "type": "string"
+        },
+        "redirect_uri": {
+          "type": "string"
+        },
+        "scopes": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "token_file": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "llm": {
+      "additionalProperties": false,
+      "properties": {
+        "claude_code": {
+          "additionalProperties": false,
+          "properties": {
+            "binary": {
+              "type": "string"
+            },
+            "concurrency": {
+              "type": "integer"
+            },
+            "max_calls_per_run": {
+              "type": "integer"
+            },
+            "record_dir": {
+              "type": "string"
+            },
+            "timeout": {
+              "description": "duração do Go, ex.: 15m, 2h, 168h",
+              "pattern": "^-?([0-9]+(\\.[0-9]+)?(ns|us|µs|ms|s|m|h))+$",
+              "type": "string"
+            },
+            "workdir": {
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "provider": {
+          "type": "string"
+        },
+        "replay": {
+          "additionalProperties": false,
+          "properties": {
+            "dir": {
+              "type": "string"
+            }
+          },
+          "type": "object"
+        }
+      },
+      "type": "object"
+    },
+    "models": {
+      "additionalProperties": false,
+      "properties": {
+        "analysis": {
+          "type": "string"
+        },
+        "approver": {
+          "type": "string"
+        },
+        "architect": {
+          "type": "string"
+        },
+        "curator": {
+          "type": "string"
+        },
+        "executor": {
+          "type": "string"
+        },
+        "judge": {
+          "type": "string"
+        },
+        "notes": {
+          "type": "string"
+        },
+        "orchestrator": {
+          "type": "string"
+        },
+        "refusal": {
+          "additionalProperties": false,
+          "properties": {
+            "action": {
+              "type": "string"
+            },
+            "fallback_model": {
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "refusal_fallback": {
+          "type": "string"
+        },
+        "reviewer_code": {
+          "type": "string"
+        },
+        "reviewer_domain": {
+          "type": "string"
+        },
+        "reviewer_reliability": {
+          "type": "string"
+        },
+        "reviewer_security": {
+          "type": "string"
+        },
+        "shepherd": {
+          "type": "string"
+        },
+        "spec_writer": {
+          "type": "string"
+        },
+        "triage": {
+          "type": "string"
+        },
+        "use_batch": {
+          "type": "boolean"
+        }
+      },
+      "type": "object"
+    },
+    "pricing": {
+      "additionalProperties": false,
+      "properties": {
+        "batch_discount": {
+          "type": "number"
+        },
+        "cache_write_1h_multiplier": {
+          "type": "number"
+        },
+        "cache_write_5m_multiplier": {
+          "type": "number"
+        },
+        "models": {
+          "additionalProperties": {
+            "additionalProperties": false,
+            "properties": {
+              "cache_read": {
+                "type": "number"
+              },
+              "input": {
+                "type": "number"
+              },
+              "output": {
+                "type": "number"
+              },
+              "tiers": {
+                "items": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "above_input_tokens": {
+                      "type": "integer"
+                    },
+                    "cache_read": {
+                      "type": "number"
+                    },
+                    "input": {
+                      "type": "number"
+                    },
+                    "output": {
+                      "type": "number"
+                    }
+                  },
+                  "type": "object"
+                },
+                "type": "array"
+              }
+            },
+            "type": "object"
+          },
+          "type": "object"
+        }
+      },
+      "type": "object"
+    },
+    "publish": {
+      "additionalProperties": false,
+      "properties": {
+        "enabled": {
+          "type": "boolean"
+        },
+        "max_issues_per_team_per_run": {
+          "type": "integer"
+        }
+      },
+      "type": "object"
+    },
+    "repos": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "default_branch": {
+            "type": "string"
+          },
+          "fallback_team": {
+            "type": "string"
+          },
+          "languages": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "linear_project": {
+            "type": "string"
+          },
+          "models": {
+            "additionalProperties": false,
+            "properties": {
+              "analysis": {
+                "type": "string"
+              },
+              "approver": {
+                "type": "string"
+              },
+              "architect": {
+                "type": "string"
+              },
+              "curator": {
+                "type": "string"
+              },
+              "executor": {
+                "type": "string"
+              },
+              "judge": {
+                "type": "string"
+              },
+              "notes": {
+                "type": "string"
+              },
+              "orchestrator": {
+                "type": "string"
+              },
+              "refusal_fallback": {
+                "type": "string"
+              },
+              "reviewer_code": {
+                "type": "string"
+              },
+              "reviewer_domain": {
+                "type": "string"
+              },
+              "reviewer_reliability": {
+                "type": "string"
+              },
+              "reviewer_security": {
+                "type": "string"
+              },
+              "shepherd": {
+                "type": "string"
+              },
+              "spec_writer": {
+                "type": "string"
+              },
+              "triage": {
+                "type": "string"
+              }
+            },
+            "type": "object"
+          },
+          "modules": {
+            "items": {
+              "additionalProperties": false,
+              "properties": {
+                "ignore": {
+                  "type": "boolean"
+                },
+                "linear_project": {
+                  "type": "string"
+                },
+                "override": {
+                  "type": "boolean"
+                },
+                "path": {
+                  "type": "string"
+                },
+                "team": {
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            },
+            "type": "array"
+          },
+          "name": {
+            "type": "string"
+          },
+          "owners_source": {
+            "type": "string"
+          },
+          "team": {
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "signals": {
+      "additionalProperties": false,
+      "properties": {
+        "datadog": {
+          "additionalProperties": false,
+          "properties": {
+            "enabled": {
+              "type": "boolean"
+            },
+            "org": {
+              "type": "string"
+            },
+            "service_map": {
+              "additionalProperties": {
+                "type": "string"
+              },
+              "type": "object"
+            },
+            "site": {
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "sentry": {
+          "additionalProperties": false,
+          "properties": {
+            "enabled": {
+              "type": "boolean"
+            },
+            "org": {
+              "type": "string"
+            },
+            "service_map": {
+              "additionalProperties": {
+                "type": "string"
+              },
+              "type": "object"
+            },
+            "site": {
+              "type": "string"
+            }
+          },
+          "type": "object"
+        }
+      },
+      "type": "object"
+    },
+    "teams": {
+      "additionalProperties": {
+        "additionalProperties": false,
+        "properties": {
+          "assignee": {
+            "type": "string"
+          },
+          "fix_trigger": {
+            "additionalProperties": false,
+            "properties": {
+              "allowed": {
+                "description": "anyone, team_members ou uma lista de usuários do Linear (e-mail ou nome), que pode incluir team_members",
+                "oneOf": [
+                  {
+                    "enum": [
+                      "anyone",
+                      "team_members"
+                    ],
+                    "type": "string"
+                  },
+                  {
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array"
+                  }
+                ]
+              }
+            },
+            "type": "object"
+          },
+          "github": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "labels": {
+            "additionalProperties": false,
+            "properties": {
+              "done": {
+                "type": "string"
+              },
+              "failed": {
+                "type": "string"
+              },
+              "trigger": {
+                "type": "string"
+              }
+            },
+            "type": "object"
+          },
+          "lead": {
+            "type": "string"
+          },
+          "linear": {
+            "additionalProperties": false,
+            "properties": {
+              "category_projects": {
+                "additionalProperties": {
+                  "type": "string"
+                },
+                "type": "object"
+              },
+              "done_state": {
+                "type": "string"
+              },
+              "labels": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              "project": {
+                "type": "string"
+              },
+              "review_state": {
+                "type": "string"
+              },
+              "team": {
+                "type": "string"
+              },
+              "triage_state": {
+                "type": "string"
+              }
+            },
+            "type": "object"
+          },
+          "members": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "models": {
+            "additionalProperties": false,
+            "properties": {
+              "analysis": {
+                "type": "string"
+              },
+              "approver": {
+                "type": "string"
+              },
+              "architect": {
+                "type": "string"
+              },
+              "curator": {
+                "type": "string"
+              },
+              "executor": {
+                "type": "string"
+              },
+              "judge": {
+                "type": "string"
+              },
+              "notes": {
+                "type": "string"
+              },
+              "orchestrator": {
+                "type": "string"
+              },
+              "refusal_fallback": {
+                "type": "string"
+              },
+              "reviewer_code": {
+                "type": "string"
+              },
+              "reviewer_domain": {
+                "type": "string"
+              },
+              "reviewer_reliability": {
+                "type": "string"
+              },
+              "reviewer_security": {
+                "type": "string"
+              },
+              "shepherd": {
+                "type": "string"
+              },
+              "spec_writer": {
+                "type": "string"
+              },
+              "triage": {
+                "type": "string"
+              }
+            },
+            "type": "object"
+          },
+          "notify": {
+            "additionalProperties": false,
+            "properties": {
+              "mention": {
+                "type": "string"
+              },
+              "slack": {
+                "type": "string"
+              }
+            },
+            "type": "object"
+          },
+          "policy": {
+            "additionalProperties": false,
+            "properties": {
+              "auto_approve": {
+                "type": "boolean"
+              },
+              "blocked": {
+                "type": "boolean"
+              },
+              "max_files": {
+                "type": "integer"
+              },
+              "max_lines": {
+                "type": "integer"
+              }
+            },
+            "type": "object"
+          }
+        },
+        "type": "object"
+      },
+      "type": "object"
+    },
+    "telemetry": {
+      "additionalProperties": false,
+      "properties": {
+        "otlp_endpoint": {
+          "type": "string"
+        },
+        "service_name": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "trigger": {
+      "additionalProperties": false,
+      "properties": {
+        "listen_addr": {
+          "type": "string"
+        },
+        "mode": {
+          "type": "string"
+        },
+        "polling_interval": {
+          "description": "duração do Go, ex.: 15m, 2h, 168h",
+          "pattern": "^-?([0-9]+(\\.[0-9]+)?(ns|us|µs|ms|s|m|h))+$",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "workspace": {
+      "additionalProperties": false,
+      "properties": {
+        "github_owner": {
+          "type": "string"
+        },
+        "linear_workspace": {
+          "type": "string"
+        },
+        "slack_workspace": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    }
+  },
+  "title": "sentinela.yaml",
+  "type": "object"
+}

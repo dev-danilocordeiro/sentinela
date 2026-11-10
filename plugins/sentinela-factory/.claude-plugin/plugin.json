@@ -1,0 +1,5 @@
+{
+  "name": "sentinela-factory",
+  "version": "1.0.0",
+  "description": "Linha de execução do Sentinela: spec-writer, builder, quatro reviewers em paralelo e approver, orquestrados pela skill /sentinela-factory:sentinela-fix. O worker invoca em modo headless; nada é copiado para o repo-alvo."
+}

@@ -1,0 +1,199 @@
+{
+ "_fonte": "Schemas das ferramentas do MCP do Linear (servidor claude.ai Linear), lidos em 2026-10-16. Todas com additionalProperties: false. Atualize quando o MCP mudar e o config validate acusar desvio.",
+ "tools": {
+  "get_issue": {
+   "cursor": false,
+   "limitMax": null,
+   "properties": [
+    "fields",
+    "id",
+    "includeCustomerNeeds",
+    "includeRelations",
+    "includeReleases"
+   ],
+   "required": [
+    "id"
+   ]
+  },
+  "list_comments": {
+   "cursor": true,
+   "limitMax": 250,
+   "properties": [
+    "cursor",
+    "documentId",
+    "initiativeId",
+    "issueId",
+    "limit",
+    "milestoneId",
+    "orderBy",
+    "projectId",
+    "statusUpdateId",
+    "statusUpdateType"
+   ],
+   "required": []
+  },
+  "list_issue_labels": {
+   "cursor": true,
+   "limitMax": 250,
+   "properties": [
+    "cursor",
+    "includeArchived",
+    "includeGroups",
+    "limit",
+    "name",
+    "orderBy",
+    "team"
+   ],
+   "required": []
+  },
+  "list_issue_statuses": {
+   "cursor": false,
+   "limitMax": null,
+   "properties": [
+    "team"
+   ],
+   "required": [
+    "team"
+   ]
+  },
+  "list_issues": {
+   "cursor": true,
+   "limitMax": 250,
+   "properties": [
+    "assignee",
+    "createdAt",
+    "creator",
+    "cursor",
+    "customView",
+    "cycle",
+    "delegate",
+    "fields",
+    "includeArchived",
+    "includeSubTeams",
+    "label",
+    "limit",
+    "orderBy",
+    "parentId",
+    "priority",
+    "project",
+    "query",
+    "release",
+    "state",
+    "team",
+    "triagedAt",
+    "updatedAt"
+   ],
+   "required": []
+  },
+  "list_projects": {
+   "cursor": true,
+   "limitMax": 50,
+   "properties": [
+    "createdAt",
+    "cursor",
+    "customView",
+    "fields",
+    "includeArchived",
+    "includeMembers",
+    "includeMilestones",
+    "includeSubTeams",
+    "initiative",
+    "label",
+    "limit",
+    "member",
+    "orderBy",
+    "query",
+    "state",
+    "team",
+    "updatedAt"
+   ],
+   "required": []
+  },
+  "list_teams": {
+   "cursor": true,
+   "limitMax": 250,
+   "properties": [
+    "ancestorTeam",
+    "createdAt",
+    "cursor",
+    "includeArchived",
+    "limit",
+    "orderBy",
+    "parentTeam",
+    "query",
+    "updatedAt"
+   ],
+   "required": []
+  },
+  "list_users": {
+   "cursor": true,
+   "limitMax": 250,
+   "properties": [
+    "cursor",
+    "limit",
+    "orderBy",
+    "query",
+    "team"
+   ],
+   "required": []
+  },
+  "save_comment": {
+   "cursor": false,
+   "limitMax": null,
+   "properties": [
+    "body",
+    "documentId",
+    "id",
+    "initiativeId",
+    "issueId",
+    "milestoneId",
+    "parentId",
+    "projectId",
+    "statusUpdateId",
+    "statusUpdateType"
+   ],
+   "required": [
+    "body"
+   ]
+  },
+  "save_issue": {
+   "cursor": false,
+   "limitMax": null,
+   "properties": [
+    "addLabels",
+    "addReleases",
+    "assignee",
+    "blockedBy",
+    "blocks",
+    "cycle",
+    "delegate",
+    "description",
+    "dueDate",
+    "duplicateOf",
+    "estimate",
+    "id",
+    "labels",
+    "links",
+    "milestone",
+    "parentId",
+    "patch",
+    "priority",
+    "project",
+    "relatedTo",
+    "removeBlockedBy",
+    "removeBlocks",
+    "removeLabels",
+    "removeRelatedTo",
+    "removeReleases",
+    "setReleases",
+    "slaBreachesAt",
+    "slaType",
+    "state",
+    "team",
+    "template",
+    "title"
+   ],
+   "required": []
+  }
+ }
+}

@@ -1,0 +1,209 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "judge.input",
+  "type": "object",
+  "properties": {
+    "finding": {
+      "type": "object",
+      "properties": {
+        "source": {
+          "type": "string"
+        },
+        "repo": {
+          "type": "string"
+        },
+        "module": {
+          "type": "string"
+        },
+        "category": {
+          "type": "string"
+        },
+        "severity": {
+          "type": "string"
+        },
+        "confidence": {
+          "type": "number"
+        },
+        "title": {
+          "type": "string"
+        },
+        "context": {
+          "type": "string"
+        },
+        "evidence": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "file": {
+                "type": "string"
+              },
+              "line": {
+                "type": "integer"
+              },
+              "snippet": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "file",
+              "line",
+              "snippet"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "proposed_fix": {
+          "type": "string"
+        },
+        "acceptance_criteria": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "related_modules": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "fingerprint": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "source",
+        "repo",
+        "module",
+        "category",
+        "severity",
+        "confidence",
+        "title",
+        "context",
+        "evidence",
+        "proposed_fix",
+        "acceptance_criteria",
+        "related_modules",
+        "fingerprint"
+      ],
+      "additionalProperties": false
+    },
+    "similar": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "fingerprint": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "category": {
+            "type": "string"
+          },
+          "state": {
+            "type": "string"
+          },
+          "similarity": {
+            "type": "number"
+          },
+          "issue": {
+            "type": "string"
+          },
+          "acceptance_criteria": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "evidence": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "overlap": {
+            "type": "object",
+            "properties": {
+              "criteria": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "evidence": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            },
+            "required": [
+              "criteria",
+              "evidence"
+            ],
+            "additionalProperties": false
+          },
+          "location": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "fingerprint",
+          "title",
+          "category",
+          "state",
+          "similarity",
+          "issue",
+          "acceptance_criteria",
+          "evidence",
+          "overlap",
+          "location"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "examples": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "category": {
+            "type": "string"
+          },
+          "outcome": {
+            "type": "string"
+          },
+          "reason": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "title",
+          "category",
+          "outcome",
+          "reason"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "min_confidence": {
+      "type": "number"
+    }
+  },
+  "required": [
+    "finding",
+    "similar",
+    "examples",
+    "min_confidence"
+  ],
+  "additionalProperties": false
+}

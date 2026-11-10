@@ -1,0 +1,11 @@
+.git
+.env
+.env.*
+secrets/
+sentinela-setup/
+sentinela.yaml
+.sentinela/
+reports/
+scripts/termos-proibidos.local.txt
+sentinela
+tools/node/node_modules/

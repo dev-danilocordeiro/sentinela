@@ -1,0 +1,52 @@
+{
+  "agent": "judge",
+  "prompt_version": "judge@8",
+  "model": "claude-sonnet-5-5",
+  "max_tokens": 4000,
+  "effort": "low",
+  "has_schema": true,
+  "user": {
+    "finding": {
+      "source": "code_analysis",
+      "repo": "acme/app-java-angular",
+      "module": "src",
+      "category": "bug",
+      "severity": "high",
+      "confidence": 0.82,
+      "title": "Propaga falha ao gravar URL no Redis",
+      "context": "c",
+      "evidence": [
+        {
+          "file": "src/UrlService.java",
+          "line": 3,
+          "snippet": "redis.save(url);"
+        }
+      ],
+      "proposed_fix": "f",
+      "acceptance_criteria": [
+        "503 com Redis fora"
+      ],
+      "related_modules": [],
+      "fingerprint": "abc123def456"
+    },
+    "similar": [
+      {
+        "fingerprint": "000000000000",
+        "title": "Outro",
+        "category": "bug",
+        "state": "rejected",
+        "similarity": 0.5,
+        "issue": "",
+        "acceptance_criteria": [],
+        "evidence": [],
+        "overlap": {
+          "criteria": [],
+          "evidence": []
+        },
+        "location": []
+      }
+    ],
+    "examples": [],
+    "min_confidence": 0.6
+  }
+}

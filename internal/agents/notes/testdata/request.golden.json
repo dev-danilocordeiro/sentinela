@@ -1,0 +1,49 @@
+{
+  "agent": "notes",
+  "prompt_version": "notes@2",
+  "model": "claude-sonnet-5-5",
+  "max_tokens": 16000,
+  "effort": "medium",
+  "has_schema": true,
+  "user": {
+    "repo": "acme/monorepo-poliglota",
+    "execution": {
+      "issue": "EX-12",
+      "title": "Configura timeouts no servidor HTTP",
+      "pr_url": "https://github.com/acme/monorepo-poliglota/pull/3",
+      "head_sha": "77edbe0",
+      "scope_paths": [
+        "go/cmd/api"
+      ],
+      "proposed_fix": "Usar http.Server com timeouts."
+    },
+    "notes": [
+      {
+        "id": "note:1",
+        "lens": "security",
+        "round": 1,
+        "text": "`go/cmd/api/main.go:24-44`: os handlers não limitam o tamanho do corpo com `http.MaxBytesReader`."
+      },
+      {
+        "id": "note:2",
+        "lens": "security",
+        "round": 1,
+        "text": "`go/cmd/api/main.go:38,40`: `err.Error()` vai para o cliente na resposta."
+      },
+      {
+        "id": "note:3",
+        "lens": "reliability",
+        "round": 1,
+        "text": "`go/cmd/api/main.go:47`: sem shutdown gracioso, então o SIGTERM derruba as requisições em andamento."
+      }
+    ],
+    "excerpts": [
+      {
+        "file": "go/cmd/api/main.go",
+        "start_line": 12,
+        "code": "package main"
+      }
+    ],
+    "max_findings": 5
+  }
+}

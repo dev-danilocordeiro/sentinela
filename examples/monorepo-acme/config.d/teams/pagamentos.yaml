@@ -1,0 +1,37 @@
+# config.d/teams/pagamentos.yaml: o time pagamentos (o nome do arquivo é o nome do time).
+# Dono deste arquivo: @acme/pagamentos (veja .github/CODEOWNERS). Política da organização
+# (auto-aprovação, modelos, custos, modos) não entra aqui: fica no sentinela.yaml principal.
+# Schema para o editor: schema/team.schema.json.
+
+github: ["@acme/pagamentos"]          # como o time aparece no CODEOWNERS dos repos
+lead: lider.pagamentos@example.com    # recebe as issues com assignee: lead
+assignee: lead                        # none | lead | round_robin
+
+linear:
+  team: PAG                           # o board do time no Linear
+  # Sem project do time: o código de pagamentos fora dos módulos (libs/dinheiro) vai para o projeto
+  # padrão da organização, exceto os achados de segurança, que vão para o projeto abaixo.
+  category_projects:                  # achado de segurança vai para um projeto próprio
+    security: "Pagamentos · Segurança"   # vence time, repo e defaults; perde para o projeto do módulo
+
+notify:
+  slack: C0ACMEPAG01                  # #pagamentos-alertas: cada issue e PR do time
+  mention: S0ACMEPAG01                # ID do grupo @pagamentos-team (o Slack só notifica grupo por ID)
+
+labels:
+  trigger: pagamentos-fix             # o time pede correção com a própria label (a da organização não dispara)
+
+policy:
+  max_lines: 20                       # o time aperta o tamanho de PR que o gate aceita
+
+modules:                              # um projeto do Linear por módulo do monorepo
+  - { repo: acme/plataforma, path: "modules/cobranca/**", linear_project: "Pagamentos · Cobrança" }
+  - { repo: acme/plataforma, path: "modules/carteira/**", linear_project: "Pagamentos · Carteira" }
+  - { repo: acme/plataforma, path: "modules/conciliacao-de-repasses/**", linear_project: "Pagamentos · Repasse" }   # nome longo: o glob é maior que "**/Dockerfile"
+  - { repo: acme/plataforma, path: "modules/fraude/**",   linear_project: "Pagamentos · Fraude" }
+# Ordem do projeto: módulo > categoria do time > time > repo > defaults. Um achado de segurança em
+# modules/cobranca fica em "Pagamentos · Cobrança" (o módulo vence); um em libs/dinheiro, que não é
+# módulo, vai para "Pagamentos · Segurança".
+
+blocked_paths:                        # só acrescenta à lista da organização
+  - "modules/*/cartao/**"             # dado de cartão: nunca auto-aprova

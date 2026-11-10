@@ -1,0 +1,13 @@
+{
+  "name": "sentinela-node-tools",
+  "private": true,
+  "description": "Ferramentas de Node dos scanners do Sentinela (eslint com a config neutra e tsc), instaladas com npm ci --ignore-scripts, à parte dos repos analisados.",
+  "license": "UNLICENSED",
+  "dependencies": {
+    "@eslint/js": "10.0.1",
+    "eslint": "10.12.0",
+    "eslint-plugin-react-hooks": "7.1.1",
+    "typescript": "5.9.3",
+    "typescript-eslint": "8.71.0"
+  }
+}

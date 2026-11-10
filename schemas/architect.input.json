@@ -1,0 +1,115 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "architect.input",
+  "type": "object",
+  "properties": {
+    "repo": {
+      "type": "string"
+    },
+    "packages": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "path": {
+            "type": "string"
+          },
+          "language": {
+            "type": "string"
+          },
+          "owner_team": {
+            "type": "string"
+          },
+          "summary": {
+            "type": "string"
+          },
+          "landmarks": {
+            "type": "array",
+            "description": "linhas reais do pacote (imports e declarações), citáveis como evidência",
+            "items": {
+              "type": "object",
+              "properties": {
+                "file": {
+                  "type": "string"
+                },
+                "line": {
+                  "type": "integer"
+                },
+                "code": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "file",
+                "line",
+                "code"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "path",
+          "language",
+          "owner_team",
+          "summary",
+          "landmarks"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "edges": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "from": {
+            "type": "string"
+          },
+          "to": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "from",
+          "to"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "findings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "category": {
+            "type": "string"
+          },
+          "file": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "title",
+          "category",
+          "file"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "max_findings": {
+      "type": "integer"
+    }
+  },
+  "required": [
+    "repo",
+    "packages",
+    "edges",
+    "findings",
+    "max_findings"
+  ],
+  "additionalProperties": false
+}

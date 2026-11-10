@@ -1,0 +1,63 @@
+# `docker compose up` sobe só o Postgres com pgvector.
+# O app entra com o profile "app": `docker compose --profile app up --build`.
+# O pgAdmin entra com o profile "tools": `docker compose --profile tools up -d` (http://127.0.0.1:5050).
+services:
+  postgres:
+    image: pgvector/pgvector:pg16
+    restart: unless-stopped        # volta sozinho depois de reiniciar a máquina ou o Docker
+    environment:
+      POSTGRES_USER: sentinela
+      POSTGRES_PASSWORD: sentinela   # só desenvolvimento local
+      POSTGRES_DB: sentinela
+    ports:
+      - "${SENTINELA_PG_PORT:-5432}:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U sentinela -d sentinela"]
+      interval: 2s
+      timeout: 3s
+      retries: 30
+
+  app:
+    profiles: [app]
+    build: .
+    depends_on:
+      postgres:
+        condition: service_healthy
+    env_file:
+      - path: .env
+        required: false
+    environment:
+      DATABASE_URL: postgres://sentinela:sentinela@postgres:5432/sentinela?sslmode=disable
+    volumes:
+      - ./sentinela.yaml:/app/sentinela.yaml:ro
+    command: ["migrate", "up"]
+
+  pgadmin:
+    profiles: [tools]
+    image: dpage/pgadmin4:9.18   # https://hub.docker.com/r/dpage/pgadmin4/tags
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      # Modo desktop: sem tela de login nem senha mestra. Só desenvolvimento local.
+      PGADMIN_CONFIG_SERVER_MODE: "False"
+      PGADMIN_CONFIG_MASTER_PASSWORD_REQUIRED: "False"
+      # O entrypoint da imagem exige as duas variáveis; no modo desktop elas não são usadas.
+      PGADMIN_DEFAULT_EMAIL: pgadmin4@pgadmin.org
+      PGADMIN_DEFAULT_PASSWORD: nao-usada
+      PGADMIN_SERVER_JSON_FILE: /pgadmin4/servers.json
+    # A libpq ignora um pgpass legível por outros usuários, e o arquivo montado do host não pertence
+    # ao usuário do pgAdmin (5050): ele é copiado para o volume com chmod 600 antes de subir.
+    entrypoint: ["/bin/sh", "-c", "install -m 600 /pgadmin4/pgpass.host /var/lib/pgadmin/pgpass && exec /entrypoint.sh"]
+    ports:
+      - "127.0.0.1:${SENTINELA_PGADMIN_PORT:-5050}:80"
+    volumes:
+      - pgadmin:/var/lib/pgadmin
+      - ./docker/pgadmin/servers.json:/pgadmin4/servers.json:ro
+      - ./docker/pgadmin/pgpass:/pgadmin4/pgpass.host:ro
+
+volumes:
+  pgdata:
+  pgadmin:

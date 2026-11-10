@@ -1,0 +1,54 @@
+services:
+  redis:
+    image: redis:7-alpine
+    container_name: app-redis
+    ports:
+      - "6379:6379"
+    command: ["redis-server", "--appendonly", "yes"]
+    volumes:
+      - redis-data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+    restart: unless-stopped
+
+  redis-commander:
+    image: rediscommander/redis-commander:latest
+    container_name: app-redis-commander
+    environment:
+      REDIS_HOSTS: app:redis:6379
+    ports:
+      - "8081:8081"
+    depends_on:
+      redis:
+        condition: service_healthy
+    restart: unless-stopped
+
+  backend:
+    build: ./backend
+    container_name: app-backend
+    environment:
+      SPRING_DATA_REDIS_HOST: redis
+      APP_BASE_URL: http://localhost:${BACKEND_PORT:-8080}
+      # Zone used to bucket analytics clicks by hour and day; match the host's.
+      TZ: ${TZ:-America/Sao_Paulo}
+    ports:
+      - "${BACKEND_PORT:-8080}:8080"
+    depends_on:
+      redis:
+        condition: service_healthy
+    restart: unless-stopped
+
+  frontend:
+    build: ./frontend
+    container_name: app-frontend
+    ports:
+      - "${FRONTEND_PORT:-8082}:80"
+    depends_on:
+      - backend
+    restart: unless-stopped
+
+volumes:
+  redis-data:

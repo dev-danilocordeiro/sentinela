@@ -1,0 +1,23 @@
+{
+  "name": "sentinela-reviewer-<sua-org>",
+  "description": "Publica a revisão dos PRs do Sentinela (decisão do approver e do gate). Não escreve código. Só aprova com github_apps.reviewer_approves: true no sentinela.yaml.",
+  "url": "https://example.com",
+  "public": false,
+  "hook_attributes": {
+    "url": "https://example.invalid/sentinela/github",
+    "active": false
+  },
+  "default_permissions": {
+    "pull_requests": "write",
+    "contents": "read",
+    "metadata": "read",
+    "checks": "read",
+    "statuses": "read"
+  },
+  "default_events": [
+    "pull_request",
+    "pull_request_review",
+    "check_suite",
+    "push"
+  ]
+}

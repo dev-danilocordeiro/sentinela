@@ -1,0 +1,11 @@
+# Toda segunda às 07:00 (hora local). Persistent: se a máquina estava desligada, roda ao ligar.
+[Unit]
+Description=Sentinela scan semanal (segunda de manhã)
+
+[Timer]
+OnCalendar=Mon *-*-* 07:00:00
+Persistent=true
+RandomizedDelaySec=10m
+
+[Install]
+WantedBy=timers.target

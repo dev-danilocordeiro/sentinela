@@ -1,0 +1,22 @@
+# Slack: api.slack.com/apps > Create New App > From a manifest > escolha o workspace
+# Depois: Install to Workspace, copie o Bot User OAuth Token (xoxb-...) para SLACK_BOT_TOKEN
+# e convide o bot em cada canal do sentinela.yaml (padrão e dos times): /invite @Sentinela
+display_information:
+  name: Sentinela
+  description: Achados de código e PRs automáticos do Sentinela
+  background_color: "#1f2933"
+features:
+  bot_user:
+    display_name: Sentinela
+    always_online: false
+oauth_config:
+  scopes:
+    bot:
+      - chat:write          # postar resumos e avisos
+      - chat:write.public   # postar em canais públicos sem convite
+      - channels:read       # resolver nome do canal para ID
+      - links:write         # unfurl de links do Linear/GitHub (opcional)
+settings:
+  org_deploy_enabled: false
+  socket_mode_enabled: false
+  token_rotation_enabled: false

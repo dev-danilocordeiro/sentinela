@@ -1,0 +1,11 @@
+# CODEOWNERS de exemplo do repo onde a acme guarda a config do Sentinela (o sentinela.yaml e o
+# config.d). Cada time aprova o PR do seu arquivo; o principal e o workflow são dos administradores.
+# Com "Require review from Code Owners" ligado na branch main, um time não muda o arquivo de outro.
+
+*                                   @acme/sentinela-admins
+/sentinela.yaml                     @acme/sentinela-admins
+/.github/                           @acme/sentinela-admins
+/config.d/teams/pagamentos.yaml     @acme/pagamentos
+/config.d/teams/catalogo.yaml       @acme/catalogo
+/config.d/teams/identidade.yaml     @acme/identidade
+/config.d/teams/plataforma.yaml     @acme/plataforma

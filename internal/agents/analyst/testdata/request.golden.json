@@ -1,0 +1,28 @@
+{
+  "agent": "analyst",
+  "prompt_version": "analyst@1",
+  "model": "claude-sonnet-5-5",
+  "max_tokens": 16000,
+  "effort": "medium",
+  "has_schema": true,
+  "user": {
+    "repo": "acme/app-java-angular",
+    "package": "src",
+    "language": "java",
+    "owner_team": "time-exemplo",
+    "files": [
+      {
+        "path": "src/UrlService.java",
+        "content": "1| class UrlService {\n2|   void shorten() {\n3|     redis.save(url);\n4|   }\n5| }\n"
+      }
+    ],
+    "truncated": [],
+    "triage": {
+      "category": "bug",
+      "reason": "save() ignorado"
+    },
+    "scanner_signals": [],
+    "suppressions": [],
+    "max_findings": 5
+  }
+}

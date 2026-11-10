@@ -1,0 +1,30 @@
+# CODEOWNERS de teste para o roteamento do Sentinela.
+# Os times @acme/* são fictícios: o GitHub vai marcá-los como inválidos
+# (não existem numa organização), mas o Sentinela os resolve pelo sentinela.yaml.
+# Regra do GitHub: a última linha que casa vence.
+
+# Padrão: tudo que não tiver dono mais específico é da plataforma
+*                                           @acme/plataforma
+
+# --- Acadêmico: matrícula, turmas e pedagógico, em todas as linguagens ---
+/go/internal/matricula/                     @acme/academico
+/go/internal/turmas/                        @acme/academico
+/java/src/main/java/escola/matricula/       @acme/academico
+/java/src/main/java/escola/turmas/          @acme/academico
+/java/src/main/java/escola/pedagogico/      @acme/academico
+/java/servico-turmas/                       @acme/academico
+/kotlin/src/main/kotlin/escola/matricula/   @acme/academico
+/kotlin/src/main/kotlin/escola/pedagogico/  @acme/academico
+/python/escola/modules/                     @acme/academico
+
+# --- Financeiro: domínio sensível (paths bloqueados no gate) ---
+/go/internal/financeiro/                    @acme/financeiro
+/kotlin/src/main/kotlin/escola/mensalidades/ @acme/financeiro
+
+# --- Casos de borda que o resolvedor precisa tratar ---
+# Vários donos na mesma regra: primeiro é o principal, o segundo entra como inscrito
+/java/src/main/resources/db/                @acme/plataforma @acme/academico
+# Owner sem time mapeado no sentinela.yaml: deve gerar aviso no `config validate`
+/python/tests/                              @acme/qa
+# Usuário individual: resolve para o time de que ele é membro
+/go/archtest/                               @fulano

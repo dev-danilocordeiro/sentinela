@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "triager.output",
+  "type": "object",
+  "properties": {
+    "category": {
+      "type": "string",
+      "enum": [
+        "bug",
+        "performance",
+        "improvement",
+        "security",
+        "none"
+      ]
+    },
+    "deepen": {
+      "type": "boolean"
+    },
+    "reason": {
+      "type": "string"
+    },
+    "summary": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "category",
+    "deepen",
+    "reason",
+    "summary"
+  ],
+  "additionalProperties": false
+}

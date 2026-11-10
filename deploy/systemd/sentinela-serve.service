@@ -1,0 +1,19 @@
+# Sync com o Linear (polling ou webhook) e Feedback Curator semanal. Ver docs/operacao.md.
+[Unit]
+Description=Sentinela serve (sync com o Linear e curadoria)
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=simple
+@USER_LINE@
+Environment=SENTINELA_HOME=@SENTINELA_HOME@
+ExecStart=@SENTINELA_HOME@/deploy/bin/sentinela-run serve
+Restart=always
+RestartSec=30
+# Logs no journald do usuário (persistente quando /var/log/journal existe):
+#   journalctl --user -u sentinela-serve -f
+SyslogIdentifier=sentinela-serve
+
+[Install]
+WantedBy=@WANTED_BY@

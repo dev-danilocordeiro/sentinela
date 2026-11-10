@@ -1,0 +1,19 @@
+{
+  "name": "sentinela-bot-<sua-org>",
+  "description": "Abre branches e PRs em draft com correções propostas pelo Sentinela.",
+  "url": "https://example.com",
+  "public": false,
+  "hook_attributes": {
+    "url": "https://example.invalid/sentinela/github",
+    "active": false
+  },
+  "default_permissions": {
+    "contents": "write",
+    "pull_requests": "write",
+    "metadata": "read",
+    "checks": "read",
+    "statuses": "read",
+    "actions": "read"
+  },
+  "default_events": []
+}

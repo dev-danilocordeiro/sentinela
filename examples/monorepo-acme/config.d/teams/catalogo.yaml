@@ -1,0 +1,17 @@
+# config.d/teams/catalogo.yaml: o time catalogo. Dono: @acme/catalogo.
+# Os módulos dele no monorepo (modules/produtos e modules/busca) vêm do CODEOWNERS do monorepo:
+# não precisam estar aqui, porque usam o projeto do time.
+
+github: ["@acme/catalogo"]
+assignee: none                        # ninguém é atribuído automaticamente
+
+linear:
+  team: CAT
+  project: "Catálogo"
+
+notify:
+  slack: C0ACMECAT01                  # #catalogo-alertas
+  mention: S0ACMECAT01                # @catalogo-team
+
+repos:                                # repo inteiro do time: o caso comum, um repo e um time
+  - { name: acme/vitrine-web }       # sem linear_project: o projeto do time vence o do repo (time > repo)

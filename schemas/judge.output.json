@@ -1,0 +1,89 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "judge.output",
+  "type": "object",
+  "properties": {
+    "product_decision": {
+      "type": "object",
+      "description": "sempre respondida, inclusive em discard e merge: este achado depende de uma decisão de produto?",
+      "properties": {
+        "depends": {
+          "type": "boolean",
+          "description": "true se o achado só vale sob uma decisão de produto que o código não confirma"
+        },
+        "decision": {
+          "type": "string",
+          "description": "a decisão, escrita como pergunta ao time do produto; \"\" quando depends é false"
+        }
+      },
+      "required": [
+        "depends",
+        "decision"
+      ],
+      "additionalProperties": false
+    },
+    "decision": {
+      "type": "string",
+      "enum": [
+        "publish",
+        "discard",
+        "merge"
+      ]
+    },
+    "confidence": {
+      "type": "number",
+      "description": "0 a 1"
+    },
+    "reason": {
+      "type": "string"
+    },
+    "merge_with": {
+      "type": "string"
+    },
+    "related_to": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "fingerprints de achados em similar que cobrem parte deste; [] se nenhum"
+    },
+    "narrowed": {
+      "type": "object",
+      "description": "o achado reduzido ao que related_to não cobre; strings vazias e [] se não reduziu",
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "context": {
+          "type": "string"
+        },
+        "proposed_fix": {
+          "type": "string"
+        },
+        "acceptance_criteria": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "title",
+        "context",
+        "proposed_fix",
+        "acceptance_criteria"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "product_decision",
+    "decision",
+    "confidence",
+    "reason",
+    "merge_with",
+    "related_to",
+    "narrowed"
+  ],
+  "additionalProperties": false
+}

@@ -1,0 +1,130 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "notes.output",
+  "type": "object",
+  "properties": {
+    "findings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "category": {
+            "type": "string",
+            "enum": [
+              "bug",
+              "performance",
+              "improvement",
+              "security"
+            ]
+          },
+          "severity": {
+            "type": "string",
+            "enum": [
+              "critical",
+              "high",
+              "medium",
+              "low"
+            ]
+          },
+          "confidence": {
+            "type": "number",
+            "description": "0 a 1"
+          },
+          "title": {
+            "type": "string"
+          },
+          "context": {
+            "type": "string"
+          },
+          "problem_key": {
+            "type": "string"
+          },
+          "evidence": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "file": {
+                  "type": "string"
+                },
+                "line": {
+                  "type": "integer"
+                },
+                "snippet": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "file",
+                "line",
+                "snippet"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "proposed_fix": {
+            "type": "string"
+          },
+          "acceptance_criteria": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "scope_paths": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "signal_refs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "ids das notas (note:N) que o achado cobre; pelo menos uma"
+          }
+        },
+        "required": [
+          "category",
+          "severity",
+          "confidence",
+          "title",
+          "context",
+          "problem_key",
+          "evidence",
+          "proposed_fix",
+          "acceptance_criteria",
+          "scope_paths",
+          "signal_refs"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "ignored_notes": {
+      "type": "array",
+      "description": "cada nota que não virou achado, com o motivo",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "reason": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "reason"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": [
+    "findings",
+    "ignored_notes"
+  ],
+  "additionalProperties": false
+}

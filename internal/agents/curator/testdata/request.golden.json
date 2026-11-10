@@ -1,0 +1,29 @@
+{
+  "agent": "curator",
+  "prompt_version": "curator@1",
+  "model": "claude-haiku-5-5",
+  "max_tokens": 4000,
+  "effort": "low",
+  "has_schema": true,
+  "user": {
+    "repo": "acme/app-java-angular",
+    "default_min_confidence": 0.6,
+    "outcomes": [
+      {
+        "finding_id": 7,
+        "module": "backend/controller",
+        "category": "security",
+        "severity": "high",
+        "title": "Exige autorização no endpoint de exclusão de URL",
+        "file": "backend/controller/UrlController.java",
+        "outcome": "rejected",
+        "reason": "O app não tem login; é decisão de produto.",
+        "analyst_confidence": 0.7,
+        "judge_confidence": 0.7
+      }
+    ],
+    "current_examples": [],
+    "current_thresholds": [],
+    "max_examples": 2
+  }
+}

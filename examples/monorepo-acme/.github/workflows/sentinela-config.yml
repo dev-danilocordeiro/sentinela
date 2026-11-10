@@ -1,0 +1,57 @@
+# Workflow de exemplo para o repo da config do Sentinela: em cada PR que muda o sentinela.yaml ou o
+# config.d, roda `sentinela config validate --offline --changed` e comenta o resultado no PR (o
+# roteamento dos caminhos afetados, antes e depois). Não chama Linear, Slack nem GitHub além do
+# comentário. Falha o check se a config for inválida.
+name: sentinela config
+
+on:
+  pull_request:
+    paths: ["sentinela.yaml", "config.d/**"]
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0                       # o --changed lê a config da branch de destino no git
+
+      - uses: actions/checkout@v4              # o código do Sentinela, para compilar o binário
+        with:
+          repository: acme/sentinela
+          path: .sentinela-src
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: .sentinela-src/go.mod
+
+      - name: Compila o sentinela
+        run: go build -C .sentinela-src -o "$PWD/sentinela" ./cmd/sentinela
+
+      - name: Valida a config
+        id: validate
+        run: |
+          changed=$(git diff --name-only "origin/${{ github.base_ref }}...HEAD" -- sentinela.yaml config.d | paste -sd, -)
+          set +e
+          ./sentinela --config sentinela.yaml config validate --offline \
+            --changed "$changed" --base "origin/${{ github.base_ref }}" > validate.txt 2>&1
+          echo "status=$?" >> "$GITHUB_OUTPUT"
+          cat validate.txt
+
+      - name: Comenta no PR
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const out = fs.readFileSync('validate.txt', 'utf8');
+            const ok = '${{ steps.validate.outputs.status }}' === '0';
+            const body = `### sentinela config validate --offline ${ok ? '✅' : '❌'}\n\n\`\`\`\n${out.slice(0, 60000)}\n\`\`\``;
+            await github.rest.issues.createComment({ ...context.repo, issue_number: context.issue.number, body });
+
+      - name: Falha se a config for inválida
+        if: steps.validate.outputs.status != '0'
+        run: exit 1

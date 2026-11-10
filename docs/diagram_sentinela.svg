@@ -1,0 +1,162 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 700" width="1120" height="700" role="img" aria-label="Fluxo do Sentinela: descoberta até a issue no Linear, execução sob demanda até o PR em draft, e retroalimentação no Postgres">
+  <!-- Fonte editável de docs/diagram_sentinela.png. Para regenerar o PNG:
+       google-chrome --headless --hide-scrollbars --force-device-scale-factor=2 \
+         --window-size=1120,700 --screenshot=docs/diagram_sentinela.png docs/diagram_sentinela.svg -->
+  <style>
+    text{font-family:"IBM Plex Sans","Segoe UI",system-ui,sans-serif}
+    .mono{font-family:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace}
+    .t{font-size:14px;font-weight:600;fill:#151A22}
+    .d{font-size:11.5px;fill:#5A6372}
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#5A6372"/></marker>
+    <marker id="arA" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#B86506"/></marker>
+  </defs>
+  <rect width="1120" height="700" fill="#FFFFFF"/>
+
+  <text x="20" y="50" font-size="12" class="mono" fill="#5A6372" letter-spacing="1.2">DESCOBERTA · sentinela scan (agenda ou sob demanda)</text>
+  <text x="20" y="612" font-size="12" class="mono" fill="#5A6372" letter-spacing="1.2">EXECUÇÃO · sentinela worker (sob demanda)</text>
+
+  <!-- linha de cima -->
+  <rect x="20" y="80" width="150" height="110" rx="8" fill="#FFFFFF" stroke="#D9DDE4" stroke-width="1.5"/>
+  <text x="34" y="106" class="t">Repos + sinais</text>
+  <text x="34" y="128" class="d">diff desde o último</text>
+  <text x="34" y="144" class="d">SHA analisado</text>
+  <text x="34" y="166" class="d">Sentry · Datadog</text>
+  <text x="34" y="181" class="d">(Fase 5, roadmap)</text>
+
+  <rect x="200" y="80" width="150" height="110" rx="8" fill="#FFFFFF" stroke="#D9DDE4" stroke-width="1.5"/>
+  <text x="214" y="106" class="t">Scanners</text>
+  <text x="214" y="128" class="d">golangci-lint · gosec</text>
+  <text x="214" y="144" class="d">govulncheck · semgrep</text>
+  <text x="214" y="160" class="d">testes</text>
+  <rect x="214" y="168" width="64" height="16" rx="3" fill="#D9DDE4"/>
+  <text x="220" y="180" font-size="10.5" class="mono" fill="#5A6372">custo 0</text>
+
+  <rect x="380" y="80" width="150" height="110" rx="8" fill="#FFFFFF" stroke="#2F7D6A" stroke-width="1.5"/>
+  <text x="394" y="106" class="t">Triager</text>
+  <text x="394" y="128" class="d">1 agente por pacote</text>
+  <text x="394" y="144" class="d">categoriza e decide</text>
+  <text x="394" y="160" class="d">se vale aprofundar</text>
+  <rect x="394" y="168" width="108" height="16" rx="3" fill="#DDF0EA"/>
+  <text x="400" y="180" font-size="10.5" class="mono" fill="#2F7D6A">Haiku 5.5 · batch</text>
+
+  <rect x="560" y="80" width="150" height="110" rx="8" fill="#FFFFFF" stroke="#3D5BA9" stroke-width="1.5"/>
+  <text x="574" y="106" class="t">Analyst + Architect</text>
+  <text x="574" y="128" class="d">só pacotes sinalizados</text>
+  <text x="574" y="144" class="d">+ achados entre módulos</text>
+  <text x="574" y="160" class="d">evidência arquivo:linha</text>
+  <rect x="574" y="168" width="114" height="16" rx="3" fill="#E1E7F6"/>
+  <text x="580" y="180" font-size="10.5" class="mono" fill="#3D5BA9">Sonnet 5.5 · batch</text>
+
+  <rect x="740" y="80" width="150" height="110" rx="8" fill="#FFFFFF" stroke="#3D5BA9" stroke-width="1.5"/>
+  <text x="754" y="106" class="t">Judge + dedup</text>
+  <text x="754" y="128" class="d">fingerprint, similaridade</text>
+  <text x="754" y="144" class="d">e lugar no código</text>
+  <text x="754" y="160" class="d">publica ou descarta</text>
+  <rect x="754" y="168" width="72" height="16" rx="3" fill="#E1E7F6"/>
+  <text x="760" y="180" font-size="10.5" class="mono" fill="#3D5BA9">Sonnet 5.5</text>
+
+  <rect x="920" y="80" width="180" height="110" rx="8" fill="#FFFFFF" stroke="#D9DDE4" stroke-width="1.5"/>
+  <text x="934" y="106" class="t">Issue no Linear</text>
+  <text x="934" y="128" class="d">board do time dono</text>
+  <text x="934" y="144" class="d">CODEOWNERS + config</text>
+  <text x="934" y="160" class="d">evidência + critérios</text>
+  <text x="934" y="176" class="d">de aceite · aviso no Slack</text>
+
+  <line x1="170" y1="135" x2="198" y2="135" stroke="#5A6372" stroke-width="1.5" marker-end="url(#ar)"/>
+  <line x1="350" y1="135" x2="378" y2="135" stroke="#5A6372" stroke-width="1.5" marker-end="url(#ar)"/>
+  <line x1="530" y1="135" x2="558" y2="135" stroke="#5A6372" stroke-width="1.5" marker-end="url(#ar)"/>
+  <line x1="710" y1="135" x2="738" y2="135" stroke="#5A6372" stroke-width="1.5" marker-end="url(#ar)"/>
+  <line x1="890" y1="135" x2="918" y2="135" stroke="#5A6372" stroke-width="1.5" marker-end="url(#ar)"/>
+
+  <!-- Postgres -->
+  <rect x="380" y="262" width="330" height="100" rx="10" fill="#FBEBD6" stroke="#B86506" stroke-width="2"/>
+  <text x="398" y="290" font-size="15" font-weight="700" fill="#151A22">Postgres · harness</text>
+  <text x="398" y="312" font-size="11.5" fill="#151A22">achados, fingerprints, rodadas, execuções</text>
+  <text x="398" y="330" font-size="11.5" fill="#151A22">supressões + exemplos aceitos/recusados</text>
+  <text x="398" y="348" font-size="11.5" fill="#151A22">pgvector · fila (SKIP LOCKED) · orçamento</text>
+
+  <line x1="455" y1="262" x2="455" y2="193" stroke="#B86506" stroke-width="1.5" stroke-dasharray="4 3" marker-end="url(#arA)"/>
+  <text x="462" y="232" font-size="10.5" fill="#B86506">supressões,</text>
+  <text x="462" y="246" font-size="10.5" fill="#B86506">few-shot</text>
+  <path d="M815 190 L815 312 L713 312" fill="none" stroke="#B86506" stroke-width="1.5" stroke-dasharray="4 3" marker-end="url(#arA)"/>
+  <text x="822" y="240" font-size="10.5" fill="#B86506">consulta e</text>
+  <text x="822" y="254" font-size="10.5" fill="#B86506">grava achados</text>
+
+  <line x1="1010" y1="190" x2="1010" y2="437" stroke="#5A6372" stroke-width="1.5" marker-end="url(#ar)"/>
+  <text x="1018" y="300" font-size="10.5" fill="#5A6372">triagem</text>
+  <text x="1018" y="314" font-size="10.5" fill="#5A6372">humana</text>
+
+  <!-- linha de baixo -->
+  <rect x="920" y="440" width="180" height="110" rx="8" fill="#FFFFFF" stroke="#A23B3B" stroke-width="1.5"/>
+  <text x="934" y="466" class="t">Humano aplica label</text>
+  <text x="934" y="488" class="d">sentinela-fix</text>
+  <text x="934" y="504" class="d">comentários viram</text>
+  <text x="934" y="520" class="d">instruções da equipe</text>
+  <text x="934" y="540" font-size="11.5" fill="#A23B3B">ou cancela → feedback</text>
+
+  <rect x="740" y="440" width="150" height="110" rx="8" fill="#FFFFFF" stroke="#7A3E9D" stroke-width="1.5"/>
+  <text x="754" y="466" class="t">Executor</text>
+  <text x="754" y="488" class="d">Claude Code headless</text>
+  <text x="754" y="504" class="d">git worktree isolado</text>
+  <rect x="754" y="512" width="122" height="16" rx="3" fill="#EEE2F5"/>
+  <text x="760" y="524" font-size="10.5" class="mono" fill="#7A3E9D">Opus + Sonnet 5.5</text>
+  <text x="754" y="542" font-size="10.5" fill="#5A6372">spec · builder · 4 reviews</text>
+
+  <rect x="560" y="440" width="150" height="110" rx="8" fill="#FFFFFF" stroke="#D9DDE4" stroke-width="1.5"/>
+  <text x="574" y="466" class="t">PR em draft + CI</text>
+  <text x="574" y="488" class="d">Fixes EX-123</text>
+  <text x="574" y="504" class="d">issue → In Review</text>
+  <text x="574" y="520" class="d">approver: APPROVE</text>
+  <text x="574" y="536" class="d">ou ESCALATE</text>
+
+  <rect x="380" y="440" width="150" height="110" rx="8" fill="#FFFFFF" stroke="#D9DDE4" stroke-width="1.5"/>
+  <text x="394" y="466" class="t">Policy Gate</text>
+  <text x="394" y="488" class="d">tamanho · paths</text>
+  <text x="394" y="504" class="d">categoria · CI verde</text>
+  <text x="394" y="520" class="d">política do time</text>
+  <rect x="394" y="528" width="64" height="16" rx="3" fill="#D9DDE4"/>
+  <text x="400" y="540" font-size="10.5" class="mono" fill="#5A6372">código</text>
+
+  <rect x="200" y="420" width="150" height="56" rx="8" fill="#FFFFFF" stroke="#D9DDE4" stroke-width="1.5"/>
+  <text x="214" y="444" font-size="13.5" font-weight="600" fill="#151A22">Revisora aprova</text>
+  <text x="214" y="464" font-size="11" fill="#5A6372">só com a trava liberada</text>
+
+  <rect x="200" y="514" width="150" height="56" rx="8" fill="#FFFFFF" stroke="#A23B3B" stroke-width="1.5"/>
+  <text x="214" y="538" font-size="13.5" font-weight="600" fill="#151A22">Review humano</text>
+  <text x="214" y="558" font-size="11" fill="#5A6372">CODEOWNERS do módulo</text>
+
+  <rect x="20" y="440" width="150" height="110" rx="8" fill="#FFFFFF" stroke="#B86506" stroke-width="1.5"/>
+  <text x="34" y="466" class="t">Resultado</text>
+  <text x="34" y="488" class="d">mergeado</text>
+  <text x="34" y="504" class="d">PR fechado</text>
+  <text x="34" y="520" class="d">revertido depois</text>
+  <text x="34" y="536" class="d">issue cancelada</text>
+
+  <line x1="920" y1="495" x2="892" y2="495" stroke="#5A6372" stroke-width="1.5" marker-end="url(#ar)"/>
+  <line x1="740" y1="495" x2="712" y2="495" stroke="#5A6372" stroke-width="1.5" marker-end="url(#ar)"/>
+  <line x1="560" y1="495" x2="532" y2="495" stroke="#5A6372" stroke-width="1.5" marker-end="url(#ar)"/>
+  <line x1="380" y1="478" x2="353" y2="452" stroke="#5A6372" stroke-width="1.5" marker-end="url(#ar)"/>
+  <line x1="380" y1="512" x2="353" y2="538" stroke="#5A6372" stroke-width="1.5" marker-end="url(#ar)"/>
+  <text x="356" y="410" font-size="10" fill="#5A6372" text-anchor="end">pequeno e seguro</text>
+  <text x="356" y="586" font-size="10" fill="#A23B3B" text-anchor="end">resto (padrão)</text>
+  <line x1="200" y1="448" x2="173" y2="478" stroke="#5A6372" stroke-width="1.5" marker-end="url(#ar)"/>
+  <line x1="200" y1="542" x2="173" y2="512" stroke="#5A6372" stroke-width="1.5" marker-end="url(#ar)"/>
+
+  <path d="M95 440 L95 312 L377 312" fill="none" stroke="#B86506" stroke-width="2" marker-end="url(#arA)"/>
+  <text x="104" y="380" font-size="11" font-weight="600" fill="#B86506">retroalimentação</text>
+  <text x="104" y="395" font-size="10.5" fill="#B86506">aceito · recusado · motivo</text>
+  <path d="M790 440 L790 380 L640 380 L640 365" fill="none" stroke="#B86506" stroke-width="1.5" stroke-dasharray="4 3" marker-end="url(#arA)"/>
+  <text x="648" y="398" font-size="10.5" fill="#B86506">registra execução</text>
+
+  <!-- legenda -->
+  <g font-size="12" fill="#5A6372">
+    <rect x="20" y="650" width="12" height="12" rx="3" fill="#D9DDE4"/><text x="38" y="660">sem LLM</text>
+    <rect x="120" y="650" width="12" height="12" rx="3" fill="#2F7D6A"/><text x="138" y="660">Haiku 5.5</text>
+    <rect x="230" y="650" width="12" height="12" rx="3" fill="#3D5BA9"/><text x="248" y="660">Sonnet 5.5</text>
+    <rect x="345" y="650" width="12" height="12" rx="3" fill="#7A3E9D"/><text x="363" y="660">Opus 5.5</text>
+    <rect x="450" y="650" width="12" height="12" rx="3" fill="#A23B3B"/><text x="468" y="660">decisão humana</text>
+    <rect x="590" y="650" width="12" height="12" rx="3" fill="#B86506"/><text x="608" y="660">harness / feedback</text>
+  </g>
+</svg>

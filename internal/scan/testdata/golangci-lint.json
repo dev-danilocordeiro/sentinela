@@ -1,0 +1,1 @@
+{"Issues":[{"FromLinter":"errcheck","Text":"Error return value of `os.Chmod` is not checked","Severity":"","SourceLines":["\tos.Chmod(\"/tmp/x\", 0777)"],"Pos":{"Filename":"main.go","Offset":143,"Line":12,"Column":10},"ExpectNoLint":false,"ExpectedNoLintLinter":""}]}

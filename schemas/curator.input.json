@@ -1,0 +1,134 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "curator.input",
+  "type": "object",
+  "properties": {
+    "repo": {
+      "type": "string"
+    },
+    "default_min_confidence": {
+      "type": "number"
+    },
+    "outcomes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "finding_id": {
+            "type": "integer"
+          },
+          "module": {
+            "type": "string"
+          },
+          "category": {
+            "type": "string"
+          },
+          "severity": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "file": {
+            "type": "string"
+          },
+          "outcome": {
+            "type": "string",
+            "enum": [
+              "accepted",
+              "rejected"
+            ]
+          },
+          "reason": {
+            "type": "string"
+          },
+          "analyst_confidence": {
+            "type": "number"
+          },
+          "judge_confidence": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "finding_id",
+          "module",
+          "category",
+          "severity",
+          "title",
+          "file",
+          "outcome",
+          "reason",
+          "analyst_confidence",
+          "judge_confidence"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "current_examples": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "finding_id": {
+            "type": "integer"
+          },
+          "outcome": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "lesson": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "finding_id",
+          "outcome",
+          "title",
+          "lesson"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "current_thresholds": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "module": {
+            "type": "string"
+          },
+          "category": {
+            "type": "string"
+          },
+          "min_confidence": {
+            "type": "number"
+          },
+          "reason": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "module",
+          "category",
+          "min_confidence",
+          "reason"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "max_examples": {
+      "type": "integer"
+    }
+  },
+  "required": [
+    "repo",
+    "default_min_confidence",
+    "outcomes",
+    "current_examples",
+    "current_thresholds",
+    "max_examples"
+  ],
+  "additionalProperties": false
+}

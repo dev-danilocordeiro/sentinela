@@ -1,0 +1,28 @@
+#!/bin/sh
+# Roda o sentinela com o ambiente do projeto, para as units do systemd (deploy/systemd).
+# - Carrega o .env pelo shell: o EnvironmentFile do systemd não entende os comentários no fim da
+#   linha que o .env usa (o valor viraria "# só no modo webhook").
+# - Põe no PATH o claude (~/.local/bin) e as ferramentas do mise (go, govulncheck, golangci-lint,
+#   gosec), que o systemd não herda do shell de login.
+# Uso: sentinela-run <subcomando> [flags]   (ex.: sentinela-run worker)
+set -eu
+SENTINELA_HOME="${SENTINELA_HOME:-$(cd "$(dirname "$0")/../.." && pwd)}"
+cd "$SENTINELA_HOME"
+export PATH="$HOME/.local/bin:$HOME/.local/share/mise/shims:$PATH"
+if command -v mise >/dev/null 2>&1; then
+	eval "$(mise env -s sh 2>/dev/null)" || true
+fi
+# Ferramentas instaladas com `go install` (govulncheck, golangci-lint, gosec) ficam no GOBIN, que
+# o mise não expõe por shim.
+if command -v go >/dev/null 2>&1; then
+	gobin="$(go env GOBIN 2>/dev/null || true)"
+	[ -n "$gobin" ] || gobin="$(go env GOPATH 2>/dev/null)/bin"
+	PATH="$gobin:$PATH"
+fi
+if [ -f .env ]; then
+	set -a
+	# shellcheck disable=SC1091
+	. ./.env
+	set +a
+fi
+exec "$SENTINELA_HOME/sentinela" "$@"

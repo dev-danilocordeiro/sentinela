@@ -1,0 +1,41 @@
+{
+  "agent": "architect",
+  "prompt_version": "architect@2",
+  "model": "claude-sonnet-5-5",
+  "max_tokens": 16000,
+  "effort": "medium",
+  "has_schema": true,
+  "user": {
+    "repo": "acme/app-java-angular",
+    "packages": [
+      {
+        "path": "app/controller",
+        "language": "java",
+        "owner_team": "time-exemplo",
+        "summary": "API HTTP",
+        "landmarks": [
+          {
+            "file": "app/controller/UrlController.java",
+            "line": 3,
+            "code": "import app.model.UrlData;"
+          }
+        ]
+      },
+      {
+        "path": "app/model",
+        "language": "java",
+        "owner_team": "time-exemplo",
+        "summary": "Modelo gravado no Redis",
+        "landmarks": []
+      }
+    ],
+    "edges": [
+      {
+        "from": "app/controller",
+        "to": "app/model"
+      }
+    ],
+    "findings": [],
+    "max_findings": 5
+  }
+}

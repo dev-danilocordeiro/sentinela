@@ -1,0 +1,229 @@
+# sentinela.example.yaml: ponto de partida para uma instalação do Sentinela.
+#
+# Copie para sentinela.yaml (fora do git) e troque os valores de exemplo:
+#   cp sentinela.example.yaml sentinela.yaml
+# Segredos NÃO entram aqui: vão no .env (veja .env.example). A referência completa de cada campo
+# está em docs/configuracao.md. Todos os nomes abaixo são exemplos (empresa fictícia "acme").
+#
+# Este arquivo é o modo completo, com um arquivo só. Para avaliar sem chaves, use
+# `sentinela init --mode local` (docs/avaliacao.md). Para cada time manter o próprio arquivo por
+# PR (config.d/teams/<time>.yaml), veja o cenário em examples/monorepo-acme e
+# docs/guia-configuracao.md. Schema para o editor: schema/sentinela.schema.json.
+
+# adapters:                        # modo de operação (docs/modos.md); estes são os padrões
+#   tracker: linear_api            # linear_api | linear_mcp | local
+#   notifier: slack_api            # slack_api | slack_mcp | none
+#   git_host: github_apps          # github_apps | gh_cli
+
+workspace:
+  linear_workspace: acme
+  slack_workspace: acme
+  github_owner: acme
+
+defaults:
+  linear:
+    team: PLAT                     # time do Linear usado quando nada mais casar
+    labels: [sentinela]
+    triage_state: Triage           # estado inicial das issues (precisa existir no time)
+    # review_state: In Review      # para onde a issue vai quando o worker abre o PR (vazio não move)
+    # done_state: Done             # para onde a issue vai quando o worker vê o PR mergeado (padrão Done)
+  owners_source: both              # codeowners | config | both (config tem precedência)
+  notify:
+    slack: C0XXXXXXXXX             # canal padrão (ID C... preferível; "#nome" também vale)
+  policy:
+    auto_approve: false            # nada é auto-aprovado até decisão explícita
+    max_lines: 50
+    max_files: 3
+
+fix_trigger:                     # quem pode pedir a correção com a label de gatilho (ADR 0042)
+  allowed: team_members          # anyone | team_members | lista de usuários do Linear (e-mail ou nome)
+
+github_apps:                       # Fase 4: slugs das duas GitHub Apps
+  bot: sentinela-bot-acme          # abre branches e PRs em draft
+  reviewer: sentinela-reviewer-acme  # publica a revisão; não escreve código
+  reviewer_approves: false         # false: a revisora só comenta (COMMENT), nunca aprova
+
+labels:                            # labels do Linear usadas pelo Sentinela (crie todas no time)
+  finding: sentinela               # toda issue do Sentinela
+  trigger: sentinela-fix           # aplicada por uma pessoa: pede a correção
+  done: sentinela-done             # resultado: PR em draft aberto
+  failed: sentinela-failed         # resultado: a linha de execução falhou
+  question: sentinela-pergunta     # achado que depende de decisão de produto
+  intentional: sentinela-intencional          # resposta: é intencional (vira supressão)
+  not_intentional: sentinela-nao-intencional  # resposta: não é intencional (vira achado)
+
+budget:                            # em dólar: só vale com llm.provider anthropic_api
+  per_run_usd: 10.00              # perfil qualidade (economia: 5.00)
+  per_pr_usd: 3.00
+  per_month_usd: 80.00
+
+# Modelos: perfil qualidade (padrão): modelo forte onde há julgamento que não se recupera depois
+# (triagem, análise, arquitetura, revisão de segurança e aprovação). Para orçamento ou cota
+# limitados, o perfil economia está em docs/custos.md (ou gere com --models economia).
+models:                            # IDs de modelo da Anthropic por papel
+  # Cada papel pode mudar por repo (repos[].models) ou por time (teams.<time>.models), só com as
+  # chaves que mudam. Vale o time dono, depois o repo, depois este bloco. Veja quem decidiu cada
+  # papel, e a que perfil ele corresponde, com: sentinela config models --repo <repo> --team <time>
+  triage: claude-opus-5-5
+  analysis: claude-opus-5-5
+  architect: claude-opus-5-5
+  judge: claude-sonnet-5-5
+  curator: claude-sonnet-5-5
+  notes: claude-sonnet-5-5         # intérprete de notas de review
+  orchestrator: claude-sonnet-5-5  # sessão da skill sentinela-fix, que coordena os subagentes
+  spec_writer: claude-sonnet-5-5
+  executor: claude-sonnet-5-5      # builder: issue bem escopada, sem escalada para Opus
+  reviewer_security: claude-opus-5-5
+  reviewer_code: claude-sonnet-5-5
+  reviewer_reliability: claude-sonnet-5-5
+  reviewer_domain: claude-sonnet-5-5
+  approver: claude-opus-5-5
+  shepherd: claude-sonnet-5-5      # PR Shepherd
+  refusal:
+    action: fallback_model         # fallback_model | skip
+    fallback_model: claude-sonnet-5-5  # outro modelo que o principal; em repos[].models e teams.<time>.models: refusal_fallback
+  use_batch: true                  # Batch API (só anthropic_api)
+
+llm:
+  provider: claude_code            # claude_code (assinatura, `claude -p`) | anthropic_api | replay
+  claude_code:
+    binary: claude
+    concurrency: 3                 # perfil qualidade: chamadas ao Opus mais longas (economia: 2)
+    max_calls_per_run: 200
+    timeout: 15m                   # perfil qualidade (economia: 10m)
+    workdir: ~/.cache/sentinela/claude-cwd   # fora de qualquer projeto (sem CLAUDE.md acima)
+
+pricing:                           # USD por milhão de tokens; confira a tabela atual da Anthropic
+  batch_discount: 0.5
+  cache_write_5m_multiplier: 1.25
+  cache_write_1h_multiplier: 2.0
+  models:
+    claude-haiku-5-5: { input: 0.10, output: 0.50, cache_read: 0.01 }
+    claude-sonnet-5-5: { input: 2.00, output: 10.00, cache_read: 0.20 }
+    claude-opus-5-5: { input: 4.00, output: 20.00, cache_read: 0.20 }
+
+blocked_paths:                     # nunca auto-aprova, em qualquer repo
+  - "**/billing/**"
+  - "**/payment*/**"
+  - "**/migrations/**"
+  - "**/migration/**"                 # Flyway (db/migration, singular)
+  - "**/auth/**"
+  - ".github/workflows/**"
+
+teams:
+  payments:
+    github: ["@acme/payments"]               # como o time aparece no CODEOWNERS
+    linear:
+      team: PAY                              # board próprio do time
+      project: "Sentinela · Payments"        # projeto do time (módulo > categoria > time > repo > defaults)
+      category_projects: { security: "Sentinela · Payments · Segurança" }   # achado de segurança em projeto próprio
+    assignee: lead                           # none | lead | round_robin
+    lead: lead.payments@example.com
+    notify: { slack: C0PAYMENTS1, mention: S0PAYTEAM1 }   # canal do time e user group a mencionar
+    policy: { auto_approve: false, blocked: true }       # domínio sensível: nunca auto-aprova
+    labels: { trigger: payments-fix }        # opcional: o time troca a label de gatilho (e done, failed)
+    # models: { analysis: claude-opus-5-5, judge: claude-opus-5-5 }   # opcional: mais rigor neste domínio
+  platform:
+    github: ["@acme/platform", "@acme/sre"]
+    members: [fulano]                        # usuário individual do CODEOWNERS que é deste time
+    linear: { team: PLAT, project: "Sentinela · Platform" }
+    assignee: round_robin
+    notify: { slack: "#platform-alerts" }   # nome é resolvido para ID uma vez
+    policy: { auto_approve: false, max_lines: 50 }
+
+repos:
+  # Monorepo: cada módulo tem um time; modules[] sobrescreve o CODEOWNERS onde precisa.
+  - name: acme/monorepo
+    default_branch: main
+    # models: { triage: claude-sonnet-5-5 }   # opcional: triagem com Sonnet neste repo
+    languages: [go, java]
+    owners_source: both
+    modules:
+      - { path: "services/billing/**", team: payments, linear_project: "Sentinela · Payments · Billing" }   # projeto do módulo vence o do time
+      - { path: "libs/**", team: platform }
+      - { path: "**/Dockerfile", team: platform }
+      - { path: "services/legacy/**", ignore: true }   # fora da análise
+    fallback_team: platform
+  # Repo de um time só.
+  - name: acme/app-java-angular
+    team: platform
+    linear_project: app-java-angular
+
+discovery:
+  workdir: .sentinela/repos        # clones locais (fora do git)
+  scanners: [golangci-lint, gosec, govulncheck, semgrep, osv-scanner, eslint, tsc]   # go-test executa código: só repos confiáveis
+  # node_tools: tools/node   # eslint e tsc do Sentinela: npm ci --ignore-scripts --prefix tools/node
+  semgrep_config: p/default
+  # semgrep_languages: {java: [p/java], kotlin: [p/kotlin], typescript: [p/typescript, p/react, p/nodejs, p/expressjs], javascript: [p/javascript, p/nodejs, p/expressjs]}   # padrão; {} desliga
+  scanner_timeout: 5m
+  triage_context_tokens: 150000    # Opus na triagem, sem a faixa de 100k do Haiku (economia: 90000, abaixo de 100k)
+  analysis_context_tokens: 300000  # perfil qualidade (economia: 150000)
+  max_findings_per_package: 5
+  min_confidence: 0.6              # limiar do Judge para publicar
+  similarity_threshold: 0.92
+  location_candidates: 5           # achados no mesmo arquivo, símbolo ou linhas próximas mostrados ao Judge (0 desliga)
+  location_line_window: 10
+  revote_band: 0.10
+  judge_votes: 3                   # perto do limiar, o Judge vota 3 vezes e vale a mediana (1 desliga)
+  batch_poll_interval: 30s
+  max_new_repos_per_run: 1         # scan --all: repos nunca analisados por rodada (0 = só os já analisados)
+
+telemetry:
+  otlp_endpoint: ""                # vazio = desligado; ex.: http://localhost:4318
+  service_name: sentinela
+
+signals:                           # Fase 5 (ainda não implementada)
+  sentry: { enabled: false }
+  datadog: { enabled: false }
+
+execution:                         # Fase 4: linha de execução
+  concurrency: 1
+  # worktrees, jobs e home: padrão ~/.cache/sentinela/<chave da instalação>/{worktrees,jobs,job-home},
+  # um diretório por instalação na mesma máquina (ADR 0056). O home é o HOME do job, só com o login
+  # do Claude Code: sem git/ssh/gh da máquina (M6); "off" usa o do worker.
+  # worktrees: ~/.cache/sentinela/<chave>/worktrees
+  # jobs: ~/.cache/sentinela/<chave>/jobs
+  # home: ~/.cache/sentinela/<chave>/job-home
+  # home_files: [.npmrc, .gradle/gradle.properties]   # registro privado no HOME do job: só token de leitura (ADR 0057)
+  plugin: plugins/sentinela-factory
+  binary: claude
+  runtime: host                             # host | container (recomendado para empresa; ADR 0053, Dockerfile.worker)
+  job_docker: none                          # none | dind (runtime container: Docker isolado por job, para Testcontainers)
+  container:
+    engine: docker                          # docker | podman
+    image: sentinela-job:latest
+  timeout: 60m
+  idle_timeout: 15m                         # sem saída do agente: falha idle_timeout, retomável (ADR 0034)
+  completion_timeout: 2m                    # processo não sai depois do resultado: encerra com aviso
+  failed_worktree_retention: 168h           # worktree de job que falhou fica 7 dias; o de PR mergeado ou fechado sai logo (ADR 0037)
+  jobs_retention: 2160h                     # artefatos do job (com o stream.jsonl) saem 90 dias depois do desfecho
+  webhook_events_retention: 720h            # corpo dos webhooks processados é esvaziado depois de 30 dias
+  poll_interval: 1m
+  max_budget_usd: 20               # teto da sessão (--max-budget-usd); na assinatura limita consumo
+  shepherd_max_cycles: 3
+  max_resumes: 2                            # retomadas de sessão seguidas no retry (ADR 0030)
+  review_notes: shadow             # off | shadow | publish: notas fora do escopo dos reviewers
+  disallowed_tools: ["Bash(git push:*)", "Bash(gh:*)", "Bash(curl:*)", "Bash(wget:*)", "WebFetch", "WebSearch"]
+  ignore_comment_prefixes: []      # comentários que não viram instrução da equipe (além de **Sentinela)
+
+publish:
+  enabled: false                   # comece em modo sombra; ligue depois de revisar os achados
+  max_issues_per_team_per_run: 3
+
+feedback:
+  curator_interval: 168h
+  suppression_ttl: 2160h
+  max_examples: 6
+
+linear_auth:                                # identidade no Linear (ADR 0032)
+  mode: app                                 # app (LINEAR_OAUTH_CLIENT_*) | api_key (LINEAR_API_KEY)
+  grant: authorization_code                 # authorization_code (actor=app, `sentinela linear auth`) | client_credentials
+  scopes: [read, write]
+  redirect_uri: http://localhost:8787/oauth/linear/callback
+  token_file: ~/.config/sentinela/linear-token.json   # 0600, fora do git
+  fallback_api_key: false                  # true: usa LINEAR_API_KEY se o token do app faltar (ações saem como a pessoa)
+
+trigger:
+  mode: polling                    # polling | webhook
+  polling_interval: 2m
+  listen_addr: 127.0.0.1:8080

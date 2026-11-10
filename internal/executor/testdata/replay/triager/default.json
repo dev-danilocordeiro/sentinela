@@ -1,0 +1,1 @@
+{"category":"bug","deepen":true,"reason":"main.go:3 não faz nada e o pacote não tem teste.","summary":"Ponto de entrada da API."}

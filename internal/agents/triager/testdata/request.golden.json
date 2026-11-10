@@ -1,0 +1,34 @@
+{
+  "agent": "triager",
+  "prompt_version": "triager@1",
+  "model": "claude-haiku-5-5",
+  "max_tokens": 4000,
+  "effort": "low",
+  "has_schema": true,
+  "user": {
+    "repo": "acme/app-java-angular",
+    "package": "src",
+    "language": "java",
+    "owner_team": "time-exemplo",
+    "files": [
+      {
+        "path": "src/UrlService.java",
+        "content": "1| class UrlService {\n2|   void shorten() {\n3|     redis.save(url);\n4|   }\n5| }\n"
+      }
+    ],
+    "truncated": [],
+    "neighbors": [],
+    "scanner_signals": [
+      {
+        "ref": "semgrep:x:src/UrlService.java:3",
+        "scanner": "semgrep",
+        "rule": "x",
+        "file": "src/UrlService.java",
+        "line": 3,
+        "severity": "warning",
+        "message": "retorno ignorado"
+      }
+    ],
+    "suppressions": []
+  }
+}

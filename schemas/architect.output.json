@@ -1,0 +1,108 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "architect.output",
+  "type": "object",
+  "properties": {
+    "findings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "category": {
+            "type": "string",
+            "enum": [
+              "bug",
+              "performance",
+              "improvement",
+              "security"
+            ]
+          },
+          "severity": {
+            "type": "string",
+            "enum": [
+              "critical",
+              "high",
+              "medium",
+              "low"
+            ]
+          },
+          "confidence": {
+            "type": "number",
+            "description": "0 a 1"
+          },
+          "title": {
+            "type": "string"
+          },
+          "context": {
+            "type": "string"
+          },
+          "problem_key": {
+            "type": "string"
+          },
+          "evidence": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "file": {
+                  "type": "string"
+                },
+                "line": {
+                  "type": "integer"
+                },
+                "snippet": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "file",
+                "line",
+                "snippet"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "proposed_fix": {
+            "type": "string"
+          },
+          "acceptance_criteria": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "scope_paths": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "affected_modules": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "category",
+          "severity",
+          "confidence",
+          "title",
+          "context",
+          "problem_key",
+          "evidence",
+          "proposed_fix",
+          "acceptance_criteria",
+          "scope_paths",
+          "affected_modules"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": [
+    "findings"
+  ],
+  "additionalProperties": false
+}

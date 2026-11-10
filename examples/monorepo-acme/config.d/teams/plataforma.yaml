@@ -1,0 +1,19 @@
+# config.d/teams/plataforma.yaml: o time plataforma. Dono: @acme/plataforma.
+# Módulos dele no monorepo: modules/observabilidade e modules/fila (pelo CODEOWNERS), mais os
+# Dockerfiles, o CI e a infra compartilhada. A auto-aprovação dele é decidida no principal.
+
+github: ["@acme/plataforma"]
+
+linear:
+  team: PLAT
+  project: "Plataforma"
+
+notify:
+  slack: C0ACMEPLAT1                  # #plataforma-alertas
+  mention: S0ACMEPLAT1                # @plataforma-team
+
+modules:
+  # Arquivos transversais: o Dockerfile de qualquer lugar é da plataforma, mesmo dentro de um
+  # módulo de outro time. override: true faz este módulo vencer os módulos comuns que também casam
+  # (sem ele, valeria o glob mais longo, e "modules/cobranca/**" ganharia de "**/Dockerfile").
+  - { repo: acme/plataforma, path: "**/Dockerfile", override: true }

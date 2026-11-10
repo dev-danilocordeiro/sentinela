@@ -1,0 +1,2 @@
+{"custom_id":"pkg-handler","result":{"type":"succeeded","message":{"id":"msg_01BatchA","type":"message","role":"assistant","model":"claude-haiku-5-5","content":[{"type":"text","text":"{\"category\":\"performance\",\"deepen\":false,\"reason\":\"loop O(n²) pequeno\"}"}],"stop_reason":"end_turn","stop_sequence":null,"usage":{"input_tokens":2000,"output_tokens":100,"cache_creation_input_tokens":0,"cache_read_input_tokens":0}}}}
+{"custom_id":"pkg-store","result":{"type":"errored","error":{"type":"error","error":{"type":"invalid_request_error","message":"prompt is too long"}}}}

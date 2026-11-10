@@ -1,0 +1,21 @@
+# Linha de execução: fila da sentinela-fix, worktrees, plugin, PRs em draft e PR Shepherd.
+[Unit]
+Description=Sentinela worker (linha de execução)
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=simple
+@USER_LINE@
+Environment=SENTINELA_HOME=@SENTINELA_HOME@
+ExecStart=@SENTINELA_HOME@/deploy/bin/sentinela-run worker
+Restart=always
+RestartSec=30
+# Um job pode levar até execution.timeout (60m): ao parar, espera o job em andamento por um tempo
+# e depois encerra; o retry retoma a sessão (ADR 0030).
+TimeoutStopSec=120
+KillMode=mixed
+SyslogIdentifier=sentinela-worker
+
+[Install]
+WantedBy=@WANTED_BY@

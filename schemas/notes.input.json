@@ -1,0 +1,106 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "notes.input",
+  "type": "object",
+  "properties": {
+    "repo": {
+      "type": "string"
+    },
+    "execution": {
+      "type": "object",
+      "properties": {
+        "issue": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "pr_url": {
+          "type": "string"
+        },
+        "head_sha": {
+          "type": "string"
+        },
+        "scope_paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "proposed_fix": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "issue",
+        "title",
+        "pr_url",
+        "head_sha",
+        "scope_paths",
+        "proposed_fix"
+      ],
+      "additionalProperties": false
+    },
+    "notes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "lens": {
+            "type": "string"
+          },
+          "round": {
+            "type": "integer"
+          },
+          "text": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "lens",
+          "round",
+          "text"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "excerpts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "file": {
+            "type": "string"
+          },
+          "start_line": {
+            "type": "integer"
+          },
+          "code": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "file",
+          "start_line",
+          "code"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "max_findings": {
+      "type": "integer"
+    }
+  },
+  "required": [
+    "repo",
+    "execution",
+    "notes",
+    "excerpts",
+    "max_findings"
+  ],
+  "additionalProperties": false
+}

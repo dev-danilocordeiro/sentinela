@@ -1,0 +1,143 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "analyst.input",
+  "type": "object",
+  "properties": {
+    "repo": {
+      "type": "string"
+    },
+    "package": {
+      "type": "string"
+    },
+    "language": {
+      "type": "string"
+    },
+    "owner_team": {
+      "type": "string"
+    },
+    "files": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "path": {
+            "type": "string"
+          },
+          "content": {
+            "type": "string",
+            "description": "conteúdo com linhas numeradas"
+          }
+        },
+        "required": [
+          "path",
+          "content"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "truncated": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "triage": {
+      "type": "object",
+      "properties": {
+        "category": {
+          "type": "string"
+        },
+        "reason": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "category",
+        "reason"
+      ],
+      "additionalProperties": false
+    },
+    "scanner_signals": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "ref": {
+            "type": "string"
+          },
+          "scanner": {
+            "type": "string"
+          },
+          "rule": {
+            "type": "string"
+          },
+          "file": {
+            "type": "string"
+          },
+          "line": {
+            "type": "integer"
+          },
+          "severity": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "ref",
+          "scanner",
+          "rule",
+          "file",
+          "line",
+          "severity",
+          "message"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "suppressions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "fingerprint": {
+            "type": "string"
+          },
+          "pattern": {
+            "type": "string"
+          },
+          "category": {
+            "type": "string"
+          },
+          "reason": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "fingerprint",
+          "pattern",
+          "category",
+          "reason"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "max_findings": {
+      "type": "integer"
+    }
+  },
+  "required": [
+    "repo",
+    "package",
+    "language",
+    "owner_team",
+    "files",
+    "truncated",
+    "triage",
+    "scanner_signals",
+    "suppressions",
+    "max_findings"
+  ],
+  "additionalProperties": false
+}

@@ -1,0 +1,228 @@
+# Fixture de teste: a configuração do ambiente de desenvolvimento do projeto, com IDs de canal,
+# e-mail e workspaces trocados por valores fictícios. Os testes de config, roteamento, gate e CLI
+# leem este arquivo; o sentinela.yaml de cada instalação fica fora do git (veja sentinela.example.yaml).
+
+workspace:
+  linear_workspace: exemplo
+  slack_workspace: exemplo
+  github_owner: acme
+
+defaults:
+  linear:
+    team: EX                      # único time do Linear hoje
+    labels: [sentinela]
+    triage_state: Backlog          # o time de teste não tem estado Triage habilitado
+  owners_source: both              # config tem precedência sobre CODEOWNERS
+  notify:
+    slack: C0DEFAULT01             # #sentinela: resumo de cada rodada e times sem canal próprio
+  policy:
+    auto_approve: false            # nada é auto-aprovado até decisão explícita do dono
+    max_lines: 50
+    max_files: 3
+
+github_apps:                       # Fase 4: slugs conferidos pelo `config validate`
+  bot: sentinela-bot-exemplo        # abre branches e PRs em draft (contents/pull_requests: write)
+  reviewer: sentinela-reviewer-exemplo  # publica a revisão; não escreve código
+  reviewer_approves: false         # false: só review COMMENT com a decisão do approver e do gate.
+                                   # Ligar exige decisão explícita do dono (e policy.auto_approve no time).
+
+labels:                            # labels do Sentinela (separadas das usadas pelas scheduled tasks)
+  trigger: sentinela-fix
+  done: sentinela-done
+  failed: sentinela-failed
+  finding: sentinela
+  question: sentinela-pergunta       # achado que depende de premissa de produto: vira pergunta ao time
+  intentional: sentinela-intencional # resposta: é intencional -> supressão com o motivo
+  not_intentional: sentinela-nao-intencional  # resposta: não é intencional -> vira achado normal
+
+budget:                            # em dólar: só vale para llm.provider anthropic_api
+  per_run_usd: 5.00                # aborta a rodada se passar disso
+  per_pr_usd: 3.00
+  per_month_usd: 80.00
+
+models:                            # IDs conferidos na documentação da Anthropic (ADR 0002)
+  # Descoberta (volume alto, Batch API): Haiku na triagem, Sonnet na análise, arquitetura e juiz.
+  triage: claude-haiku-5-5
+  analysis: claude-sonnet-5-5
+  architect: claude-sonnet-5-5
+  judge: claude-sonnet-5-5
+  curator: claude-haiku-5-5
+  # Linha de execução (Fase 4, plugin sentinela-factory): qualidade pesa mais que preço.
+  spec_writer: claude-sonnet-5-5
+  executor: claude-opus-5-5          # builder
+  reviewer_security: claude-opus-5-5
+  reviewer_code: claude-sonnet-5-5
+  reviewer_reliability: claude-sonnet-5-5
+  reviewer_domain: claude-sonnet-5-5
+  approver: claude-opus-5-5
+  # Recusa do modelo (stop_reason=refusal): tenta outro modelo ou pula o item com motivo gravado.
+  refusal:
+    action: fallback_model           # fallback_model | skip
+    fallback_model: claude-opus-5-5
+  use_batch: true
+
+llm:                               # como os agentes chamam modelos (ADR 0013)
+  provider: claude_code            # claude_code | anthropic_api | replay
+  claude_code:                     # Claude Code CLI (claude -p) pela assinatura; custo em dólar não se aplica
+    binary: claude
+    concurrency: 2
+    max_calls_per_run: 200         # aborta a rodada ao estourar
+    timeout: 10m                   # por chamada
+    record_dir: ""                 # ex.: .sentinela/recordings, para reusar com provider replay
+    # Fora de qualquer projeto: o CLI carrega o CLAUDE.md do diretório e dos pais. Dentro deste
+    # repo, cada chamada da descoberta recebia o CLAUDE.md do Sentinela (o provider recusa).
+    workdir: ~/.cache/sentinela/claude-cwd
+  replay:
+    dir: ""
+
+pricing:                           # USD por milhão de tokens (MTok), API first-party da Anthropic
+  # Fonte: https://platform.claude.com/docs/en/about-claude/pricing e
+  # https://platform.claude.com/docs/en/build-with-claude/prompt-caching (conferido em 2026-10-09).
+  batch_discount: 0.5              # Batch API cobra 50% do preço padrão
+  cache_write_5m_multiplier: 1.25  # escrita no cache com TTL de 5 min
+  cache_write_1h_multiplier: 2.0   # escrita no cache com TTL de 1 h
+  models:
+    claude-haiku-5-5:
+      input: 0.10
+      output: 0.50
+      cache_read: 0.01
+      tiers:                       # prompt acima de 100K tokens muda de faixa
+        - { above_input_tokens: 100000, input: 0.50, output: 2.50, cache_read: 0.05 }
+    claude-sonnet-5-5: { input: 2.00, output: 10.00, cache_read: 0.20 }
+    claude-opus-5-5:   { input: 4.00, output: 20.00, cache_read: 0.20 }
+
+blocked_paths:                     # nunca auto-aprova, em qualquer repo
+  - "**/financeiro/**"
+  - "**/mensalidades/**"
+  - "**/billing/**"
+  - "**/payment*/**"
+  - "**/migrations/**"
+  - "**/db/**"
+  - "**/auth/**"
+  - ".github/workflows/**"
+
+teams:
+  # Avisos no Slack: cada issue vai para notify.slack do time dono (ID C... preferível; #nome
+  # é resolvido uma vez); sem canal, cai em defaults.notify.slack. notify.mention (ID S... de
+  # user group, U... de usuário, @here) menciona o time; sem ele, ninguém é mencionado.
+  # Times fictícios para exercitar o roteamento do monorepo-poliglota.
+  # Enquanto só existir o time EX no Linear, cada time vira um PROJETO dentro dele.
+  # Quando criar times de verdade no Linear, troque `team: EX` pela chave nova.
+  academico:
+    github: ["@acme/academico"]
+    linear: { team: EX, project: "Sentinela · Acadêmico" }
+    notify: { slack: C0ACADEMIC1 }  # #sentinela-academico
+    assignee: none
+  financeiro:
+    github: ["@acme/financeiro"]
+    linear: { team: EX, project: "Sentinela · Financeiro" }
+    notify: { slack: C0FINANCE01 }  # #sentinela-financeiro
+    assignee: lead
+    lead: lead@example.com
+    policy: { auto_approve: false, blocked: true }
+  plataforma:
+    github: ["@acme/plataforma"]
+    members: [fulano]   # @fulano no CODEOWNERS resolve para cá
+    linear: { team: EX, project: "Sentinela · Plataforma" }
+    notify: { slack: C0PLATFORM1 }  # #sentinela-plataforma
+    assignee: none
+    policy: { auto_approve: false }  # primeiras execuções da Fase 4: nenhum time auto-aprova
+  # @acme/qa está no CODEOWNERS de propósito SEM mapeamento: `config validate` deve avisar.
+
+  # Repos de um time só: usam o projeto do Linear que já existe para cada repo
+  time-exemplo:
+    github: ["@fulano"]
+    linear: { team: EX }           # projeto vem de repos[].linear_project
+    assignee: none                  # sem notify: avisos vão para defaults.notify.slack (#sentinela)
+
+repos:
+  # --- Monorepo de teste do roteamento ---
+  - name: acme/monorepo-poliglota
+    default_branch: main
+    languages: [go, java, kotlin, python]
+    linear_project: monorepo-poliglota        # projeto padrão do repo (P-EX-1)
+    owners_source: both
+    modules:                                # sobrescreve o CODEOWNERS só onde precisa
+      - path: "java/scripts/**"
+        team: plataforma
+      - path: "java/e2e/**"
+        team: plataforma
+      - path: "**/Dockerfile"               # imagem e runtime são da plataforma, em qualquer módulo
+        team: plataforma
+    fallback_team: plataforma
+
+  # --- Repos de um time só (projetos P-EX-2 a P-EX-11) ---
+  - { name: acme/go-servico-modular, team: time-exemplo, linear_project: go-servico-modular }
+  - { name: acme/go-microsservicos,    team: time-exemplo, linear_project: go-microsservicos }
+  - { name: acme/lib-go-auth,          team: time-exemplo, linear_project: lib-go-auth }
+  - { name: acme/hub-iot,       team: time-exemplo, linear_project: hub-iot }
+  - { name: acme/app-java-angular,            team: time-exemplo, linear_project: app-java-angular }
+  - { name: acme/medidor-energia,      team: time-exemplo, linear_project: medidor-energia }
+
+  # --- Domínio financeiro: testa bloqueio do gate ---
+  - { name: acme/razao-core,    team: financeiro, linear_project: razao-core }
+  - { name: acme/razao-gateway, team: financeiro, linear_project: razao-gateway }
+  - { name: acme/razao-consulta,   team: financeiro, linear_project: razao-consulta }
+  - { name: acme/razao-conciliacao,   team: financeiro, linear_project: razao-conciliacao }
+
+discovery:                                  # Fase 2: descoberta em modo sombra
+  workdir: .sentinela/repos                 # clones locais (fora do git)
+  scanners: [golangci-lint, gosec, govulncheck, semgrep]   # go-test executa código do repo: ligue só se confiar
+  semgrep_config: p/default
+  scanner_timeout: 5m
+  triage_context_tokens: 90000              # teto estimado por chamada do Triager (Haiku muda de faixa em 100K)
+  analysis_context_tokens: 150000
+  max_findings_per_package: 5
+  min_confidence: 0.6                       # abaixo disso o juiz não publica
+  similarity_threshold: 0.92                # cosseno acima disso = mesmo achado
+  premise_margin: 0.10                      # premissa de produto: limiar + isto, e publica como pergunta
+  revote_band: 0.10                         # com judge_votes > 1: veredito a menos disto do limiar vota de novo
+  judge_votes: 3                            # ligado: a EX-10 oscilou 0,70 ×4 e 0,65 ×1 em cima do limiar (ADR 0021)
+  batch_poll_interval: 30s
+
+telemetry:
+  otlp_endpoint: ""                         # vazio = desligado; ex.: http://localhost:4318
+  service_name: sentinela
+
+signals:                                    # Fase 5
+  sentry:
+    enabled: false
+    org: ""
+    service_map: {}                         # tag de serviço do Sentry → repo/módulo
+  datadog:
+    enabled: false
+    site: datadoghq.com
+    service_map: {}
+
+execution:                                  # Fase 4: linha de execução (plugin sentinela-factory)
+  concurrency: 1                            # jobs em paralelo, cada um no seu git worktree
+  # Fora de qualquer projeto: o Claude Code lê o CLAUDE.md do diretório atual e de todos os pais.
+  # Um worktree dentro deste repo levaria o CLAUDE.md do Sentinela aos agentes (o worker recusa).
+  worktrees: ~/.cache/sentinela/worktrees
+  jobs: ~/.cache/sentinela/jobs             # spec.md, build.md, reviews, decision.md e o stream de cada job
+  plugin: plugins/sentinela-factory
+  binary: claude
+  timeout: 60m                              # por job
+  poll_interval: 1m                         # fila (label sentinela-fix) e acompanhamento dos PRs
+  # Teto da sessão em --max-budget-usd (preço de lista; na assinatura não é cobrado, mas limita o
+  # consumo). Um job com builder, revisão de segurança e approver em Opus passa fácil de 3 dólares.
+  max_budget_usd: 20
+  shepherd_max_cycles: 3
+  # Observações fora do escopo dos reviewers viram achados candidatos (source review_note) ao fim de
+  # um job com PR: off | shadow (só registra o que o Judge decidiria) | publish (ADR 0019).
+  review_notes: publish
+  disallowed_tools: ["Bash(git push:*)", "Bash(gh:*)", "Bash(curl:*)", "Bash(wget:*)", "WebFetch", "WebSearch"]
+
+publish:                                    # Fase 3: issues no Linear
+  enabled: true                             # false = modo sombra (só grava no Postgres)
+  max_issues_per_team_per_run: 3            # excedente fica pendente para a próxima rodada
+
+feedback:                                   # Fase 3: Feedback Curator
+  curator_interval: 168h                    # roda no máximo uma vez por semana
+  suppression_ttl: 2160h                    # supressões por padrão expiram em 90 dias
+  max_examples: 6                           # exemplos few-shot por repo para o Judge
+
+trigger:                                    # sync de estado das issues do Linear
+  mode: polling                             # polling | webhook (LINEAR_WEBHOOK_SECRET)
+  polling_interval: 2m
+  listen_addr: 127.0.0.1:8080               # só no modo webhook

@@ -1,0 +1,703 @@
+{
+ "results": [
+  {
+   "source": {
+    "path": "/checkout/api/adapter/pom.xml",
+    "type": "lockfile"
+   },
+   "packages": [
+    {
+     "package": {
+      "name": "com.acme:acme-application",
+      "version": "0.1.0-SNAPSHOT",
+      "ecosystem": "Maven"
+     }
+    },
+    {
+     "package": {
+      "name": "org.postgresql:postgresql",
+      "version": "",
+      "ecosystem": "Maven"
+     }
+    },
+    {
+     "package": {
+      "name": "org.springframework.boot:spring-boot-starter-webmvc-test",
+      "version": "",
+      "ecosystem": "Maven"
+     },
+     "dependency_groups": [
+      "test"
+     ]
+    },
+    {
+     "package": {
+      "name": "org.springframework.boot:spring-boot-starter-validation",
+      "version": "",
+      "ecosystem": "Maven"
+     }
+    },
+    {
+     "package": {
+      "name": "org.flywaydb:flyway-database-postgresql",
+      "version": "",
+      "ecosystem": "Maven"
+     }
+    },
+    {
+     "package": {
+      "name": "org.junit.jupiter:junit-jupiter",
+      "version": "",
+      "ecosystem": "Maven"
+     },
+     "dependency_groups": [
+      "test"
+     ]
+    },
+    {
+     "package": {
+      "name": "org.assertj:assertj-core",
+      "version": "",
+      "ecosystem": "Maven"
+     },
+     "dependency_groups": [
+      "test"
+     ]
+    },
+    {
+     "package": {
+      "name": "org.testcontainers:junit-jupiter",
+      "version": "",
+      "ecosystem": "Maven"
+     },
+     "dependency_groups": [
+      "test"
+     ]
+    },
+    {
+     "package": {
+      "name": "com.fasterxml.jackson.core:jackson-databind",
+      "version": "",
+      "ecosystem": "Maven"
+     }
+    },
+    {
+     "package": {
+      "name": "org.springframework.kafka:spring-kafka",
+      "version": "",
+      "ecosystem": "Maven"
+     }
+    },
+    {
+     "package": {
+      "name": "org.springframework:spring-websocket",
+      "version": "",
+      "ecosystem": "Maven"
+     }
+    },
+    {
+     "package": {
+      "name": "org.springframework.boot:spring-boot-starter-jdbc",
+      "version": "",
+      "ecosystem": "Maven"
+     }
+    },
+    {
+     "package": {
+      "name": "org.flywaydb:flyway-core",
+      "version": "",
+      "ecosystem": "Maven"
+     }
+    },
+    {
+     "package": {
+      "name": "org.testcontainers:postgresql",
+      "version": "",
+      "ecosystem": "Maven"
+     },
+     "dependency_groups": [
+      "test"
+     ]
+    },
+    {
+     "package": {
+      "name": "org.springframework.boot:spring-boot-starter-webmvc",
+      "version": "",
+      "ecosystem": "Maven"
+     }
+    },
+    {
+     "package": {
+      "name": "org.springframework.boot:spring-boot-testcontainers",
+      "version": "",
+      "ecosystem": "Maven"
+     },
+     "dependency_groups": [
+      "test"
+     ]
+    }
+   ]
+  },
+  {
+   "source": {
+    "path": "/checkout/web/package-lock.json",
+    "type": "lockfile"
+   },
+   "packages": [
+    {
+     "package": {
+      "name": "@alloc/quick-lru",
+      "version": "5.3.0",
+      "ecosystem": "npm"
+     },
+     "dependency_groups": [
+      "dev"
+     ]
+    },
+    {
+     "package": {
+      "name": "@emnapi/core",
+      "version": "1.10.0",
+      "ecosystem": "npm"
+     },
+     "dependency_groups": [
+      "dev",
+      "optional"
+     ]
+    },
+    {
+     "package": {
+      "name": "braces",
+      "version": "3.0.3",
+      "ecosystem": "npm"
+     },
+     "dependency_groups": [
+      "dev"
+     ],
+     "vulnerabilities": [
+      {
+       "id": "GHSA-vfj7-8cjw-p6xm",
+       "summary": "braces vulnerable to stack-exhaustion denial of service through deeply nested patterns",
+       "aliases": [
+        "CVE-2026-93687"
+       ],
+       "affected": [
+        {
+         "package": {
+          "ecosystem": "npm",
+          "name": "braces",
+          "purl": "pkg:npm/braces"
+         },
+         "ranges": [
+          {
+           "events": [
+            {
+             "introduced": "0"
+            },
+            {
+             "last_affected": "3.0.3"
+            }
+           ],
+           "type": "SEMVER"
+          }
+         ]
+        }
+       ],
+       "database_specific": {
+        "cwe_ids": [
+         "CWE-674"
+        ],
+        "github_reviewed": true,
+        "github_reviewed_at": "2026-10-02T22:36:33Z",
+        "nvd_published_at": "2026-09-18T16:17:15Z",
+        "severity": "HIGH"
+       }
+      }
+     ],
+     "groups": [
+      {
+       "ids": [
+        "GHSA-vfj7-8cjw-p6xm"
+       ],
+       "aliases": [
+        "CVE-2026-93687",
+        "GHSA-vfj7-8cjw-p6xm"
+       ],
+       "max_severity": "8.7"
+      }
+     ]
+    },
+    {
+     "package": {
+      "name": "next",
+      "version": "15.5.25",
+      "ecosystem": "npm"
+     },
+     "vulnerabilities": [
+      {
+       "id": "GHSA-4jqv-mc3x-m676",
+       "summary": "Next.js has cache poisoning of SSG and ISR pages in self-hosted applications",
+       "aliases": [
+        "CVE-2026-94543"
+       ],
+       "affected": [
+        {
+         "package": {
+          "ecosystem": "npm",
+          "name": "next",
+          "purl": "pkg:npm/next"
+         },
+         "ranges": [
+          {
+           "events": [
+            {
+             "introduced": "15.0.0"
+            },
+            {
+             "fixed": "15.5.27"
+            }
+           ],
+           "type": "SEMVER"
+          }
+         ]
+        },
+        {
+         "package": {
+          "ecosystem": "npm",
+          "name": "next",
+          "purl": "pkg:npm/next"
+         },
+         "ranges": [
+          {
+           "events": [
+            {
+             "introduced": "16.0.0"
+            },
+            {
+             "fixed": "16.3.8"
+            }
+           ],
+           "type": "SEMVER"
+          }
+         ]
+        }
+       ],
+       "database_specific": {
+        "cwe_ids": [
+         "CWE-524"
+        ],
+        "github_reviewed": true,
+        "github_reviewed_at": "2026-10-07T20:32:06Z",
+        "nvd_published_at": "2026-10-02T16:16:52Z",
+        "severity": "MODERATE"
+       }
+      },
+      {
+       "id": "GHSA-mcj8-r9mp-w47p",
+       "summary": "Next.js has cache poisoning in SSG/ISR rendering that leads to cross-user content substitution and persistent denial of service",
+       "aliases": [
+        "CVE-2026-94484"
+       ],
+       "affected": [
+        {
+         "package": {
+          "ecosystem": "npm",
+          "name": "next",
+          "purl": "pkg:npm/next"
+         },
+         "ranges": [
+          {
+           "events": [
+            {
+             "introduced": "16.0.0"
+            },
+            {
+             "fixed": "16.3.8"
+            }
+           ],
+           "type": "SEMVER"
+          }
+         ]
+        },
+        {
+         "package": {
+          "ecosystem": "npm",
+          "name": "next",
+          "purl": "pkg:npm/next"
+         },
+         "ranges": [
+          {
+           "events": [
+            {
+             "introduced": "15.0.0"
+            },
+            {
+             "fixed": "15.5.27"
+            }
+           ],
+           "type": "SEMVER"
+          }
+         ]
+        }
+       ],
+       "database_specific": {
+        "cwe_ids": [
+         "CWE-524"
+        ],
+        "github_reviewed": true,
+        "github_reviewed_at": "2026-10-07T20:31:13Z",
+        "nvd_published_at": "2026-10-02T16:16:51Z",
+        "severity": "MODERATE"
+       }
+      }
+     ],
+     "groups": [
+      {
+       "ids": [
+        "GHSA-4jqv-mc3x-m676"
+       ],
+       "aliases": [
+        "CVE-2026-94543",
+        "GHSA-4jqv-mc3x-m676"
+       ],
+       "max_severity": "6.3"
+      },
+      {
+       "ids": [
+        "GHSA-mcj8-r9mp-w47p"
+       ],
+       "aliases": [
+        "CVE-2026-94484",
+        "GHSA-mcj8-r9mp-w47p"
+       ],
+       "max_severity": "6.3"
+      }
+     ]
+    },
+    {
+     "package": {
+      "name": "postcss",
+      "version": "8.4.31",
+      "ecosystem": "npm"
+     },
+     "vulnerabilities": [
+      {
+       "id": "GHSA-6g55-p6wh-862q",
+       "summary": "PostCSS: Arbitrary file read and information disclosure via attacker-controlled sourceMappingURL in CSS comments",
+       "aliases": [
+        "CVE-2026-45623"
+       ],
+       "affected": [
+        {
+         "package": {
+          "ecosystem": "npm",
+          "name": "postcss",
+          "purl": "pkg:npm/postcss"
+         },
+         "ranges": [
+          {
+           "events": [
+            {
+             "introduced": "0"
+            },
+            {
+             "fixed": "8.5.12"
+            }
+           ],
+           "type": "SEMVER"
+          }
+         ]
+        }
+       ],
+       "database_specific": {
+        "cwe_ids": [
+         "CWE-200",
+         "CWE-22"
+        ],
+        "github_reviewed": true,
+        "github_reviewed_at": "2026-07-23T15:06:16Z",
+        "nvd_published_at": null,
+        "severity": "HIGH"
+       }
+      },
+      {
+       "id": "GHSA-fxqj-rqcc-2cmp",
+       "summary": "PostCSS: incomplete fix of GHSA-6g55-p6wh-862q — attacker-controlled sourceMappingURL reads arbitrary .map files when `from` is unset",
+       "aliases": [
+        "CVE-2026-69153"
+       ],
+       "affected": [
+        {
+         "package": {
+          "ecosystem": "npm",
+          "name": "postcss",
+          "purl": "pkg:npm/postcss"
+         },
+         "ranges": [
+          {
+           "events": [
+            {
+             "introduced": "0"
+            },
+            {
+             "fixed": "8.5.23"
+            }
+           ],
+           "type": "SEMVER"
+          }
+         ]
+        }
+       ],
+       "database_specific": {
+        "cwe_ids": [
+         "CWE-200",
+         "CWE-22"
+        ],
+        "github_reviewed": true,
+        "github_reviewed_at": "2026-08-03T17:11:39Z",
+        "nvd_published_at": null,
+        "severity": "MODERATE"
+       }
+      },
+      {
+       "id": "GHSA-qx2v-qp2m-jg93",
+       "summary": "PostCSS has XSS via Unescaped </style> in its CSS Stringify Output",
+       "aliases": [
+        "CVE-2026-41305"
+       ],
+       "affected": [
+        {
+         "package": {
+          "ecosystem": "npm",
+          "name": "postcss",
+          "purl": "pkg:npm/postcss"
+         },
+         "ranges": [
+          {
+           "events": [
+            {
+             "introduced": "0"
+            },
+            {
+             "fixed": "8.5.10"
+            }
+           ],
+           "type": "SEMVER"
+          }
+         ]
+        }
+       ],
+       "database_specific": {
+        "cwe_ids": [
+         "CWE-79"
+        ],
+        "github_reviewed": true,
+        "github_reviewed_at": "2026-04-24T15:31:42Z",
+        "nvd_published_at": "2026-04-24T03:16:11Z",
+        "severity": "MODERATE"
+       }
+      },
+      {
+       "id": "GHSA-r28c-9q8g-f849",
+       "summary": "PostCSS: Path Traversal in Previous Source Map Auto-Loading (sourceMappingURL) leads to Arbitrary .map File Disclosure",
+       "aliases": [
+        "CVE-2026-73646"
+       ],
+       "affected": [
+        {
+         "package": {
+          "ecosystem": "npm",
+          "name": "postcss",
+          "purl": "pkg:npm/postcss"
+         },
+         "ranges": [
+          {
+           "events": [
+            {
+             "introduced": "0"
+            },
+            {
+             "fixed": "8.5.18"
+            }
+           ],
+           "type": "SEMVER"
+          }
+         ]
+        }
+       ],
+       "database_specific": {
+        "cwe_ids": [
+         "CWE-22"
+        ],
+        "github_reviewed": true,
+        "github_reviewed_at": "2026-07-24T16:24:55Z",
+        "nvd_published_at": null,
+        "severity": "HIGH"
+       }
+      }
+     ],
+     "groups": [
+      {
+       "ids": [
+        "GHSA-6g55-p6wh-862q"
+       ],
+       "aliases": [
+        "CVE-2026-45623",
+        "GHSA-6g55-p6wh-862q"
+       ],
+       "max_severity": "7.5"
+      },
+      {
+       "ids": [
+        "GHSA-fxqj-rqcc-2cmp"
+       ],
+       "aliases": [
+        "CVE-2026-69153",
+        "GHSA-fxqj-rqcc-2cmp"
+       ],
+       "max_severity": "6.3"
+      },
+      {
+       "ids": [
+        "GHSA-qx2v-qp2m-jg93"
+       ],
+       "aliases": [
+        "CVE-2026-41305",
+        "GHSA-qx2v-qp2m-jg93"
+       ],
+       "max_severity": "6.1"
+      },
+      {
+       "ids": [
+        "GHSA-r28c-9q8g-f849"
+       ],
+       "aliases": [
+        "CVE-2026-73646",
+        "GHSA-r28c-9q8g-f849"
+       ],
+       "max_severity": "7.5"
+      }
+     ]
+    },
+    {
+     "package": {
+      "name": "sharp",
+      "version": "0.35.4",
+      "ecosystem": "npm"
+     },
+     "dependency_groups": [
+      "optional"
+     ],
+     "vulnerabilities": [
+      {
+       "id": "GHSA-wq5f-xc86-pv6w",
+       "summary": "sharp : Vulnerability in librsvg dependency CVE-2026-96889",
+       "affected": [
+        {
+         "package": {
+          "ecosystem": "npm",
+          "name": "sharp",
+          "purl": "pkg:npm/sharp"
+         },
+         "ranges": [
+          {
+           "events": [
+            {
+             "introduced": "0"
+            },
+            {
+             "fixed": "0.35.5"
+            }
+           ],
+           "type": "SEMVER"
+          }
+         ]
+        }
+       ],
+       "database_specific": {
+        "cwe_ids": [
+         "CWE-1395",
+         "CWE-416"
+        ],
+        "github_reviewed": true,
+        "github_reviewed_at": "2026-10-06T13:43:57Z",
+        "nvd_published_at": null,
+        "severity": "HIGH"
+       }
+      }
+     ],
+     "groups": [
+      {
+       "ids": [
+        "GHSA-wq5f-xc86-pv6w"
+       ],
+       "aliases": [
+        "GHSA-wq5f-xc86-pv6w"
+       ],
+       "max_severity": "8.9"
+      }
+     ]
+    },
+    {
+     "package": {
+      "name": "source-map-js",
+      "version": "1.2.1",
+      "ecosystem": "npm"
+     },
+     "vulnerabilities": [
+      {
+       "id": "GHSA-68fv-2mgg-jv7q",
+       "summary": "source-map-js allows event-loop denial of service through indexed source-map section offsets",
+       "aliases": [
+        "CVE-2026-93749"
+       ],
+       "affected": [
+        {
+         "package": {
+          "ecosystem": "npm",
+          "name": "source-map-js",
+          "purl": "pkg:npm/source-map-js"
+         },
+         "ranges": [
+          {
+           "events": [
+            {
+             "introduced": "1.0.0"
+            },
+            {
+             "fixed": "1.2.2"
+            }
+           ],
+           "type": "SEMVER"
+          }
+         ]
+        }
+       ],
+       "database_specific": {
+        "cwe_ids": [
+         "CWE-1284"
+        ],
+        "github_reviewed": true,
+        "github_reviewed_at": "2026-10-05T23:31:22Z",
+        "nvd_published_at": "2026-09-18T18:18:33Z",
+        "severity": "HIGH"
+       }
+      }
+     ],
+     "groups": [
+      {
+       "ids": [
+        "GHSA-68fv-2mgg-jv7q"
+       ],
+       "aliases": [
+        "CVE-2026-93749",
+        "GHSA-68fv-2mgg-jv7q"
+       ],
+       "max_severity": "8.7"
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}
