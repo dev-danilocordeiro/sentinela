@@ -1,0 +1,13 @@
+{
+  "replay_key": "d0b0888ac24fdac06c0d",
+  "model": "claude-sonnet-5-5",
+  "stop_reason": "tool_use",
+  "text": "{\"product_decision\":{\"depends\":true,\"decision\":\"A página pública de rastreamento deve exibir nome completo e endereço de entrega do cliente?\"},\"decision\":\"publish\",\"confidence\":0.8,\"reason\":\"O handler público retorna nome completo e endereço a qualquer portador do código de rastreio de 8 caracteres, exposição de dados pessoais confirmada pela evidência. Cabe ao time de produto decidir se isso é intencional.\",\"merge_with\":\"\",\"related_to\":[],\"narrowed\":{\"title\":\"\",\"context\":\"\",\"proposed_fix\":\"\",\"acceptance_criteria\":[]}}",
+  "usage": {
+    "InputTokens": 2,
+    "OutputTokens": 348,
+    "CacheWrite5mTokens": 0,
+    "CacheWrite1hTokens": 956,
+    "CacheReadTokens": 3472
+  }
+}

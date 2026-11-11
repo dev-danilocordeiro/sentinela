@@ -2,12 +2,12 @@
   "replay_key": "dde3f653519b848ad08c",
   "model": "claude-sonnet-5-5",
   "stop_reason": "tool_use",
-  "text": "{\"product_decision\":{\"depends\":false,\"decision\":\"\"},\"decision\":\"discard\",\"confidence\":0.95,\"reason\":\"Renomear `cfg` para `configuration` é questão puramente de estilo; `cfg` é idiomático em Go e não há defeito nem impacto que justifique uma issue.\",\"merge_with\":\"\",\"related_to\":[],\"narrowed\":{\"title\":\"\",\"context\":\"\",\"proposed_fix\":\"\",\"acceptance_criteria\":[]}}",
+  "text": "{\"product_decision\":{\"depends\":false,\"decision\":\"\"},\"decision\":\"discard\",\"confidence\":0.95,\"reason\":\"Renomear cfg para configuration é questão de estilo; cfg é idiomático em Go e não há defeito nem impacto que justifique uma issue.\",\"merge_with\":\"\",\"related_to\":[],\"narrowed\":{\"title\":\"\",\"context\":\"\",\"proposed_fix\":\"\",\"acceptance_criteria\":[]}}",
   "usage": {
     "InputTokens": 2,
-    "OutputTokens": 298,
+    "OutputTokens": 287,
     "CacheWrite5mTokens": 0,
-    "CacheWrite1hTokens": 801,
-    "CacheReadTokens": 3472
+    "CacheWrite1hTokens": 0,
+    "CacheReadTokens": 4273
   }
 }

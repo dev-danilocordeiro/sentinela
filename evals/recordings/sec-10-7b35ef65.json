@@ -2,12 +2,12 @@
   "replay_key": "aa8c4cf3e419fbbf32b2",
   "model": "claude-sonnet-5-5",
   "stop_reason": "tool_use",
-  "text": "{\"product_decision\":{\"depends\":false,\"decision\":\"\"},\"decision\":\"discard\",\"confidence\":0.9,\"reason\":\"SHA-1 é usado apenas para gerar um ETag (validador de cache), truncado em 8 bytes, sem função de segurança; colisões resistentes não importam aqui. Falso positivo de segurança, trocar o hash seria só estilo.\",\"merge_with\":\"\",\"related_to\":[],\"narrowed\":{\"title\":\"\",\"context\":\"\",\"proposed_fix\":\"\",\"acceptance_criteria\":[]}}",
+  "text": "{\"product_decision\":{\"depends\":false,\"decision\":\"\"},\"decision\":\"discard\",\"confidence\":0.9,\"reason\":\"SHA-1 é usado só para gerar ETag (validador de cache, truncado em 8 bytes), sem papel de segurança; resistência a colisão não é um requisito aqui. Trocar o hash é mudança cosmética, não uma vulnerabilidade real.\",\"merge_with\":\"\",\"related_to\":[],\"narrowed\":{\"title\":\"\",\"context\":\"\",\"proposed_fix\":\"\",\"acceptance_criteria\":[]}}",
   "usage": {
     "InputTokens": 2,
-    "OutputTokens": 320,
+    "OutputTokens": 326,
     "CacheWrite5mTokens": 0,
-    "CacheWrite1hTokens": 856,
-    "CacheReadTokens": 3472
+    "CacheWrite1hTokens": 0,
+    "CacheReadTokens": 4328
   }
 }

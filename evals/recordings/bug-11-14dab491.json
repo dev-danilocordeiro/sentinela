@@ -1,0 +1,13 @@
+{
+  "replay_key": "1dfe71c18c6eedf0688e",
+  "model": "claude-sonnet-5-5",
+  "stop_reason": "tool_use",
+  "text": "{\"product_decision\":{\"depends\":false,\"decision\":\"\"},\"decision\":\"publish\",\"confidence\":0.8,\"reason\":\"O loop usa time.Sleep(30s) sem observar ctx.Done, então o worker não encerra ao cancelar o contexto; a evidência sustenta isso e a correção (select com ticker e ctx.Done) é simples e acionável.\",\"merge_with\":\"\",\"related_to\":[],\"narrowed\":{\"title\":\"\",\"context\":\"\",\"proposed_fix\":\"\",\"acceptance_criteria\":[]}}",
+  "usage": {
+    "InputTokens": 2,
+    "OutputTokens": 318,
+    "CacheWrite5mTokens": 0,
+    "CacheWrite1hTokens": 973,
+    "CacheReadTokens": 3472
+  }
+}

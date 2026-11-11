@@ -2,12 +2,12 @@
   "replay_key": "d68d81f05db238be291b",
   "model": "claude-sonnet-5-5",
   "stop_reason": "tool_use",
-  "text": "{\"product_decision\":{\"depends\":false,\"decision\":\"\"},\"decision\":\"publish\",\"confidence\":0.78,\"reason\":\"O handler mapeia qualquer erro de Create para 500, conforme a evidência. Entrada inválida vira erro de servidor e gera alertas falsos e retentativas inúteis. A correção com erro tipado e errors.As é acionável.\",\"merge_with\":\"\",\"related_to\":[],\"narrowed\":{\"title\":\"\",\"context\":\"\",\"proposed_fix\":\"\",\"acceptance_criteria\":[]}}",
+  "text": "{\"product_decision\":{\"depends\":false,\"decision\":\"\"},\"decision\":\"publish\",\"confidence\":0.72,\"reason\":\"O snippet mostra que qualquer erro de Create vira 500, inclusive entrada inválida, o que gera alertas falsos e retries inúteis. A correção com erro tipado e errors.As é acionável e os critérios são verificáveis.\",\"merge_with\":\"\",\"related_to\":[],\"narrowed\":{\"title\":\"\",\"context\":\"\",\"proposed_fix\":\"\",\"acceptance_criteria\":[]}}",
   "usage": {
     "InputTokens": 2,
     "OutputTokens": 317,
     "CacheWrite5mTokens": 0,
-    "CacheWrite1hTokens": 913,
-    "CacheReadTokens": 3472
+    "CacheWrite1hTokens": 0,
+    "CacheReadTokens": 4385
   }
 }

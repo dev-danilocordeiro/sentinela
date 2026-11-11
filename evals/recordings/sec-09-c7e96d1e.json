@@ -2,12 +2,12 @@
   "replay_key": "880b61e15f28b53e51a0",
   "model": "claude-sonnet-5-5",
   "stop_reason": "tool_use",
-  "text": "{\"product_decision\":{\"depends\":false,\"decision\":\"\"},\"decision\":\"discard\",\"confidence\":0.95,\"reason\":\"A evidência é uma senha fictícia (\\\"test-password\\\") num arquivo de teste com store em memória, não uma credencial real. Não há risco de segurança, e carregar isso do ambiente seria um exagero.\",\"merge_with\":\"\",\"related_to\":[],\"narrowed\":{\"title\":\"\",\"context\":\"\",\"proposed_fix\":\"\",\"acceptance_criteria\":[]}}",
+  "text": "{\"product_decision\":{\"depends\":false,\"decision\":\"\"},\"decision\":\"discard\",\"confidence\":0.95,\"reason\":\"A evidência é uma senha fictícia (\\\"test-password\\\") em login_test.go, usada num memstore de teste. Não é credencial real, então é falso positivo, e carregar do ambiente não faz sentido num teste unitário.\",\"merge_with\":\"\",\"related_to\":[],\"narrowed\":{\"title\":\"\",\"context\":\"\",\"proposed_fix\":\"\",\"acceptance_criteria\":[]}}",
   "usage": {
     "InputTokens": 2,
-    "OutputTokens": 306,
+    "OutputTokens": 310,
     "CacheWrite5mTokens": 0,
-    "CacheWrite1hTokens": 816,
-    "CacheReadTokens": 3472
+    "CacheWrite1hTokens": 0,
+    "CacheReadTokens": 4288
   }
 }

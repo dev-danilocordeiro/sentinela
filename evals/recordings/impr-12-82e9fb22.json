@@ -1,0 +1,13 @@
+{
+  "replay_key": "52430e87109cbad93147",
+  "model": "claude-sonnet-5-5",
+  "stop_reason": "tool_use",
+  "text": "{\"product_decision\":{\"depends\":false,\"decision\":\"\"},\"decision\":\"discard\",\"confidence\":0.9,\"reason\":\"A evidência contradiz o achado: DueDate já usa um relógio injetável (campo now, que os testes definem), não chama time.Now diretamente. O problema descrito não existe.\",\"merge_with\":\"\",\"related_to\":[],\"narrowed\":{\"title\":\"\",\"context\":\"\",\"proposed_fix\":\"\",\"acceptance_criteria\":[]}}",
+  "usage": {
+    "InputTokens": 2,
+    "OutputTokens": 297,
+    "CacheWrite5mTokens": 0,
+    "CacheWrite1hTokens": 907,
+    "CacheReadTokens": 3472
+  }
+}

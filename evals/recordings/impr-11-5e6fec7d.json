@@ -1,0 +1,13 @@
+{
+  "replay_key": "33ffdd3b3211b0008396",
+  "model": "claude-sonnet-5-5",
+  "stop_reason": "tool_use",
+  "text": "{\"product_decision\":{\"depends\":false,\"decision\":\"\"},\"decision\":\"publish\",\"confidence\":0.75,\"reason\":\"A evidência mostra que respostas 5xx são apenas logadas e descartadas (return nil), sem retry, o que causa perda de atualizações para parceiros. A correção usando o outbox existente com backoff é acionável.\",\"merge_with\":\"\",\"related_to\":[],\"narrowed\":{\"title\":\"\",\"context\":\"\",\"proposed_fix\":\"\",\"acceptance_criteria\":[]}}",
+  "usage": {
+    "InputTokens": 2,
+    "OutputTokens": 310,
+    "CacheWrite5mTokens": 0,
+    "CacheWrite1hTokens": 966,
+    "CacheReadTokens": 3472
+  }
+}

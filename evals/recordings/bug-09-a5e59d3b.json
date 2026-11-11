@@ -2,10 +2,10 @@
   "replay_key": "c5260769d9f92e1ad64b",
   "model": "claude-sonnet-5-5",
   "stop_reason": "tool_use",
-  "text": "{\"product_decision\":{\"depends\":false,\"decision\":\"\"},\"decision\":\"discard\",\"confidence\":0.95,\"reason\":\"A evidência contradiz o achado: `@Value(\\\"${gateway.timeout:30}\\\")` já define o default de 30 segundos, e um int primitivo injetado assim não gera NPE nem falha de startup.\",\"merge_with\":\"\",\"related_to\":[],\"narrowed\":{\"title\":\"\",\"context\":\"\",\"proposed_fix\":\"\",\"acceptance_criteria\":[]}}",
+  "text": "{\"product_decision\":{\"depends\":false,\"decision\":\"\"},\"decision\":\"discard\",\"confidence\":0.95,\"reason\":\"A evidência contradiz o achado: `@Value(\\\"${gateway.timeout:30}\\\")` já define o padrão de 30 segundos, e um `int` primitivo injetado assim não gera NPE. A aplicação sobe sem a propriedade.\",\"merge_with\":\"\",\"related_to\":[],\"narrowed\":{\"title\":\"\",\"context\":\"\",\"proposed_fix\":\"\",\"acceptance_criteria\":[]}}",
   "usage": {
     "InputTokens": 2,
-    "OutputTokens": 304,
+    "OutputTokens": 317,
     "CacheWrite5mTokens": 0,
     "CacheWrite1hTokens": 0,
     "CacheReadTokens": 4330

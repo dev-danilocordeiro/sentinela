@@ -1,0 +1,13 @@
+{
+  "replay_key": "4572223897c102680244",
+  "model": "claude-sonnet-5-5",
+  "stop_reason": "tool_use",
+  "text": "{\"product_decision\":{\"depends\":false,\"decision\":\"\"},\"decision\":\"discard\",\"confidence\":0.85,\"reason\":\"O go.mod declara go 1.27.0, e desde o Go 1.23 timers de time.After não referenciados são coletados pelo GC mesmo sem disparar. O vazamento descrito não existe, então a evidência não sustenta o achado.\",\"merge_with\":\"\",\"related_to\":[],\"narrowed\":{\"title\":\"\",\"context\":\"\",\"proposed_fix\":\"\",\"acceptance_criteria\":[]}}",
+  "usage": {
+    "InputTokens": 2,
+    "OutputTokens": 435,
+    "CacheWrite5mTokens": 0,
+    "CacheWrite1hTokens": 976,
+    "CacheReadTokens": 3472
+  }
+}

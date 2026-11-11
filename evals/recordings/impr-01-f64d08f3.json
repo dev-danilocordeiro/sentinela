@@ -2,12 +2,12 @@
   "replay_key": "40471ae1c87f8e375676",
   "model": "claude-sonnet-5-5",
   "stop_reason": "tool_use",
-  "text": "{\"product_decision\":{\"depends\":false,\"decision\":\"\"},\"decision\":\"publish\",\"confidence\":0.8,\"reason\":\"A evidência mostra duas regras de arredondamento diferentes (RoundToEven e Trunc) em pricing e invoices, o que pode gerar diferença de um centavo entre total do pedido e fatura. A correção é acionável e clara.\",\"merge_with\":\"\",\"related_to\":[],\"narrowed\":{\"title\":\"\",\"context\":\"\",\"proposed_fix\":\"\",\"acceptance_criteria\":[]}}",
+  "text": "{\"product_decision\":{\"depends\":false,\"decision\":\"\"},\"decision\":\"publish\",\"confidence\":0.8,\"reason\":\"As evidências mostram duas regras de arredondamento divergentes (RoundToEven em pricing e Trunc em invoices), o que pode gerar diferença de centavos entre total do pedido e fatura. A correção é acionável: centralizar em um pacote compartilhado.\",\"merge_with\":\"\",\"related_to\":[],\"narrowed\":{\"title\":\"\",\"context\":\"\",\"proposed_fix\":\"\",\"acceptance_criteria\":[]}}",
   "usage": {
     "InputTokens": 2,
-    "OutputTokens": 317,
+    "OutputTokens": 327,
     "CacheWrite5mTokens": 0,
-    "CacheWrite1hTokens": 921,
-    "CacheReadTokens": 3472
+    "CacheWrite1hTokens": 0,
+    "CacheReadTokens": 4393
   }
 }

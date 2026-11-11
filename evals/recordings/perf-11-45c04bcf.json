@@ -1,0 +1,13 @@
+{
+  "replay_key": "c1c478b7fabcf4619a3e",
+  "model": "claude-sonnet-5-5",
+  "stop_reason": "tool_use",
+  "text": "{\"product_decision\":{\"depends\":false,\"decision\":\"\"},\"decision\":\"publish\",\"confidence\":0.85,\"reason\":\"O snippet mostra Refresh segurando o write lock durante provider.Fetch (chamada HTTP), bloqueando todas as leituras de preço pelo tempo da requisição. A correção (buscar fora do lock e só trocar a tabela dentro dele) é simples e acionável.\",\"merge_with\":\"\",\"related_to\":[],\"narrowed\":{\"title\":\"\",\"context\":\"\",\"proposed_fix\":\"\",\"acceptance_criteria\":[]}}",
+  "usage": {
+    "InputTokens": 2,
+    "OutputTokens": 332,
+    "CacheWrite5mTokens": 0,
+    "CacheWrite1hTokens": 996,
+    "CacheReadTokens": 3472
+  }
+}

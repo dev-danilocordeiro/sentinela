@@ -18,8 +18,15 @@ directory measures how often its decision matches a reviewer's.
 
 ## The dataset
 
-- 40 cases: 10 per category (bug, performance, improvement, security), 5 accepted and 5 rejected
+- 48 cases: 12 per category (bug, performance, improvement, security), 6 accepted and 6 rejected
   in each.
+- The first 40 are clear-cut. The last 8 (`-11` and `-12` in each category) are harder:
+  - accepted findings with real but moderate impact (a shutdown that ignores the context, a lock
+    held across an HTTP call, dropped webhooks);
+  - one finding that depends on a product decision (a public tracking page that shows the
+    address), labeled accepted because the pipeline publishes it as a question;
+  - rejected findings that need knowledge outside the snippet (timers since Go 1.23, CSRF against
+    a bearer-token API) or that the snippet refutes less obviously.
 - The findings and code snippets were written for this dataset, in fictional repos
   (`example/shop-api`, `example/shop-web`, `example/billing-service`). They are not production
   data.
@@ -32,8 +39,8 @@ directory measures how often its decision matches a reviewer's.
   - style-only changes;
   - suggestions that cannot apply (a JPA entity as a Java record).
 - Findings that depend on a product decision are left out of the rejected class. The pipeline
-  always publishes them as a question to the team, by design (ADR 0054), so they would measure
-  the rule, not the Judge.
+  always publishes them as a question to the team, by design (ADR 0054), so a rejected label
+  there would measure the rule, not the Judge.
 
 What this does not measure:
 

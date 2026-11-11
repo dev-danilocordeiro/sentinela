@@ -2,12 +2,12 @@
   "replay_key": "ab19738fad8dcc8613a2",
   "model": "claude-sonnet-5-5",
   "stop_reason": "tool_use",
-  "text": "{\"product_decision\":{\"depends\":false,\"decision\":\"\"},\"decision\":\"discard\",\"confidence\":0.97,\"reason\":\"A evidência mostra que o regexp já é compilado uma única vez, em variável de pacote (slugRe); Slugify apenas o reutiliza. O achado descreve um problema que não existe no código.\",\"merge_with\":\"\",\"related_to\":[],\"narrowed\":{\"title\":\"\",\"context\":\"\",\"proposed_fix\":\"\",\"acceptance_criteria\":[]}}",
+  "text": "{\"product_decision\":{\"depends\":false,\"decision\":\"\"},\"decision\":\"discard\",\"confidence\":0.97,\"reason\":\"A evidência já mostra a regexp declarada em nível de pacote (`var slugRe = regexp.MustCompile(...)`), compilada uma única vez; Slugify apenas a reutiliza. O achado descreve um problema que não existe no código.\",\"merge_with\":\"\",\"related_to\":[],\"narrowed\":{\"title\":\"\",\"context\":\"\",\"proposed_fix\":\"\",\"acceptance_criteria\":[]}}",
   "usage": {
     "InputTokens": 2,
-    "OutputTokens": 303,
+    "OutputTokens": 319,
     "CacheWrite5mTokens": 0,
-    "CacheWrite1hTokens": 879,
-    "CacheReadTokens": 3472
+    "CacheWrite1hTokens": 0,
+    "CacheReadTokens": 4351
   }
 }

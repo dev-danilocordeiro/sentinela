@@ -7,7 +7,7 @@
     "InputTokens": 2,
     "OutputTokens": 288,
     "CacheWrite5mTokens": 0,
-    "CacheWrite1hTokens": 818,
-    "CacheReadTokens": 3472
+    "CacheWrite1hTokens": 0,
+    "CacheReadTokens": 4290
   }
 }

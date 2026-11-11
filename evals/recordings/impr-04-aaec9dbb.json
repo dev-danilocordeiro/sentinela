@@ -2,12 +2,12 @@
   "replay_key": "5f989bd03b3a1e7ba8c2",
   "model": "claude-sonnet-5-5",
   "stop_reason": "tool_use",
-  "text": "{\"product_decision\":{\"depends\":false,\"decision\":\"\"},\"decision\":\"publish\",\"confidence\":0.72,\"reason\":\"O log de falha de captura não traz invoiceId nem paymentId, como mostra a evidência, o que dificulta o diagnóstico em incidentes. A correção é simples e acionável, embora o impacto seja baixo.\",\"merge_with\":\"\",\"related_to\":[],\"narrowed\":{\"title\":\"\",\"context\":\"\",\"proposed_fix\":\"\",\"acceptance_criteria\":[]}}",
+  "text": "{\"product_decision\":{\"depends\":false,\"decision\":\"\"},\"decision\":\"publish\",\"confidence\":0.7,\"reason\":\"A evidência mostra o log de falha de captura sem invoiceId/paymentId, o que dificulta o diagnóstico em incidentes. A correção é simples e acionável, ainda que de baixo impacto.\",\"merge_with\":\"\",\"related_to\":[],\"narrowed\":{\"title\":\"\",\"context\":\"\",\"proposed_fix\":\"\",\"acceptance_criteria\":[]}}",
   "usage": {
     "InputTokens": 2,
-    "OutputTokens": 310,
+    "OutputTokens": 306,
     "CacheWrite5mTokens": 0,
-    "CacheWrite1hTokens": 884,
-    "CacheReadTokens": 3472
+    "CacheWrite1hTokens": 0,
+    "CacheReadTokens": 4356
   }
 }

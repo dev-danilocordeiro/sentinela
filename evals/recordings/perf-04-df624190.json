@@ -2,10 +2,10 @@
   "replay_key": "d765e13a49b40d2e2fdb",
   "model": "claude-sonnet-5-5",
   "stop_reason": "tool_use",
-  "text": "{\"product_decision\":{\"depends\":false,\"decision\":\"\"},\"decision\":\"publish\",\"confidence\":0.85,\"reason\":\"A evidência mostra findAll().stream().filter().count(), que carrega todas as entidades na memória só para contar. Trocar por um COUNT no banco (countByStatus) é uma correção simples e acionável.\",\"merge_with\":\"\",\"related_to\":[],\"narrowed\":{\"title\":\"\",\"context\":\"\",\"proposed_fix\":\"\",\"acceptance_criteria\":[]}}",
+  "text": "{\"product_decision\":{\"depends\":false,\"decision\":\"\"},\"decision\":\"publish\",\"confidence\":0.85,\"reason\":\"A evidência mostra findAll().stream().filter().count(), que carrega todas as entidades em memória para contar; countByStatus resolve no banco. Defeito real de desempenho e correção acionável.\",\"merge_with\":\"\",\"related_to\":[],\"narrowed\":{\"title\":\"\",\"context\":\"\",\"proposed_fix\":\"\",\"acceptance_criteria\":[]}}",
   "usage": {
     "InputTokens": 2,
-    "OutputTokens": 307,
+    "OutputTokens": 302,
     "CacheWrite5mTokens": 0,
     "CacheWrite1hTokens": 0,
     "CacheReadTokens": 4395
