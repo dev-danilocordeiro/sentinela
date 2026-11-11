@@ -48,7 +48,7 @@ flags it.
 ## Consequences
 
 - Nothing merges without a person, and every outcome says who decided it.
-- Auto-approval is opt-in per team. Even then, it only approves; auto-merge is a separate flag
-  per category.
+- Auto-approval is opt-in per team, and it only approves. Auto-merge is deliberately not
+  implemented (see the [roadmap](../roadmap.md)).
 - Some work stays manual by design: triaging the issues, choosing what to fix, and reviewing
   escalations.
