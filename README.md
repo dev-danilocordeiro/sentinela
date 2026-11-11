@@ -91,32 +91,38 @@ Open `reports/local/index.md`, or the HTML report of each repo. Then decide:
 ## Evals
 
 The Judge is the step that decides whether a finding is worth an issue, so it is the part that is
-evaluated. [`evals/`](evals/) has 40 hand-labeled findings: 10 per category, half that a reviewer
+evaluated. [`evals/`](evals/) has 48 hand-labeled findings: 12 per category, half that a reviewer
 would accept and half that a reviewer would close.
 
 - `make eval` runs the Judge on them with the same decision rule as the pipeline, and reports
   accuracy, precision and recall per category.
 - `make eval-replay` replays the recorded responses in CI without calling a model.
 
-**Latest live run** (2026-11-11, `claude-sonnet-5-5`, prompt `judge@8`, threshold 0.6, 40 calls,
+**Latest live run** (2026-11-11, `claude-sonnet-5-5`, prompt `judge@8`, threshold 0.6, 50 calls,
 no errors). Full report: [evals/results/latest.md](evals/results/latest.md).
 
 | Category | Cases | Correct | Accuracy |
 |---|---|---|---|
-| bug | 10 | 10 | 100% |
-| performance | 10 | 10 | 100% |
-| improvement | 10 | 10 | 100% |
-| security | 10 | 10 | 100% |
-| **all** | **40** | **40** | **100%** |
+| bug | 12 | 12 | 100% |
+| performance | 12 | 12 | 100% |
+| improvement | 12 | 12 | 100% |
+| security | 12 | 12 | 100% |
+| **all** | **48** | **48** | **100%** |
 
-**How to read this:** a perfect score here means the dataset is too easy. It does not mean the
-Judge is perfect.
+**How to read this:** a perfect score means the dataset does not yet separate a good Judge from a
+great one. It does not mean the Judge is perfect.
 
-- The cases are clear-cut: most rejected findings are refuted by their own code snippet, and the
-  lowest confidence in the run was 0.72.
-- No case came near the threshold, so the re-vote path never ran.
-- The useful next step is harder cases: real but low-impact findings, findings that depend on a
-  product decision, and near-duplicates.
+- 40 of the cases are clear-cut: most rejected findings are refuted by their own code snippet.
+- The 8 harder cases also passed:
+  - moderate-impact defects;
+  - a product-decision finding, published as a question;
+  - rejections that need knowledge outside the snippet.
+- One case (`impr-04`) landed near the threshold and was settled by the 3-vote median, at 0.72.
+  The lowest confidence in the run was 0.72.
+- Next steps that would make the eval harder:
+  - near-duplicates with similar findings in the input;
+  - few-shot examples that contradict the default;
+  - real outcomes from a live install.
 
 The labels were written by hand for this dataset. They are not decisions recorded from real teams.
 The eval does not cover the Judge's use of similar findings and past decisions, which production
