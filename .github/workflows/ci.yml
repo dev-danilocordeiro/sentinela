@@ -52,3 +52,15 @@ jobs:
           fi
           git tag ci-exportacao HEAD
           scripts/exportar.sh --tag ci-exportacao --modulo github.com/acme/sentinela --saida "$RUNNER_TEMP/exportacao" --sem-testes
+
+  eval-replay:
+    # Replays the recorded Judge eval (no model calls) and fails if the prompt, the dataset or the
+    # scoring no longer reproduce evals/results/latest.json.
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+      - name: make eval-replay
+        run: make eval-replay

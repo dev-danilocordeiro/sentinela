@@ -1,0 +1,32 @@
+# Live Judge eval, started by hand. It spends API calls, so it needs the ANTHROPIC_API_KEY secret
+# and never runs on push. The report is uploaded as an artifact; committing it is a manual step.
+name: eval-live
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  eval:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+      - name: make eval
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          if [ -z "$ANTHROPIC_API_KEY" ]; then
+            echo "ANTHROPIC_API_KEY secret is not set"; exit 1
+          fi
+          make eval EVAL_FLAGS="--provider anthropic_api"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: eval-results
+          path: |
+            evals/results/
+            evals/recordings/
