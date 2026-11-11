@@ -31,16 +31,16 @@ jobs:
       # Os testes de integração apagam o schema deste banco: é um banco só de teste.
       SENTINELA_TEST_DATABASE_URL: postgres://sentinela:sentinela@localhost:5432/sentinela_test?sslmode=disable
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0
-      - uses: actions/setup-go@v5
+      - uses: actions/setup-go@v7
         with:
           go-version-file: go.mod
       - name: go test (com os testes de integração)
         run: go test -p 1 ./...
       - name: golangci-lint
-        uses: golangci/golangci-lint-action@v8
+        uses: golangci/golangci-lint-action@v9
         with:
           version: v2.14.0
       - name: termos proibidos (exportação)
@@ -58,8 +58,8 @@ jobs:
     # scoring no longer reproduce evals/results/latest.json.
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-go@v5
+      - uses: actions/checkout@v7
+      - uses: actions/setup-go@v7
         with:
           go-version-file: go.mod
       - name: make eval-replay
