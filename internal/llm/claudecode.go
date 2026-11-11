@@ -11,6 +11,7 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"regexp"
 	"sort"
 	"strings"
 	"sync"
@@ -35,9 +36,16 @@ var ErrUsageLimit = fmt.Errorf("%w: limite de uso da assinatura do Claude Code",
 // UsageLimited reconhece a mensagem de limite de uso do CLI (também usada pelo executor).
 func UsageLimited(msg string) bool { return usageLimited(msg) }
 
+// hitLimitRe matches any "You've hit your <kind> limit" from the CLI, including kinds not listed
+// below ("5-hour limit" in Claude Code 2.1.322).
+var hitLimitRe = regexp.MustCompile(`(?i)hit your [a-z0-9 -]{0,30}limit`)
+
 // usageLimited reconhece a mensagem de limite de uso do CLI: o de sessão e o semanal da
 // assinatura e o rate limit da API (429, rate_limit_error).
 func usageLimited(msg string) bool {
+	if hitLimitRe.MatchString(msg) {
+		return true
+	}
 	m := strings.ToLower(msg)
 	for _, k := range []string{"session limit", "usage limit", "weekly limit", "hit your limit", "limit reached", "rate limit", "rate_limit"} {
 		if strings.Contains(m, k) {

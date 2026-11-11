@@ -37,7 +37,7 @@ func TestUsageResetAtReadsTheResetFromTheMessage(t *testing.T) {
 			t.Errorf("%q: reset = %s, %v; quer %s, %v", c.msg, got, ok, c.want, c.ok)
 		}
 	}
-	for _, msg := range []string{"Rate limit reached for requests", "You've hit your limit · resets 3am"} {
+	for _, msg := range []string{"Rate limit reached for requests", "You've hit your limit · resets 3am", "You've hit your 5-hour limit · resets 11:30pm (America/Sao_Paulo)"} {
 		if !UsageLimited(msg) {
 			t.Errorf("%q deveria ser limite de uso", msg)
 		}
