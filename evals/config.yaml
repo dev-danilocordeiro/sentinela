@@ -1,0 +1,56 @@
+# Config for `sentinela eval` (make eval). It holds only what the Judge needs, with the values of
+# the default "quality" profile in sentinela.example.yaml, so the eval scores the shipped defaults
+# and does not depend on anyone's sentinela.yaml. Secrets come from the environment.
+
+adapters:                          # local mode: the eval publishes nothing
+  tracker: local
+  notifier: none
+  git_host: gh_cli
+
+models:                            # every role is required by the config loader; only judge is used here
+  triage: claude-opus-5-5
+  analysis: claude-opus-5-5
+  architect: claude-opus-5-5
+  judge: claude-sonnet-5-5
+  curator: claude-sonnet-5-5
+  notes: claude-sonnet-5-5
+  orchestrator: claude-sonnet-5-5
+  spec_writer: claude-sonnet-5-5
+  executor: claude-sonnet-5-5
+  reviewer_security: claude-opus-5-5
+  reviewer_code: claude-sonnet-5-5
+  reviewer_reliability: claude-sonnet-5-5
+  reviewer_domain: claude-sonnet-5-5
+  approver: claude-opus-5-5
+  shepherd: claude-sonnet-5-5
+  refusal:
+    action: fallback_model
+    fallback_model: claude-opus-5-5
+  use_batch: true                  # Batch API with anthropic_api (half price)
+
+llm:
+  provider: claude_code            # claude_code (subscription, `claude -p`) | anthropic_api
+  claude_code:
+    binary: claude
+    concurrency: 3
+    max_calls_per_run: 200
+    timeout: 10m
+    workdir: ~/.cache/sentinela/claude-cwd
+
+budget:
+  per_run_usd: 2.00                # anthropic_api only: the eval aborts above this
+  per_pr_usd: 1.00
+
+discovery:
+  min_confidence: 0.6              # same threshold as discovery
+  revote_band: 0.10
+  judge_votes: 3                   # near the threshold the Judge votes 3 times; the median counts
+
+pricing:                           # USD per million tokens, same table as sentinela.example.yaml
+  batch_discount: 0.5
+  cache_write_5m_multiplier: 1.25
+  cache_write_1h_multiplier: 2.0
+  models:
+    claude-haiku-5-5: { input: 0.10, output: 0.50, cache_read: 0.01 }
+    claude-sonnet-5-5: { input: 2.00, output: 10.00, cache_read: 0.20 }
+    claude-opus-5-5: { input: 4.00, output: 20.00, cache_read: 0.20 }
