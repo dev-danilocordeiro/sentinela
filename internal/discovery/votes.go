@@ -24,9 +24,10 @@ import (
 // Question é a decisão registrada para um achado que sai como pergunta de produto.
 const Question = "question"
 
-// decide aplica as regras da casa ao veredito: devolve a decisão final (publish, discard ou
-// merge) e o limiar que valeu (0 para a pergunta, que não passa por limiar).
-func decide(minConf float64, v judge.Verdict) (string, float64) {
+// Decide applies the house rules to a verdict: it returns the final decision (publish, discard
+// or merge) and the threshold that applied (0 for a product question, which skips the
+// threshold). Exported for the evals runner, which must score the same rule the pipeline uses.
+func Decide(minConf float64, v judge.Verdict) (string, float64) {
 	switch {
 	case v.Decision == judge.Merge && v.MergeWith != "":
 		return judge.Merge, minConf
@@ -48,7 +49,13 @@ func publishScore(v judge.Verdict) float64 {
 
 // borderline diz se o veredito está perto demais do limiar para confiar num voto só.
 func (r *Runner) borderline(v judge.Verdict, th float64) bool {
-	return v.Decision == judge.Publish && v.Premise == "" && math.Abs(v.Confidence-th) < r.Cfg.Discovery.RevoteBand
+	return Borderline(v, th, r.Cfg.Discovery.RevoteBand)
+}
+
+// Borderline reports whether a publish verdict without a product premise is within band of the
+// threshold, where one vote is not enough (discovery.revote_band).
+func Borderline(v judge.Verdict, th, band float64) bool {
+	return v.Decision == judge.Publish && v.Premise == "" && math.Abs(v.Confidence-th) < band
 }
 
 // MedianVote ordena os votos pela confiança em publicar e devolve o do meio (com número par, o

@@ -131,7 +131,7 @@ func (r *Runner) Rejudge(ctx context.Context, repos []string, only []string, app
 		if vs := votes[it.Fingerprint]; len(vs) > 1 {
 			v, it.Votes = MedianVote(vs), vs
 		}
-		decision, th := decide(minConf(findings[it.Fingerprint]), v)
+		decision, th := Decide(minConf(findings[it.Fingerprint]), v)
 		it.Threshold = th
 		it.After, it.AfterConf, it.Reason, it.Premise, it.MergeWith = decision, v.Confidence, v.Reason, v.Premise, v.MergeWith
 		it.DependsOnProduct = v.ProductDecision.Depends

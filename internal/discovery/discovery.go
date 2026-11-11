@@ -498,7 +498,7 @@ func (r *Runner) judgeAndStore(ctx context.Context, client llm.Caller, runID int
 			v = MedianVote(vs)
 		}
 		minConf, thFrom := thresholds.For(f.Module, f.Category)
-		decision, th := decide(minConf, v)
+		decision, th := Decide(minConf, v)
 		out := map[string]any{"verdict": v, "decision": decision, "question": v.Premise != "" && decision == judge.Publish, "min_confidence": minConf, "threshold": thFrom, "dry_run": jo.DryRun, "effective_threshold": th}
 		if vs := votes[it.Key]; len(vs) > 1 {
 			out["votes"] = vs
