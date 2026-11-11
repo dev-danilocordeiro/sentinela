@@ -1,134 +1,158 @@
 # Sentinela
 
-O Sentinela analisa os repositórios de uma equipe e encontra problemas de código (bugs potenciais,
-performance, segurança, melhorias). Os que valem a atenção do time viram issues no Linear, no board
-do time dono do código. Quando uma pessoa pede a correção, ele implementa, revisa e abre um PR em
-draft. Cada decisão humana (aceitar, recusar, marcar como duplicada, mergear) volta para um Postgres
-e calibra as próximas rodadas.
+Static analyzers flag too much, and teams learn to ignore them. Meanwhile, the bugs that matter sit
+unowned in code nobody is looking at. Sentinela scans a team's repositories and turns only the
+findings worth a person's time into issues on the board of the team that owns the code. When
+someone asks for the fix, it writes it, reviews it, and opens a draft pull request. Every human
+decision feeds back into the next run.
 
-É código Go determinístico onde não há julgamento (scanners, roteamento, publicação, fila, política
-de aprovação) e agentes de LLM onde há (triagem, análise, julgamento, implementação, revisão). Roda
-local, com um binário só.
+It is a single Go binary. Deterministic code handles everything that needs no judgment: scanners,
+ownership routing, publishing, the job queue, the approval policy. LLM agents run only where
+judgment is needed: triage, analysis, judging, implementing, reviewing.
 
-## Como funciona
+## Architecture
 
-![Fluxo do Sentinela: descoberta até a issue no Linear, execução sob demanda até o PR em draft, e retroalimentação no Postgres](docs/diagram_sentinela.png)
+```mermaid
+flowchart LR
+    subgraph Discovery["Discovery · sentinela scan"]
+        R[Repo + diff since<br/>last analyzed SHA] --> S[Scanners<br/>golangci-lint · gosec · govulncheck<br/>semgrep · eslint · tsc · osv-scanner]
+        S --> T[Triager<br/>one per package]
+        T --> A[Analyst + Architect<br/>findings with file:line evidence]
+        A --> V[Evidence check<br/>code]
+        V --> J{Judge<br/>publish · discard · merge}
+    end
 
-A linha de cima roda na descoberta e termina numa issue pronta para executar. A de baixo só começa
-quando uma pessoa aplica a label. O Postgres no meio guarda o histórico que as duas consultam. A
-fonte editável do desenho é [docs/diagram_sentinela.svg](docs/diagram_sentinela.svg), e o fluxo
-detalhado está em [docs/arquitetura.md](docs/arquitetura.md).
+    J -->|publish| P[Publisher<br/>routes by CODEOWNERS + config]
+    P --> L[(Linear issue<br/>owning team's board)]
 
-1. **Descoberta** (`sentinela scan`): clona o repo e roda os scanners. O Triager decide quais
-   pacotes aprofundar, o Analyst e o Architect propõem achados com evidência `arquivo:linha`, e o
-   código confere cada evidência. O Judge publica, descarta ou mescla, comparando com o que já
-   existe.
-2. **Publicação**: cada achado aprovado vira issue no time resolvido pelo roteamento (CODEOWNERS e
-   `sentinela.yaml`), com aviso no canal do Slack do time. Achado que depende de decisão de produto
-   vira pergunta ao time.
-3. **Execução** (`sentinela worker`): uma pessoa aplica a label `sentinela-fix`. O worker cria um git
-   worktree e roda o plugin do Claude Code em modo headless. O plugin escreve a spec, implementa,
-   passa por quatro revisões em paralelo e pelo approver. O worker abre o PR em draft, e uma GitHub
-   App revisora comenta a decisão do approver e do Policy Gate.
-4. **Feedback** (`sentinela serve`): o sync lê o que as pessoas decidiram no Linear e no GitHub,
-   grava supressões e desfechos, e o Feedback Curator ajusta os exemplos do Judge.
+    L -->|human applies<br/>sentinela-fix| W
 
-O Sentinela nunca toma uma decisão humana por você. Ele não cancela issue, não aplica a label de
-correção, não aprova nem faz merge de PR. Veja [docs/seguranca.md](docs/seguranca.md).
+    subgraph Execution["Execution · sentinela worker"]
+        W[Git worktree<br/>per job] --> SP[Spec writer] --> B[Builder]
+        B --> RV[4 reviewers in parallel<br/>security · code · reliability · domain]
+        RV -->|changes, max 2 retries| B
+        RV -->|all pass| AP[Approver]
+        AP --> G{Policy Gate<br/>code}
+    end
 
-## Modos de operação
+    G --> PR[Draft PR]
+    PR -->|human merges, closes<br/>or reverts| F
 
-O Postgres é o mesmo em todos os modos; só mudam as pontas
-([docs/modos.md](docs/modos.md)):
+    L -->|human cancels<br/>or accepts| F[Feedback sync<br/>sentinela serve]
 
-- **Local:** achados num relatório em `reports/`, decisões pela linha de comando
-  (`sentinela finding`), PR em draft pela sua conta do `gh`. Sem nenhuma chave. Para avaliar em 10
-  minutos: [docs/avaliacao.md](docs/avaliacao.md).
-- **MCP:** issues e decisões no Linear pelo MCP do Linear do seu Claude Code, sem criar apps. As
-  ações saem com a sua conta.
-- **Completo:** app OAuth no Linear, bot no Slack e duas GitHub Apps, com identidade própria. É o
-  modo de uso real.
+    F --> DB[(Postgres + pgvector<br/>findings · outcomes · suppressions<br/>few-shot examples · thresholds · llm_calls)]
+    DB -.->|dedup, suppressions,<br/>examples, thresholds| J
+```
 
-Para uso numa empresa (provider, onde rodar, identidade, permissões e adoção), veja
-[docs/empresa.md](docs/empresa.md). Com vários times, cada um mantém o próprio arquivo de config por PR (`config.d/teams/<time>.yaml`):
-veja o [guia de configuração](docs/guia-configuracao.md), o [CONTRIBUTING.md](CONTRIBUTING.md) e o
-cenário [examples/monorepo-acme](examples/monorepo-acme).
+- **Contracts:** every agent takes and returns JSON validated against a schema in `schemas/`.
+  Every model call is recorded in `llm_calls` with tokens, cost and prompt version.
+- **Execution:** the fix pipeline is a [Claude Code plugin](plugins/sentinela-factory/) run
+  headless, one isolated git worktree per job.
+- **Further reading:** [architecture](docs/arquitetura.md) (Portuguese) and the
+  [decision records](docs/decisions/).
 
-## Começar: `/sentinela-setup` (recomendado)
+## Run it in 5 minutes (local mode)
 
-Depois de clonar, abra o [Claude Code](https://docs.claude.com/en/docs/claude-code) na pasta do
-repo e digite `/sentinela-setup`. A skill (em `.claude/skills/sentinela-setup`) conversa com você,
-uma pergunta por vez:
+Local mode needs no Linear, Slack or GitHub App. Findings land in a local report, and you decide
+from the command line.
 
-1. confere os pré-requisitos;
-2. ajuda a escolher o modo, o perfil de modelos e os repos;
-3. roda o `init`;
-4. confere ou rascunha o `AGENTS.md` de cada repo;
-5. monta os times;
-6. valida e faz o primeiro scan em modo sombra;
-7. explica o dia a dia.
+Prerequisites:
 
-Ela não publica no Linear, não posta no Slack e não abre PR sem a sua confirmação, e nunca toma
-uma decisão por você. Depois da instalação, ela também atende "adicionar um repo", "adicionar um
-time", "trocar de modo", "trocar o perfil de modelos" e "por que este caminho foi para este time".
-
-## Quickstart manual (5 minutos, modo sombra)
-
-Pré-requisitos: Go 1.27+, Docker, `git`, e o [Claude Code](https://docs.claude.com/en/docs/claude-code)
-logado com uma assinatura (ou uma chave da API da Anthropic). Para só ver achados, não é preciso
-Linear, Slack nem GitHub App.
+- Go 1.27+ and Docker;
+- [Claude Code](https://docs.claude.com/en/docs/claude-code) logged in (a subscription is
+  enough), or an Anthropic API key;
+- the [GitHub CLI](https://cli.github.com) logged in, only if you want it to open PRs.
 
 ```bash
-git clone <este repositório> && cd sentinela
-cp .env.example .env                        # preencha só DATABASE_URL e GITHUB_TOKEN por enquanto
-cp sentinela.example.yaml sentinela.yaml    # troque os repos de exemplo por um repo seu
-docker compose up -d                        # Postgres 16 + pgvector
+git clone https://github.com/dev-danilocordeiro/sentinela && cd sentinela
 go build -o sentinela ./cmd/sentinela
-./sentinela migrate up
-./sentinela config validate --offline       # confere o sentinela.yaml sem chamar serviços
-./sentinela scan --repo sua-org/seu-repo --estimate-only   # quantas chamadas a rodada faria
-./sentinela scan --repo sua-org/seu-repo    # roda; com publish.enabled: false nada sai do Postgres
-./sentinela report --run 1                  # abre reports/run-1.html com achados e decisões
+
+# Creates .env, starts Postgres (pgvector), runs migrations and writes a minimal sentinela.yaml
+./sentinela init --mode local --repo your-org/your-repo
+
+./sentinela scan --repo your-org/your-repo --estimate-only   # how many model calls a run would make
+./sentinela scan --all                                       # first run analyzes the whole repo
 ```
 
-Com `publish.enabled: false` (padrão do exemplo), os achados ficam só no Postgres. Revise o
-relatório antes de ligar o Linear.
-
-Para olhar o banco, `docker compose --profile tools up -d` sobe um pgAdmin já conectado em
-http://127.0.0.1:5050 (veja [docs/operacao.md](docs/operacao.md#pgadmin)).
-
-## Documentação
-
-| Documento | Conteúdo |
-|---|---|
-| [docs/avaliacao.md](docs/avaliacao.md) | Avaliar em 10 minutos no modo local, sem chaves |
-| [docs/modos.md](docs/modos.md) | Os três modos (local, MCP e completo), o que cada um suporta, labels, limitações e como migrar |
-| [docs/guia-configuracao.md](docs/guia-configuracao.md) | Guia do zero ao cenário de uma organização com vários times: glossário, instalação por modo, como o Sentinela decide time, projeto, canal e menção, e erros comuns |
-| [docs/guia/index.html](docs/guia/index.html) | **Guia completo e interativo** (abra no navegador, funciona offline): cenários, os três modos, instalação, configuração, simulador de roteamento, gerador de config, erros comuns e referência |
-| [docs/empresa.md](docs/empresa.md) | Requisitos para uso em empresa: provider e custo por time, onde rodar, identidade e escopos, permissões, caminho de adoção e dois cenários |
-| [CONTRIBUTING.md](CONTRIBUTING.md) | Como um time adiciona o seu time, módulo ou projeto por PR (config.d/teams), e como mexer no código |
-| [examples/monorepo-acme](examples/monorepo-acme) | Cenário de referência: monorepo com 4 times, config por time e workflow de PR |
-| [docs/instalacao.md](docs/instalacao.md) | Instalação completa, banco, binário, Docker |
-| [docs/integracoes.md](docs/integracoes.md) | Linear, Slack, GitHub Apps, Claude por assinatura ou API |
-| [docs/configuracao.md](docs/configuracao.md) | Referência do `sentinela.yaml`, com exemplo de repo simples e de monorepo |
-| [docs/arquitetura.md](docs/arquitetura.md) | Agentes, modelos, contratos, banco e fluxo |
-| [docs/operacao.md](docs/operacao.md) | Comandos do dia a dia, serviços, decisões humanas, diagnóstico |
-| [docs/seguranca.md](docs/seguranca.md) | Segredos, permissões mínimas, decidir e executar |
-| [docs/custos.md](docs/custos.md) | Quanto custa e como limitar |
-| [docs/roadmap.md](docs/roadmap.md) | Fase 5 e o que falta para adoção em equipes e empresas |
-| [docs/adr/](docs/adr/) | Decisões de arquitetura, uma por arquivo |
-| [SENTINELA_BUILD_PROMPT.md](SENTINELA_BUILD_PROMPT.md) | Especificação original, por fases |
-
-## Desenvolvimento
+Open `reports/local/index.md`, or the HTML report of each repo. Then decide:
 
 ```bash
-go test ./...
-golangci-lint run
-sqlc generate                               # depois de mudar migrations ou internal/store/queries
-docker compose exec postgres createdb -U sentinela sentinela_test   # uma vez
-SENTINELA_TEST_DATABASE_URL=postgres://sentinela:sentinela@localhost:5432/sentinela_test?sslmode=disable \
-  go test -p 1 ./...                        # integração: recria o schema do banco de teste
+./sentinela finding list
+./sentinela finding reject 13 "the handler already validates this"   # becomes a suppression
+./sentinela finding fix 12                                           # queue a fix
+./sentinela worker --once                                            # spec, build, 4 reviews, draft PR
 ```
 
-Os testes não chamam nenhum modelo: usam respostas gravadas e servidores falsos. O teste opcional
-`SENTINELA_REAL_CLAUDE=1` roda o plugin com o Claude Code de verdade, num repo local.
+- **Other modes:** MCP mode (issues in Linear through your Claude Code's Linear MCP) and full mode
+  (own Linear app, Slack bot, two GitHub Apps) are described in [docs/modos.md](docs/modos.md).
+- **Guided setup:** running `/sentinela-setup` inside Claude Code in this folder walks through
+  the whole setup, one question at a time.
+
+## Evals
+
+The Judge is the step that decides whether a finding is worth an issue, so it is the part that is
+evaluated. [`evals/`](evals/) has 40 hand-labeled findings: 10 per category, half that a reviewer
+would accept and half that a reviewer would close.
+
+- `make eval` runs the Judge on them with the same decision rule as the pipeline, and reports
+  accuracy, precision and recall per category.
+- `make eval-replay` replays the recorded responses in CI without calling a model.
+
+**Results: not run yet.** No live eval has been recorded, so there are no numbers to report. This
+section will show the table from `evals/results/latest.md` once a live run is committed.
+
+The labels were written by hand for this dataset. They are not decisions recorded from real teams.
+The eval does not cover the Judge's use of similar findings and past decisions, which production
+runs provide. See [evals/README.md](evals/README.md) for what is and is not measured.
+
+## Limits
+
+**What it never does without a human** ([decision 0003](docs/decisions/0003-agent-limits.md)):
+
+- close or cancel an issue, apply the fix label, approve or merge a pull request, or lift a
+  suppression;
+- push to a default branch (fixes go to `sentinela/<issue>` branches, and PRs are always drafts);
+- auto-approve a PR for a team marked `blocked`, or one that touches blocked paths (payments,
+  billing, migrations, auth, CI). Auto-approval is opt-in per team, and auto-merge does not exist;
+- discard a finding that depends on a product decision. It goes to the team as a question.
+
+**What it does not do (yet):**
+
+- **Production signals:** Sentry and Datadog are not implemented. The `SignalSource` interface
+  exists; the adapters are on the [roadmap](docs/roadmap.md).
+- **Languages:** scanner coverage is strongest for Go and TypeScript/JavaScript. Java and Kotlin
+  get dependency scanning (osv-scanner) and semgrep, but no language-specific linters.
+- **Repo instructions:** a fix needs the target repo to describe its build, test and lint commands
+  in `AGENTS.md` or `CLAUDE.md`. Without that, the job fails and says so.
+- **Learning is per install:** feedback, suppressions and thresholds live in that install's
+  Postgres.
+- **Costs:** model calls cost money (API) or quota (subscription). Per-run and per-PR budgets
+  apply only with the API provider. See [docs/custos.md](docs/custos.md).
+
+## Documentation
+
+New material is in English: this README, [`evals/`](evals/) and
+[`docs/decisions/`](docs/decisions/). The detailed documentation predates it and is in
+Portuguese:
+
+| Document | Content |
+|---|---|
+| [docs/avaliacao.md](docs/avaliacao.md) | Local-mode walkthrough |
+| [docs/modos.md](docs/modos.md) | Local, MCP and full modes |
+| [docs/arquitetura.md](docs/arquitetura.md) | Agents, models, contracts, database, flow |
+| [docs/configuracao.md](docs/configuracao.md) | `sentinela.yaml` reference |
+| [docs/seguranca.md](docs/seguranca.md) | Secrets, permissions, isolation, deciding vs executing |
+| [docs/custos.md](docs/custos.md) | Cost and model profiles |
+| [docs/adr/](docs/adr/) | Full decision log |
+| [SENTINELA_BUILD_PROMPT.md](SENTINELA_BUILD_PROMPT.md) | Original phased specification |
+
+## Development
+
+```bash
+make test          # unit tests; no model is called (recorded responses and fake servers)
+make lint
+make eval-replay   # replays the recorded Judge eval
+```
+
+Store integration tests run only with `SENTINELA_TEST_DATABASE_URL` set. It must point to a
+throwaway database, because the tests drop its schema.
