@@ -1,0 +1,13 @@
+{
+  "replay_key": "a02ae785e431b4316cda",
+  "model": "claude-sonnet-5-5",
+  "stop_reason": "tool_use",
+  "text": "{\"product_decision\":{\"depends\":false,\"decision\":\"\"},\"decision\":\"discard\",\"confidence\":0.95,\"reason\":\"Jitter de backoff de retry não é uso criptográfico; math/rand é adequado e crypto/rand só adicionaria custo. Falso positivo.\",\"merge_with\":\"\",\"related_to\":[],\"narrowed\":{\"title\":\"\",\"context\":\"\",\"proposed_fix\":\"\",\"acceptance_criteria\":[]}}",
+  "usage": {
+    "InputTokens": 2,
+    "OutputTokens": 288,
+    "CacheWrite5mTokens": 0,
+    "CacheWrite1hTokens": 818,
+    "CacheReadTokens": 3472
+  }
+}

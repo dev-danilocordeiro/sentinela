@@ -1,0 +1,13 @@
+{
+  "replay_key": "5567654c4d3107d21eee",
+  "model": "claude-sonnet-5-5",
+  "stop_reason": "tool_use",
+  "text": "{\"product_decision\":{\"depends\":false,\"decision\":\"\"},\"decision\":\"discard\",\"confidence\":0.9,\"reason\":\"Achado de estilo/documentação sem defeito concreto; a evidência mostra apenas uma função e não sustenta a afirmação sobre o pacote inteiro. Não justifica uma issue.\",\"merge_with\":\"\",\"related_to\":[],\"narrowed\":{\"title\":\"\",\"context\":\"\",\"proposed_fix\":\"\",\"acceptance_criteria\":[]}}",
+  "usage": {
+    "InputTokens": 2,
+    "OutputTokens": 302,
+    "CacheWrite5mTokens": 0,
+    "CacheWrite1hTokens": 825,
+    "CacheReadTokens": 3472
+  }
+}

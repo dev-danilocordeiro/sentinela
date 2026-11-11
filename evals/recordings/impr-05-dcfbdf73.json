@@ -1,0 +1,13 @@
+{
+  "replay_key": "d4e3832f5ea8e778e2ad",
+  "model": "claude-sonnet-5-5",
+  "stop_reason": "tool_use",
+  "text": "{\"product_decision\":{\"depends\":false,\"decision\":\"\"},\"decision\":\"publish\",\"confidence\":0.75,\"reason\":\"A evidência mostra o cliente lançando Error só com mensagem e um chamador detectando 404 por correspondência de texto, o que é frágil. Um ApiError com status é uma correção clara e acionável.\",\"merge_with\":\"\",\"related_to\":[],\"narrowed\":{\"title\":\"\",\"context\":\"\",\"proposed_fix\":\"\",\"acceptance_criteria\":[]}}",
+  "usage": {
+    "InputTokens": 2,
+    "OutputTokens": 306,
+    "CacheWrite5mTokens": 0,
+    "CacheWrite1hTokens": 929,
+    "CacheReadTokens": 3472
+  }
+}

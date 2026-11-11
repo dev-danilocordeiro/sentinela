@@ -1,0 +1,13 @@
+{
+  "replay_key": "33cc260e6587542510ab",
+  "model": "claude-sonnet-5-5",
+  "stop_reason": "tool_use",
+  "text": "{\"product_decision\":{\"depends\":false,\"decision\":\"\"},\"decision\":\"discard\",\"confidence\":0.95,\"reason\":\"Fprintf em strings.Builder nunca retorna erro (Write do Builder sempre devolve nil), então ignorar o retorno não é um defeito real; é ruído de linter.\",\"merge_with\":\"\",\"related_to\":[],\"narrowed\":{\"title\":\"\",\"context\":\"\",\"proposed_fix\":\"\",\"acceptance_criteria\":[]}}",
+  "usage": {
+    "InputTokens": 2,
+    "OutputTokens": 297,
+    "CacheWrite5mTokens": 0,
+    "CacheWrite1hTokens": 0,
+    "CacheReadTokens": 4331
+  }
+}

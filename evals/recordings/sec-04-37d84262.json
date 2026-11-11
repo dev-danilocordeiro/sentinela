@@ -1,0 +1,13 @@
+{
+  "replay_key": "abbbec979e5b41724912",
+  "model": "claude-sonnet-5-5",
+  "stop_reason": "tool_use",
+  "text": "{\"product_decision\":{\"depends\":false,\"decision\":\"\"},\"decision\":\"publish\",\"confidence\":0.9,\"reason\":\"O filtro registra todos os headers em INFO, incluindo Authorization, o que vaza tokens bearer nos logs. A evidência sustenta isso e a correção (redigir Authorization e Cookie) é simples e acionável.\",\"merge_with\":\"\",\"related_to\":[],\"narrowed\":{\"title\":\"\",\"context\":\"\",\"proposed_fix\":\"\",\"acceptance_criteria\":[]}}",
+  "usage": {
+    "InputTokens": 2,
+    "OutputTokens": 313,
+    "CacheWrite5mTokens": 0,
+    "CacheWrite1hTokens": 912,
+    "CacheReadTokens": 3472
+  }
+}

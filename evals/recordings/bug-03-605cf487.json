@@ -1,0 +1,13 @@
+{
+  "replay_key": "c2877df9170a7fa23255",
+  "model": "claude-sonnet-5-5",
+  "stop_reason": "tool_use",
+  "text": "{\"product_decision\":{\"depends\":false,\"decision\":\"\"},\"decision\":\"publish\",\"confidence\":0.9,\"reason\":\"repo.save(order) sem await dentro do try: a falha vira unhandled rejection e o cliente recebe 201 mesmo assim. A correção com await é simples e acionável.\",\"merge_with\":\"\",\"related_to\":[],\"narrowed\":{\"title\":\"\",\"context\":\"\",\"proposed_fix\":\"\",\"acceptance_criteria\":[]}}",
+  "usage": {
+    "InputTokens": 2,
+    "OutputTokens": 295,
+    "CacheWrite5mTokens": 0,
+    "CacheWrite1hTokens": 0,
+    "CacheReadTokens": 4379
+  }
+}

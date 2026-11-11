@@ -1,0 +1,13 @@
+{
+  "replay_key": "ab642f2b5290ea94663b",
+  "model": "claude-sonnet-5-5",
+  "stop_reason": "tool_use",
+  "text": "{\"product_decision\":{\"depends\":false,\"decision\":\"\"},\"decision\":\"discard\",\"confidence\":0.95,\"reason\":\"Micro-otimização de estilo sem impacto mensurável: forEach vs for em uma lista pequena e constante de abas não justifica uma issue, e a alegação de lentidão não tem evidência.\",\"merge_with\":\"\",\"related_to\":[],\"narrowed\":{\"title\":\"\",\"context\":\"\",\"proposed_fix\":\"\",\"acceptance_criteria\":[]}}",
+  "usage": {
+    "InputTokens": 2,
+    "OutputTokens": 303,
+    "CacheWrite5mTokens": 0,
+    "CacheWrite1hTokens": 825,
+    "CacheReadTokens": 3472
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "replay_key": "e19655f36412186ccc99",
+  "model": "claude-sonnet-5-5",
+  "stop_reason": "tool_use",
+  "text": "{\"product_decision\":{\"depends\":false,\"decision\":\"\"},\"decision\":\"discard\",\"confidence\":0.9,\"reason\":\"Achado de estilo/preferência: a interface Sender tem duas implementações (EmailSender e SlackSender) verificadas em compilação, então removê-la quebraria o polimorfismo existente. A correção proposta é inconsistente com a evidência.\",\"merge_with\":\"\",\"related_to\":[],\"narrowed\":{\"title\":\"\",\"context\":\"\",\"proposed_fix\":\"\",\"acceptance_criteria\":[]}}",
+  "usage": {
+    "InputTokens": 2,
+    "OutputTokens": 320,
+    "CacheWrite5mTokens": 0,
+    "CacheWrite1hTokens": 892,
+    "CacheReadTokens": 3472
+  }
+}

@@ -1,0 +1,479 @@
+{
+  "date": "2026-11-11",
+  "provider": "claude_code",
+  "model": "claude-sonnet-5-5",
+  "prompt_version": "judge@8",
+  "dataset_sha256": "96bf854c839fd1743b8465ce59c91d9665c729d9c38afa0105fb14233139a4c3",
+  "min_confidence": 0.6,
+  "judge_votes": 3,
+  "overall": {
+    "cases": 40,
+    "correct": 40,
+    "errors": 0,
+    "tp": 20,
+    "fp": 0,
+    "tn": 20,
+    "fn": 0,
+    "accuracy": 1,
+    "precision": 1,
+    "recall": 1
+  },
+  "by_category": {
+    "bug": {
+      "cases": 10,
+      "correct": 10,
+      "errors": 0,
+      "tp": 5,
+      "fp": 0,
+      "tn": 5,
+      "fn": 0,
+      "accuracy": 1,
+      "precision": 1,
+      "recall": 1
+    },
+    "improvement": {
+      "cases": 10,
+      "correct": 10,
+      "errors": 0,
+      "tp": 5,
+      "fp": 0,
+      "tn": 5,
+      "fn": 0,
+      "accuracy": 1,
+      "precision": 1,
+      "recall": 1
+    },
+    "performance": {
+      "cases": 10,
+      "correct": 10,
+      "errors": 0,
+      "tp": 5,
+      "fp": 0,
+      "tn": 5,
+      "fn": 0,
+      "accuracy": 1,
+      "precision": 1,
+      "recall": 1
+    },
+    "security": {
+      "cases": 10,
+      "correct": 10,
+      "errors": 0,
+      "tp": 5,
+      "fp": 0,
+      "tn": 5,
+      "fn": 0,
+      "accuracy": 1,
+      "precision": 1,
+      "recall": 1
+    }
+  },
+  "cost": {
+    "calls": 40,
+    "input_tokens": 174276,
+    "output_tokens": 12248,
+    "usd": 0.2218699
+  },
+  "results": [
+    {
+      "id": "bug-01",
+      "category": "bug",
+      "label": "accepted",
+      "prediction": "accepted",
+      "decision": "publish",
+      "confidence": 0.95,
+      "votes": 1,
+      "reason": "O snippet mostra `defer resp.Body.Close()` antes da checagem de err; em falha de transporte resp é nil e ocorre panic, escondendo o erro original. A correção é simples e acionável."
+    },
+    {
+      "id": "bug-02",
+      "category": "bug",
+      "label": "accepted",
+      "prediction": "accepted",
+      "decision": "publish",
+      "confidence": 0.88,
+      "votes": 1,
+      "reason": "O trecho mostra o loop de rows.Next() retornando out, nil sem checar rows.Err(), então um erro de iteração (conexão caída) gera lista truncada sem erro. A correção é simples e acionável."
+    },
+    {
+      "id": "bug-03",
+      "category": "bug",
+      "label": "accepted",
+      "prediction": "accepted",
+      "decision": "publish",
+      "confidence": 0.9,
+      "votes": 1,
+      "reason": "repo.save(order) sem await dentro do try: a falha vira unhandled rejection e o cliente recebe 201 mesmo assim. A correção com await é simples e acionável."
+    },
+    {
+      "id": "bug-04",
+      "category": "bug",
+      "label": "accepted",
+      "prediction": "accepted",
+      "decision": "publish",
+      "confidence": 0.8,
+      "votes": 1,
+      "reason": "Comparar Integer boxed com == compara referências e falha fora do cache -128..127, então reservas com estoque alto são rejeitadas indevidamente. A correção com Objects.equals é simples e acionável."
+    },
+    {
+      "id": "bug-05",
+      "category": "bug",
+      "label": "accepted",
+      "prediction": "accepted",
+      "decision": "publish",
+      "confidence": 0.85,
+      "votes": 1,
+      "reason": "O trecho mostra items[offset:offset+limit] sem nenhuma checagem de limites e com erros de Atoi ignorados. Isso gera panic em última página curta, offset além do fim ou valores negativos. A correção é acionável."
+    },
+    {
+      "id": "bug-06",
+      "category": "bug",
+      "label": "rejected",
+      "prediction": "rejected",
+      "decision": "discard",
+      "confidence": 0.95,
+      "votes": 1,
+      "reason": "A evidência mostra que o mapa já é inicializado com make(map[string]int, len(events)) antes do loop; ele nunca é nil, então não há panic. O achado é um falso positivo."
+    },
+    {
+      "id": "bug-07",
+      "category": "bug",
+      "label": "rejected",
+      "prediction": "rejected",
+      "decision": "discard",
+      "confidence": 0.95,
+      "votes": 1,
+      "reason": "A própria evidência mostra que a chamada já tem `.catch(logError)`, então a rejeição é tratada e logada; o achado contradiz o código."
+    },
+    {
+      "id": "bug-08",
+      "category": "bug",
+      "label": "rejected",
+      "prediction": "rejected",
+      "decision": "discard",
+      "confidence": 0.9,
+      "votes": 1,
+      "reason": "A evidência contradiz o achado: o Set já usa c.mu.Lock() com defer Unlock, então a escrita no mapa está protegida. Nenhuma evidência mostra Get sem lock, e a correção proposta (mutex) já existe."
+    },
+    {
+      "id": "bug-09",
+      "category": "bug",
+      "label": "rejected",
+      "prediction": "rejected",
+      "decision": "discard",
+      "confidence": 0.95,
+      "votes": 1,
+      "reason": "A evidência contradiz o achado: `@Value(\"${gateway.timeout:30}\")` já define o default de 30 segundos, e um int primitivo injetado assim não gera NPE nem falha de startup."
+    },
+    {
+      "id": "bug-10",
+      "category": "bug",
+      "label": "rejected",
+      "prediction": "rejected",
+      "decision": "discard",
+      "confidence": 0.95,
+      "votes": 1,
+      "reason": "Fprintf em strings.Builder nunca retorna erro (Write do Builder sempre devolve nil), então ignorar o retorno não é um defeito real; é ruído de linter."
+    },
+    {
+      "id": "perf-01",
+      "category": "performance",
+      "label": "accepted",
+      "prediction": "accepted",
+      "decision": "publish",
+      "confidence": 0.88,
+      "votes": 1,
+      "reason": "A evidência mostra uma consulta ByID por pedido dentro do loop (N+1), o que sustenta o impacto de desempenho descrito. A correção em lote é acionável e os critérios são verificáveis."
+    },
+    {
+      "id": "perf-02",
+      "category": "performance",
+      "label": "accepted",
+      "prediction": "accepted",
+      "decision": "publish",
+      "confidence": 0.8,
+      "votes": 1,
+      "reason": "A evidência mostra await dentro de for, gerando chamadas sequenciais ao backend; a correção com Promise.all e limite de concorrência é acionável e reduz a latência da rota."
+    },
+    {
+      "id": "perf-03",
+      "category": "performance",
+      "label": "accepted",
+      "prediction": "accepted",
+      "decision": "publish",
+      "confidence": 0.85,
+      "votes": 1,
+      "reason": "A evidência mostra regexp.MustCompile dentro do handler, recompilando a cada requisição; mover para variável de pacote é correção simples e acionável."
+    },
+    {
+      "id": "perf-04",
+      "category": "performance",
+      "label": "accepted",
+      "prediction": "accepted",
+      "decision": "publish",
+      "confidence": 0.85,
+      "votes": 1,
+      "reason": "A evidência mostra findAll().stream().filter().count(), que carrega todas as entidades na memória só para contar. Trocar por um COUNT no banco (countByStatus) é uma correção simples e acionável."
+    },
+    {
+      "id": "perf-05",
+      "category": "performance",
+      "label": "accepted",
+      "prediction": "accepted",
+      "decision": "publish",
+      "confidence": 0.8,
+      "votes": 1,
+      "reason": "O trecho mostra concatenação de string em loop sobre até 100k linhas, o que gera cópias quadráticas. A correção com strings.Builder ou bufio.Writer é simples e acionável."
+    },
+    {
+      "id": "perf-06",
+      "category": "performance",
+      "label": "rejected",
+      "prediction": "rejected",
+      "decision": "discard",
+      "confidence": 0.9,
+      "votes": 1,
+      "reason": "Micro-otimização sem impacto: o DSN é montado uma vez na configuração, e a concatenação simples não justifica uma issue."
+    },
+    {
+      "id": "perf-07",
+      "category": "performance",
+      "label": "rejected",
+      "prediction": "rejected",
+      "decision": "discard",
+      "confidence": 0.95,
+      "votes": 1,
+      "reason": "Micro-otimização de estilo sem impacto mensurável: forEach vs for em uma lista pequena e constante de abas não justifica uma issue, e a alegação de lentidão não tem evidência."
+    },
+    {
+      "id": "perf-08",
+      "category": "performance",
+      "label": "rejected",
+      "prediction": "rejected",
+      "decision": "discard",
+      "confidence": 0.9,
+      "votes": 1,
+      "reason": "Micro-otimização sem impacto real: a lista de migrations em um comando de CLI é pequena e executada uma vez, então a realocação do slice é irrelevante e não justifica uma issue."
+    },
+    {
+      "id": "perf-09",
+      "category": "performance",
+      "label": "rejected",
+      "prediction": "rejected",
+      "decision": "discard",
+      "confidence": 0.9,
+      "votes": 1,
+      "reason": "A evidência mostra que a query já usa @EntityGraph(attributePaths = {\"items\"}), que busca os itens com join. O N+1 descrito não existe nesse código e a correção proposta já está aplicada."
+    },
+    {
+      "id": "perf-10",
+      "category": "performance",
+      "label": "rejected",
+      "prediction": "rejected",
+      "decision": "discard",
+      "confidence": 0.97,
+      "votes": 1,
+      "reason": "A evidência mostra que o regexp já é compilado uma única vez, em variável de pacote (slugRe); Slugify apenas o reutiliza. O achado descreve um problema que não existe no código."
+    },
+    {
+      "id": "impr-01",
+      "category": "improvement",
+      "label": "accepted",
+      "prediction": "accepted",
+      "decision": "publish",
+      "confidence": 0.8,
+      "votes": 1,
+      "reason": "A evidência mostra duas regras de arredondamento diferentes (RoundToEven e Trunc) em pricing e invoices, o que pode gerar diferença de um centavo entre total do pedido e fatura. A correção é acionável e clara."
+    },
+    {
+      "id": "impr-02",
+      "category": "improvement",
+      "label": "accepted",
+      "prediction": "accepted",
+      "decision": "publish",
+      "confidence": 0.78,
+      "votes": 1,
+      "reason": "O handler mapeia qualquer erro de Create para 500, conforme a evidência. Entrada inválida vira erro de servidor e gera alertas falsos e retentativas inúteis. A correção com erro tipado e errors.As é acionável."
+    },
+    {
+      "id": "impr-03",
+      "category": "improvement",
+      "label": "accepted",
+      "prediction": "accepted",
+      "decision": "publish",
+      "confidence": 0.8,
+      "votes": 1,
+      "reason": "A mesma variável DB_TIMEOUT é lida em três pacotes com defaults diferentes (5s, 10s, 30s), como mostram as evidências. Isso é contrato duplicado e deixa o timeout efetivo inconsistente; centralizar na config é uma correção acionável."
+    },
+    {
+      "id": "impr-04",
+      "category": "improvement",
+      "label": "accepted",
+      "prediction": "accepted",
+      "decision": "publish",
+      "confidence": 0.72,
+      "votes": 1,
+      "reason": "O log de falha de captura não traz invoiceId nem paymentId, como mostra a evidência, o que dificulta o diagnóstico em incidentes. A correção é simples e acionável, embora o impacto seja baixo."
+    },
+    {
+      "id": "impr-05",
+      "category": "improvement",
+      "label": "accepted",
+      "prediction": "accepted",
+      "decision": "publish",
+      "confidence": 0.75,
+      "votes": 1,
+      "reason": "A evidência mostra o cliente lançando Error só com mensagem e um chamador detectando 404 por correspondência de texto, o que é frágil. Um ApiError com status é uma correção clara e acionável."
+    },
+    {
+      "id": "impr-06",
+      "category": "improvement",
+      "label": "rejected",
+      "prediction": "rejected",
+      "decision": "discard",
+      "confidence": 0.95,
+      "votes": 1,
+      "reason": "Renomear `cfg` para `configuration` é questão puramente de estilo; `cfg` é idiomático em Go e não há defeito nem impacto que justifique uma issue."
+    },
+    {
+      "id": "impr-07",
+      "category": "improvement",
+      "label": "rejected",
+      "prediction": "rejected",
+      "decision": "discard",
+      "confidence": 0.95,
+      "votes": 1,
+      "reason": "Mudança puramente de estilo, sem impacto funcional; a confiança do achado (0,55) também está abaixo do limiar e não justifica uma issue."
+    },
+    {
+      "id": "impr-08",
+      "category": "improvement",
+      "label": "rejected",
+      "prediction": "rejected",
+      "decision": "discard",
+      "confidence": 0.9,
+      "votes": 1,
+      "reason": "Achado de estilo/documentação sem defeito concreto; a evidência mostra apenas uma função e não sustenta a afirmação sobre o pacote inteiro. Não justifica uma issue."
+    },
+    {
+      "id": "impr-09",
+      "category": "improvement",
+      "label": "rejected",
+      "prediction": "rejected",
+      "decision": "discard",
+      "confidence": 0.95,
+      "votes": 1,
+      "reason": "Converter uma entidade JPA (@Entity) em record é estilo e, além disso, inviável: o JPA exige classe não final, construtor sem argumentos e campos mutáveis, o que records não oferecem. A evidência não mostra defeito algum."
+    },
+    {
+      "id": "impr-10",
+      "category": "improvement",
+      "label": "rejected",
+      "prediction": "rejected",
+      "decision": "discard",
+      "confidence": 0.9,
+      "votes": 1,
+      "reason": "Achado de estilo/preferência: a interface Sender tem duas implementações (EmailSender e SlackSender) verificadas em compilação, então removê-la quebraria o polimorfismo existente. A correção proposta é inconsistente com a evidência."
+    },
+    {
+      "id": "sec-01",
+      "category": "security",
+      "label": "accepted",
+      "prediction": "accepted",
+      "decision": "publish",
+      "confidence": 0.95,
+      "votes": 1,
+      "reason": "O snippet mostra o parâmetro sort da query string interpolado direto no SQL via fmt.Sprintf, o que permite injeção de SQL. A correção com lista de colunas permitidas é acionável."
+    },
+    {
+      "id": "sec-02",
+      "category": "security",
+      "label": "accepted",
+      "prediction": "accepted",
+      "decision": "publish",
+      "confidence": 0.9,
+      "votes": 1,
+      "reason": "A evidência mostra req.query.url indo direto para fetch sem validação, caracterizando SSRF real (acesso a serviços internos e metadados de nuvem). A correção por allowlist é acionável e os critérios de aceite são testáveis."
+    },
+    {
+      "id": "sec-03",
+      "category": "security",
+      "label": "accepted",
+      "prediction": "accepted",
+      "decision": "publish",
+      "confidence": 0.85,
+      "votes": 1,
+      "reason": "A verificação de assinatura HMAC usa bytes.Equal, que não é em tempo constante e permite ataque de timing; hmac.Equal é a correção padrão e simples."
+    },
+    {
+      "id": "sec-04",
+      "category": "security",
+      "label": "accepted",
+      "prediction": "accepted",
+      "decision": "publish",
+      "confidence": 0.9,
+      "votes": 1,
+      "reason": "O filtro registra todos os headers em INFO, incluindo Authorization, o que vaza tokens bearer nos logs. A evidência sustenta isso e a correção (redigir Authorization e Cookie) é simples e acionável."
+    },
+    {
+      "id": "sec-05",
+      "category": "security",
+      "label": "accepted",
+      "prediction": "accepted",
+      "decision": "publish",
+      "confidence": 0.9,
+      "votes": 1,
+      "reason": "O snippet mostra filepath.Join com o parâmetro name sem validação seguido de os.Open, o que permite path traversal (../) e leitura de arquivos arbitrários. A correção é acionável e os critérios de aceite são testáveis."
+    },
+    {
+      "id": "sec-06",
+      "category": "security",
+      "label": "rejected",
+      "prediction": "rejected",
+      "decision": "discard",
+      "confidence": 0.97,
+      "votes": 1,
+      "reason": "A evidência mostra que a consulta já usa placeholders parametrizados ($1 e $2) com id e customerID como argumentos, então não há SQL injection; o achado é um falso positivo."
+    },
+    {
+      "id": "sec-07",
+      "category": "security",
+      "label": "rejected",
+      "prediction": "rejected",
+      "decision": "discard",
+      "confidence": 0.95,
+      "votes": 1,
+      "reason": "Jitter de backoff de retry não é uso criptográfico; math/rand é adequado e crypto/rand só adicionaria custo. Falso positivo."
+    },
+    {
+      "id": "sec-08",
+      "category": "security",
+      "label": "rejected",
+      "prediction": "rejected",
+      "decision": "discard",
+      "confidence": 0.9,
+      "votes": 1,
+      "reason": "O trecho `{comment.body}` em JSX já é escapado automaticamente pelo React, então scripts no texto não são executados. Não há XSS na evidência (não há dangerouslySetInnerHTML), e sanitizar seria desnecessário."
+    },
+    {
+      "id": "sec-09",
+      "category": "security",
+      "label": "rejected",
+      "prediction": "rejected",
+      "decision": "discard",
+      "confidence": 0.95,
+      "votes": 1,
+      "reason": "A evidência é uma senha fictícia (\"test-password\") num arquivo de teste com store em memória, não uma credencial real. Não há risco de segurança, e carregar isso do ambiente seria um exagero."
+    },
+    {
+      "id": "sec-10",
+      "category": "security",
+      "label": "rejected",
+      "prediction": "rejected",
+      "decision": "discard",
+      "confidence": 0.9,
+      "votes": 1,
+      "reason": "SHA-1 é usado apenas para gerar um ETag (validador de cache), truncado em 8 bytes, sem função de segurança; colisões resistentes não importam aqui. Falso positivo de segurança, trocar o hash seria só estilo."
+    }
+  ]
+}

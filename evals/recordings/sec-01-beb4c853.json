@@ -1,0 +1,13 @@
+{
+  "replay_key": "a3a5c0e2b5071833f1c3",
+  "model": "claude-sonnet-5-5",
+  "stop_reason": "tool_use",
+  "text": "{\"product_decision\":{\"depends\":false,\"decision\":\"\"},\"decision\":\"publish\",\"confidence\":0.95,\"reason\":\"O snippet mostra o parâmetro sort da query string interpolado direto no SQL via fmt.Sprintf, o que permite injeção de SQL. A correção com lista de colunas permitidas é acionável.\",\"merge_with\":\"\",\"related_to\":[],\"narrowed\":{\"title\":\"\",\"context\":\"\",\"proposed_fix\":\"\",\"acceptance_criteria\":[]}}",
+  "usage": {
+    "InputTokens": 2,
+    "OutputTokens": 306,
+    "CacheWrite5mTokens": 0,
+    "CacheWrite1hTokens": 937,
+    "CacheReadTokens": 3472
+  }
+}

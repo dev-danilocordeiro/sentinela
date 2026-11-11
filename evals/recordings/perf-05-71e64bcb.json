@@ -1,0 +1,13 @@
+{
+  "replay_key": "2fc1fb0be13416f7d0c8",
+  "model": "claude-sonnet-5-5",
+  "stop_reason": "tool_use",
+  "text": "{\"product_decision\":{\"depends\":false,\"decision\":\"\"},\"decision\":\"publish\",\"confidence\":0.8,\"reason\":\"O trecho mostra concatenação de string em loop sobre até 100k linhas, o que gera cópias quadráticas. A correção com strings.Builder ou bufio.Writer é simples e acionável.\",\"merge_with\":\"\",\"related_to\":[],\"narrowed\":{\"title\":\"\",\"context\":\"\",\"proposed_fix\":\"\",\"acceptance_criteria\":[]}}",
+  "usage": {
+    "InputTokens": 2,
+    "OutputTokens": 303,
+    "CacheWrite5mTokens": 0,
+    "CacheWrite1hTokens": 0,
+    "CacheReadTokens": 4372
+  }
+}

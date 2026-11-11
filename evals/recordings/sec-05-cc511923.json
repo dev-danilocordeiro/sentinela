@@ -1,0 +1,13 @@
+{
+  "replay_key": "bfdbd21d1843aa76611b",
+  "model": "claude-sonnet-5-5",
+  "stop_reason": "tool_use",
+  "text": "{\"product_decision\":{\"depends\":false,\"decision\":\"\"},\"decision\":\"publish\",\"confidence\":0.9,\"reason\":\"O snippet mostra filepath.Join com o parâmetro name sem validação seguido de os.Open, o que permite path traversal (../) e leitura de arquivos arbitrários. A correção é acionável e os critérios de aceite são testáveis.\",\"merge_with\":\"\",\"related_to\":[],\"narrowed\":{\"title\":\"\",\"context\":\"\",\"proposed_fix\":\"\",\"acceptance_criteria\":[]}}",
+  "usage": {
+    "InputTokens": 2,
+    "OutputTokens": 319,
+    "CacheWrite5mTokens": 0,
+    "CacheWrite1hTokens": 884,
+    "CacheReadTokens": 3472
+  }
+}

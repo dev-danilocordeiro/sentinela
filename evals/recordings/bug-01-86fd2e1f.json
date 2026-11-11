@@ -1,0 +1,13 @@
+{
+  "replay_key": "931287366735e159a36a",
+  "model": "claude-sonnet-5-5",
+  "stop_reason": "tool_use",
+  "text": "{\"product_decision\":{\"depends\":false,\"decision\":\"\"},\"decision\":\"publish\",\"confidence\":0.95,\"reason\":\"O snippet mostra `defer resp.Body.Close()` antes da checagem de err; em falha de transporte resp é nil e ocorre panic, escondendo o erro original. A correção é simples e acionável.\",\"merge_with\":\"\",\"related_to\":[],\"narrowed\":{\"title\":\"\",\"context\":\"\",\"proposed_fix\":\"\",\"acceptance_criteria\":[]}}",
+  "usage": {
+    "InputTokens": 2,
+    "OutputTokens": 305,
+    "CacheWrite5mTokens": 0,
+    "CacheWrite1hTokens": 0,
+    "CacheReadTokens": 4420
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "replay_key": "50fea6135399d73cff2a",
+  "model": "claude-sonnet-5-5",
+  "stop_reason": "tool_use",
+  "text": "{\"product_decision\":{\"depends\":false,\"decision\":\"\"},\"decision\":\"publish\",\"confidence\":0.8,\"reason\":\"A mesma variável DB_TIMEOUT é lida em três pacotes com defaults diferentes (5s, 10s, 30s), como mostram as evidências. Isso é contrato duplicado e deixa o timeout efetivo inconsistente; centralizar na config é uma correção acionável.\",\"merge_with\":\"\",\"related_to\":[],\"narrowed\":{\"title\":\"\",\"context\":\"\",\"proposed_fix\":\"\",\"acceptance_criteria\":[]}}",
+  "usage": {
+    "InputTokens": 2,
+    "OutputTokens": 335,
+    "CacheWrite5mTokens": 0,
+    "CacheWrite1hTokens": 1017,
+    "CacheReadTokens": 3472
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "replay_key": "cc922e6e8af7c105aa5b",
+  "model": "claude-sonnet-5-5",
+  "stop_reason": "tool_use",
+  "text": "{\"product_decision\":{\"depends\":false,\"decision\":\"\"},\"decision\":\"discard\",\"confidence\":0.95,\"reason\":\"A própria evidência mostra que a chamada já tem `.catch(logError)`, então a rejeição é tratada e logada; o achado contradiz o código.\",\"merge_with\":\"\",\"related_to\":[],\"narrowed\":{\"title\":\"\",\"context\":\"\",\"proposed_fix\":\"\",\"acceptance_criteria\":[]}}",
+  "usage": {
+    "InputTokens": 2,
+    "OutputTokens": 287,
+    "CacheWrite5mTokens": 0,
+    "CacheWrite1hTokens": 0,
+    "CacheReadTokens": 4303
+  }
+}
