@@ -11,7 +11,7 @@ fim desta página.
 
 ## Ideias aprovadas da linha de execução (inspiradas no sandcastle)
 
-Lista aprovada pelo dono, inspirada em github.com/mattpocock/sandcastle. Itens feitos:
+Lista aprovada, inspirada em github.com/mattpocock/sandcastle. Itens feitos:
 - item 1, retomar a sessão no retry (ADR 0030);
 - item 2, fila consciente de conflitos (ADR 0031): jobs do mesmo repo com arquivos de escopo ou de
   evidência em comum rodam em sequência, e o seguinte só começa depois que o PR do anterior for

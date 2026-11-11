@@ -35,4 +35,4 @@ não.
 ## Registros corrigidos
 - **EX-9** (outcome 1): `decided_by human`, `executed_by agent`. Volta a contar.
 - **EX-10** (3), **EX-8** (4) e **EX-5** (5): `decided_by human`, `executed_by agent`, com a nota
-  dizendo que a decisão foi escolhida pelo dono no chat e executada pelo Claude do chat via conector.
+  dizendo que a decisão foi humana, tomada no chat, e executada pelo Claude do chat via conector.

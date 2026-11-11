@@ -12,7 +12,7 @@ shutdown gracioso. Elas ficaram só no corpo do PR, sem passar pelo Judge e sem 
 issue.
 
 ## Decisão
-- **Contrato (autorizado pelo dono):**
+- **Contrato (mudança autorizada):**
   - `Finding.source` ganha `review_note`, e `SignalRef.kind` também.
   - `findings.origin_execution_id` liga o achado à execução de origem.
   - `analysis_runs.mode` ganha `review_note`.

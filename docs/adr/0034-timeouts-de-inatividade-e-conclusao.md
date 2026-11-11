@@ -10,7 +10,7 @@ a hora inteira. Um processo que já tinha emitido o `result`, mas não saía (um
 stdout, por exemplo), também, e o job ainda falhava por timeout com o trabalho pronto. Além disso,
 uma nova tentativa que recomeçava do zero rodava `git worktree remove --force` no worktree da
 anterior e apagava commits e mudanças que nunca foram para o GitHub. Item 3 da lista do sandcastle
-(github.com/mattpocock/sandcastle, MIT), aprovada pelo dono.
+(github.com/mattpocock/sandcastle, MIT), aprovada.
 
 ## Decisão
 

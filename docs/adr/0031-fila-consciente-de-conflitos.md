@@ -9,8 +9,8 @@ Com `execution.concurrency` acima de 1, o worker pegava qualquer job da fila (`F
 LOCKED`). Dois achados no mesmo arquivo viravam dois PRs que partiam da mesma base e se
 conflitavam no merge. O segundo, além disso, era corrigido sem ver a correção do primeiro. O
 mesmo acontecia com concorrência 1: o segundo job começava enquanto o PR do primeiro ainda estava
-aberto. A ideia vem do sandcastle (github.com/mattpocock/sandcastle, MIT). O desenho foi aprovado
-pelo dono do projeto, incluindo a coluna nova `wait_reason`.
+aberto. A ideia vem do sandcastle (github.com/mattpocock/sandcastle, MIT). O desenho foi aprovado,
+incluindo a coluna nova `wait_reason`.
 
 ## Decisão
 

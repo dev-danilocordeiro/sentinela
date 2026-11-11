@@ -43,5 +43,5 @@ Campos conferidos por introspecção do tipo `Issue` na API GraphQL do Linear em
 - Uma issue que uma pessoa moveu de projeto, ou arquivou, deixa de ser reencontrada numa
   publicação retomada; nesse caso raro sai uma issue nova. A ligação já gravada no banco não muda:
   a busca só acontece para achado sem issue.
-- Mudança no esquema depois da Fase 2 (`installation`, `finding_unlinks`), pedida pelo dono da
-  instalação; as duas têm `down`.
+- Mudança no esquema depois da Fase 2 (`installation`, `finding_unlinks`), aprovada antes de
+  entrar; as duas têm `down`.
