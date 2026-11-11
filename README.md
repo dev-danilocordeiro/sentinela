@@ -98,8 +98,25 @@ would accept and half that a reviewer would close.
   accuracy, precision and recall per category.
 - `make eval-replay` replays the recorded responses in CI without calling a model.
 
-**Results: not run yet.** No live eval has been recorded, so there are no numbers to report. This
-section will show the table from `evals/results/latest.md` once a live run is committed.
+**Latest live run** (2026-11-11, `claude-sonnet-5-5`, prompt `judge@8`, threshold 0.6, 40 calls,
+no errors). Full report: [evals/results/latest.md](evals/results/latest.md).
+
+| Category | Cases | Correct | Accuracy |
+|---|---|---|---|
+| bug | 10 | 10 | 100% |
+| performance | 10 | 10 | 100% |
+| improvement | 10 | 10 | 100% |
+| security | 10 | 10 | 100% |
+| **all** | **40** | **40** | **100%** |
+
+**How to read this:** a perfect score here means the dataset is too easy. It does not mean the
+Judge is perfect.
+
+- The cases are clear-cut: most rejected findings are refuted by their own code snippet, and the
+  lowest confidence in the run was 0.72.
+- No case came near the threshold, so the re-vote path never ran.
+- The useful next step is harder cases: real but low-impact findings, findings that depend on a
+  product decision, and near-duplicates.
 
 The labels were written by hand for this dataset. They are not decisions recorded from real teams.
 The eval does not cover the Judge's use of similar findings and past decisions, which production
