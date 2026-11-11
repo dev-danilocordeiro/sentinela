@@ -43,7 +43,7 @@ func newRootCmd(env Env, hooks *initHooks) *cobra.Command {
 	root.PersistentFlags().StringVar(&cfgPath, "config", "sentinela.yaml", "caminho do sentinela.yaml")
 
 	deps := &deps{env: env, cfgPath: &cfgPath, hooks: hooks}
-	root.AddCommand(newMigrateCmd(deps), newConfigCmd(deps), newOwnersCmd(deps), newScanCmd(deps), newReportCmd(deps), newServeCmd(deps), newCurateCmd(deps), newWorkerCmd(deps), newJobCmd(deps), newMetricsCmd(deps), newNotesCmd(deps), newRejudgeCmd(deps), newLinearCmd(deps), newStatusCmd(deps), newRefreshVulnCmd(deps), newPublishCmd(deps), newFindingCmd(deps), newInitCmd(deps), newDocsCmd(deps), newEgressProxyCmd())
+	root.AddCommand(newMigrateCmd(deps), newConfigCmd(deps), newOwnersCmd(deps), newScanCmd(deps), newReportCmd(deps), newServeCmd(deps), newCurateCmd(deps), newWorkerCmd(deps), newJobCmd(deps), newMetricsCmd(deps), newNotesCmd(deps), newRejudgeCmd(deps), newLinearCmd(deps), newStatusCmd(deps), newRefreshVulnCmd(deps), newPublishCmd(deps), newFindingCmd(deps), newInitCmd(deps), newDocsCmd(deps), newEgressProxyCmd(), newEvalCmd(deps))
 	return root
 }
 
