@@ -446,6 +446,19 @@ func worstCaseAdvice(top, raise string, worst any) string {
 	return advice + "."
 }
 
+// anthropicClient builds the API client from the environment (base URL and workspace optional).
+func anthropicClient(d *deps, key string) anthropic.Client {
+	opts := []option.RequestOption{option.WithAPIKey(key)}
+	if base := d.env("ANTHROPIC_BASE_URL"); base != "" {
+		opts = append(opts, option.WithBaseURL(base))
+	}
+	// Chave não vinculada a um workspace exige o header em toda requisição.
+	if ws := d.env("ANTHROPIC_WORKSPACE_ID"); ws != "" {
+		opts = append(opts, option.WithHeader("anthropic-workspace-id", ws))
+	}
+	return anthropic.NewClient(opts...)
+}
+
 // newCaller monta o provider de LLM da rodada conforme llm.provider.
 func newCaller(d *deps, cfg *config.Config, st *store.Store, prices *llm.PriceTable, tracer trace.Tracer, runID int64, budget llm.NanoUSD) (llm.Caller, error) {
 	rec := store.NewLLMRecorder(st)
@@ -454,16 +467,8 @@ func newCaller(d *deps, cfg *config.Config, st *store.Store, prices *llm.PriceTa
 		if d.env("ANTHROPIC_API_KEY") == "" {
 			return nil, errors.New("ANTHROPIC_API_KEY não definida")
 		}
-		opts := []option.RequestOption{option.WithAPIKey(d.env("ANTHROPIC_API_KEY"))}
-		if base := d.env("ANTHROPIC_BASE_URL"); base != "" {
-			opts = append(opts, option.WithBaseURL(base))
-		}
-		// Chave não vinculada a um workspace exige o header em toda requisição.
-		if ws := d.env("ANTHROPIC_WORKSPACE_ID"); ws != "" {
-			opts = append(opts, option.WithHeader("anthropic-workspace-id", ws))
-		}
 		return llm.NewClient(llm.Options{
-			API: anthropic.NewClient(opts...), Prices: prices, Recorder: rec,
+			API: anthropicClient(d, d.env("ANTHROPIC_API_KEY")), Prices: prices, Recorder: rec,
 			Budget: llm.NewBudget(budget), RunID: runID, PollInterval: cfg.Discovery.BatchPollInterval,
 			Tracer: tracer, Sync: !cfg.Models.UseBatch,
 		})
